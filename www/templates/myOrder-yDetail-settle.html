@@ -1,0 +1,54 @@
+<ion-view hide-tabs="true" cache-view="false">
+  <ion-nav-bar class="bar-stable bar" style="display:block;z-index:10">
+    <div class="title title-center header-item" style="background-color:#fff">
+      <span style="font-size: 14px;">{{'订单'|T}}</span>
+      <span class="slider-span" ng-show="type==2"><i class="s-point" ng-repeat="(index, item) in resvOrders" ng-class="{'current': orderIndex==index}"></i></span>
+    </div>
+  </ion-nav-bar>
+  <button style="z-index:100" class="button back-button buttons button-clear header-item" ng-click="$ionicGoBack()">
+    <i class="icon icon-back" style="vertical-align: middle;"></i>
+  </button>
+  <div class="main-container" style="bottom:44px;">
+    <div class="list">
+      <div class="item row">
+        <span class="myOrder-gray-font col">{{data.vipName}}{{data.vipSex}}</span>
+      </div>
+      <div class="item row">
+        <span class="myOrder-gray-font col">{{data.vipPhone}}</span>
+      </div>
+      <div class="item row">
+        <span class="myOrder-gray-font col">{{data.tableName}} {{data.resvDate}} {{data.mealTypeName}}</span>
+      </div>
+    </div>
+    <div class="list">
+      <div class="item row">
+        <span class="myOrder-gray-font">{{'桌数'|T}}</span>
+        <input class="text-right input-style col" type="tel" ng-model=data.tableNum >
+        <span class="myOrder-gray-font" style="margin-left: 8px;">{{'桌'|T}}</span>
+      </div>
+      <div class="item row">
+        <span class="myOrder-gray-font">{{'菜品'|T}}</span>
+        <input class="text-right input-style col" type="tel" ng-model=data.dishesPrice >
+        <span class="myOrder-gray-font" style="margin-left: 8px;">{{'元'|T}}</span>
+      </div>
+      <div class="item row">
+        <span class="myOrder-gray-font">{{'酒水'|T}}</span>
+        <input class="text-right input-style col" type="tel" ng-model=data.drinksPrice >
+        <span class="myOrder-gray-font" style="margin-left: 8px;">{{'元'|T}}</span>
+      </div>
+      <div class="item row">
+        <span class="myOrder-gray-font">{{'婚庆'|T}}</span>
+        <input class="text-right input-style col" type="tel" ng-model=data.weddingPrice >
+        <span class="myOrder-gray-font" style="margin-left: 8px;">{{'元'|T}}</span>
+      </div>
+      <div class="item row">
+        <span class="myOrder-gray-font">{{'实收金额'|T}}<i style="color: #ff2741;">*</i></span>
+        <input class="text-right input-style col" type="tel" ng-model=data.actualMoney >
+        <span class="myOrder-gray-font" style="margin-left: 8px;">{{'元'|T}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="row bar bar-footer" style="background-color: #e8e8e8;border:0;padding: 0 20px 10px;">
+    <div class="text-center" style="background-color: #ff2741;color: #fff;width: 100%;height: 40px;line-height: 40px;border-radius: 4px;" ng-click="save()">{{'结账'|T}}</div>
+  </div>
+</ion-view>

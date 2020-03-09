@@ -1,0 +1,63 @@
+<ion-view hide-tabs="true">
+  <ion-nav-title>{{info.businessName.slice(0,9)}}</ion-nav-title>
+  <ion-content delegate-handle="orderContent" id="order-scroll" scroll="false">
+    <div class="row item" style="padding: 0 12px;min-height: 44px;margin: 0" ng-if="!isStore">
+      <div class="icon icon-select" ng-click="openPopover($event,1)" style="font-size: 14px;">{{state|T}}</div>
+      <div class="icon icon-select" ng-click="openPopover($event,2)" style="font-size: 14px;margin-left: 30px;">{{meal|T}}</div>
+      <div class="icon icon-select" ng-click="openPopover($event,3)" style="font-size: 14px;margin-left: 30px;">{{type|T}}</div>
+    </div>
+    <div class="list">
+      <div class="item text-center row" style="border-right:0;padding:0 8px;min-height: 40px;border-top: 1px solid #ddd;">
+        <div class="col">
+          <i class="icon icon-cal-g"></i>
+          <span ng-click="openDatePicker(1)">{{data.resvStartDate}}</span>
+        </div>
+        <!-- <div class="col-10" style="line-height: 48px;">
+          {{'至'|T}}
+        </div>
+        <div class="col-40">
+          <i class="icon icon-cal-g"></i>
+          <span ng-click="openDatePicker(2)">{{data.resvEndDate}}</span>
+        </div> -->
+      </div>
+    </div>
+    <ion-scroll style="height: calc(100% - 160px)">
+      <div class="list list-card" ng-repeat="order in orderList" ng-click="goOrderDetail('{{order.resvOrder}}', '{{order.status}}')">
+        <div class="row list-card-top">
+          <div class="row" style="position: relative;z-index: 5;align-items: center;padding: 0;">
+            <span class="tab-account-message-detail-icon" style="margin: 0;width: 28px;height: 28px;margin-right: 8px;"></span>
+            <div class="col">
+              <span>{{order.vipName}}</span>
+              <span class="myOrder-gray-font" style="font-size: 10px;">{{order.vipPhone}}</span>
+            </div>
+            <i style="font-size:14px;color:#999;" ng-style="{'color': order.status == 1 ? 'blue' : (order.status == 2 ? 'green' : (order.status == 3 ? 'grey' : ''))}">
+              {{order.status == 1 ? '已预订' : (order.status == 2 ? '已派送' : (order.status == 3 ? '已取消' : ''))}}
+            </i>
+          </div>
+        </div>
+        <div class="list-card-middle">
+          <div style="display: flex;"><span style="flex: 1;">{{'套餐名称'|T}}：{{order.groupMealName}}</span></div>
+          <div style="display: flex;"><span style="flex: 1;">{{'订单总价'|T}}：{{order.price}} {{order.price?'元':''|T}}</span></div>
+          <div style="display: flex;"><span style="flex: 1;">{{'预订餐次'|T}}：{{order.resvDate}} {{order.mealTypeName}}<i class="vertical-middle icon ion-link" ng-show="order.relatedNum>1" style="transform: rotate(-45deg);display: inline-block;font-size: 18px;color: red;margin-left: 10px;position: relative;top: -2px;"></i></span></div>
+          <div style="display: flex;"><span style="flex: 1;">{{'送达时间'|T}}：{{order.sendTime}}</span></div>
+          <div style="display: flex;"><span style="flex: 1;">{{'派送地址'|T}}：{{order.sendAddress}}</span></div>
+          <div style="display: flex;"><span style="flex: 1;">{{'备注'|T}}：{{order.remark}}</span></div>
+          <div style="display: flex;"><span style="flex: 1;">{{'派送人员'|T}}：{{order.sendMan}}</span></div>
+          <div style="display: flex;"><span style="flex: 1;">{{'派送电话'|T}}：{{order.sendPhone}}</span></div>
+          <div style="display: flex;"><span style="flex: 1;font-size: 13px;text-align: right;margin-top: 10px;">{{'下单来源'|T}}：{{order.userName}} {{order.userPhone}}</span></div>
+        </div>
+      </div>
+      <!-- <ion-infinite-scroll
+        ng-if="canLoad"
+        immediate-check="false"
+        distance="2%"
+        on-infinite="doInfinite()">
+      </ion-infinite-scroll> -->
+    </ion-scroll>
+  </ion-content>
+  <div class="row bar bar-footer" ng-hide="showState || showCai || showTong" style="background-color: #f1f2f5;border:0;padding:0; ">
+    <div class="col text-center" style="background-color: #ff2741;color:#fff;width:100%;height: 100%;" ng-click="bookT()">
+      <a href="javascript:0" class="button button-clear" style="color:#fff;line-height: 44px;">{{'新增订单'|T}}</a>
+    </div>
+  </div>
+</ion-view>

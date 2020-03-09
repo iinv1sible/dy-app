@@ -1,0 +1,117 @@
+<ion-view hide-back-button="true" hide-tabs="true">
+  <ion-nav-bar class="bar-stable bar" style="display:block;z-index:10">
+    <div class="title title-center header-item" style="background-color:#fff">
+      <span style="font-size: 14px;">{{info.businessName.slice(0,9)}}</span>
+    </div>
+  </ion-nav-bar>
+    <!-- 左側按鈕 -->
+  <button style="z-index:100" class="button back-button buttons button-clear header-item" ng-click="cancel($event)">
+      <i class="icon icon-back" style="vertical-align: middle;"></i>
+  </button>
+    <!-- 右側按鈕 -->
+  <button style="z-index:100;float:right" class="button button-icon button-clear button-positive" ng-show="edit" ng-click="submit()">
+      <i style="font-size: 15px;color:#ff2741;">{{'确认修改'|T}}</i>
+  </button>
+  <!-- 页面主体 -->
+  <div class="main-container" style="bottom:{{edit?'0':''}}" on-swipe-left="left()" on-swipe-right="right()">
+    <div class="list" style="margin-bottom:0">
+      <div class="item row" style="border-top: 0;">
+        <span class="input-label">{{'客户电话'|T}}<i style="color: #ff2741;">*</i></span>
+        <input id="vipPhone" type="tel" class="text-right input-style col" ng-change="select()" ng-model="data.vipPhone" placeholder="{{'请输入客户电话'|T}}" ng-disabled="edit">
+      </div>
+      <div class="item row">
+        <span class="input-label">{{'客户姓名'|T}}<i style="color: #ff2741;">*</i></span>
+        <input type="text" placeholder="{{'请输入客户姓名'|T}}" ng-model="data.vipName" class="text-right input-style col"  style="margin-right: 8px;display: inline-block;" ng-disabled="edit">
+        <span class="icon icon-select detail-gender-pick" ng-class="{'disable-pointer-events':detail}" ng-click="openPopover($event, 1)">{{data.vipSex | T}}</span>
+      </div>
+      <div class="item row">
+        <span class="input-label">{{'客户公司'|T}}</span>
+        <input type="text" class="text-right input-style col" ng-model="data.vipCompany" placeholder="{{'请输入客户公司'|T}}" ng-disabled="detail">
+      </div>
+      <div class="item row" ng-if="!edit">
+        <span class="input-label">{{'预订日期'|T}}<i style="color: #ff2741;">*</i></span>
+        <span class="text-right input-style col" style="text-align: center;" ng-class="{'disable-pointer-events':edit}" ng-click="openDatePicker(1)">{{data.resvStartDate}}</span>
+        <span>{{'至'|T}}</span>
+        <span class="text-right input-style col" style="text-align: center;" ng-class="{'disable-pointer-events':edit}" ng-click="openDatePicker(2)">{{data.resvEndDate}}</span>
+      </div>
+      <div class="item row">
+        <span class="input-label">{{'预订餐别'|T}}<i style="color: #ff2741;">*</i></span>
+        <div class="text-right col">
+          <span class="icon icon-select detail-gender-pick" ng-class="{'disable-pointer-events':detail}" ng-click="openPopover($event, 2)">{{data.mealTypeName}}</span>
+        </div>
+      </div>
+      <div class="item row" ng-if="edit">
+        <span class="input-label">{{'预订日期'|T}}<i style="color: #ff2741;">*</i></span>
+        <span class="text-right input-style col" ng-class="{'disable-pointer-events':detail}" ng-click="openDatePicker(3)">{{data.resvDate}}</span>
+      </div>
+      <div class="item row" ng-if="edit&&data.resvDetails.length>1" ng-click="showDetail()">
+        <span class="input-label">{{'关联订单'|T}}<i style="color: #ff2741;">*</i></span>
+      <span class="text-right input-style col">{{'共'|T}} {{data.resvDetails.length}} {{'单'|T}} <i class="icon icon-right-arrow" style="display: inline-block;transform: {{isDetailShow?'rotate(-90deg)':'rotate(90deg)'}}"></i></span>
+      </div>
+      <div ng-if="edit&&data.resvDetails.length>1&&isDetailShow" style="border-bottom: 1px solid #ddd;border-top: 1px solid #ddd;">
+        <div class="item row" ng-repeat="(index, item) in data.resvDetails" style="border-top: 0;">
+          <span class="text-right input-style col" style="text-align: center;">{{item.resvDate}}</span>
+          <span class="text-right input-style col" style="text-align: center;">{{item.mealTypeName}}</span>
+        </div>
+      </div>
+      <div class="item row">
+        <span class="input-label">{{'预订套餐'|T}}<i style="color: #ff2741;">*</i></span>
+        <span class="icon plus" ng-click="getGroupMeal()" ng-hide="mealList.length>0"></span>
+      </div>
+      <div class="item row" style="padding: 0;text-align: center;" ng-show="mealList.length>0">
+        <div class="row">
+          <div class="col">{{'套餐名称'|T}}</div>
+          <div class="col">{{'套餐价格'|T}}</div>
+          <div class="col" ng-show="data.resvStartDate == data.resvEndDate">{{'剩余数量'|T}}</div>
+          <div class="col">{{'份数'|T}}</div>
+        </div>
+        <div class="row" style="border: 0;" ng-repeat="(index,meal) in mealList" data-id="{{meal.groupMealId}}">
+          <div class="col">{{meal.groupMealName}}<i class="icon ion-ios-help-outline" style="font-size: 16px;margin-left: 5px;" ng-click="showMealDetail($event,index)" ng-show="meal.groupMealDishes.length>0"></i></div>
+          <div class="col">{{meal.groupMealPrice}}</div>
+          <div class="col" ng-show="data.resvStartDate == data.resvEndDate">{{meal.groupMealNum}}</div>
+          <input type="tel" class="col" style="border-bottom: 1px solid #ddd;text-align: center;" ng-model="meal.num" ng-disabled="detail" />
+        </div>
+      </div>
+      <div class="item row" ng-show="edit">
+        <span class="input-label">{{'订单总价'|T}}</span>
+        <input type="tel" placeholder="{{'请输入订单总价'|T}}" ng-model="data.price" class="text-right input-style col">
+      </div>
+      <div class="item row">
+        <span class="input-label">{{'派送员'|T}}</span>
+        <input type="text" placeholder="{{'请输入派送员'|T}}" ng-model="data.sendMan" class="text-right input-style col" ng-disabled="detail">
+      </div>
+      <div class="item row">
+        <span class="input-label">{{'派送电话'|T}}</span>
+        <input type="tel" placeholder="{{'请输入派送电话'|T}}" ng-model="data.sendPhone" class="text-right input-style col" ng-disabled="detail">
+      </div>
+      <div class="item row">
+        <span class="input-label">{{'派送地址'|T}}<i style="color: #ff2741;">*</i></span>
+        <input type="text" class="text-right input-style col" ng-model="data.sendAddress" placeholder="{{'请输入派送地址'|T}}" ng-disabled="detail">
+      </div>
+      <div class="item row">
+        <span class="input-label">{{'送达时间'|T}}<i style="color: #ff2741;">*</i></span>
+        <!-- <input type="time" class="text-right input-style col" ng-model="data.sendTime" placeholder="{{'请输入送达时间'|T}}" ng-disabled="detail"> -->
+        <a class="icon icon-select text-right input-style col" ng-class="{'disable-pointer-events':detail}" ng-click="openPopover2($event)">{{data.sendTime||'请选择送达时间'|T}}</a class="icon icon-select text-right input-style col">
+      </div>
+      <div class="item row">
+        <span class="input-label">{{'定金金额'|T}}</span>
+        <input type="tel" placeholder="{{'请输入定金金额'|T}}" ng-model="data.deposit" class="text-right input-style col" ng-disabled="edit">
+      </div>
+      <div class="item row">
+        <span class="input-label">{{'下单来源'|T}}</span>
+        <span class="icon icon-select text-right input-style col" ng-class="{'disable-pointer-events':detail}" ng-click="openPopover($event, 3)">{{data.appUserName}}</span>
+      </div>
+      <div class="item row" style="border-top: 1px solid #ddd">
+        <textarea name="" id="" rows="4" class="input-style textarea-style" ng-model="data.remark" placeholder="{{'请输入备注'|T}}" ng-disabled="detail"></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="row bar bar-footer" ng-hide="edit" style="background-color: #f1f2f5;border:0;padding:0; ">
+    <div class="col-50 text-center" style="background-color: #ccc;width:100%;height: 100%;">
+      <a href="javascript:0" class="button button-clear" style="color:#fff;line-height: 44px;" ng-click="cancel()">{{'取消预订'|T}}</a>
+    </div>
+    <div class="col-50 text-center" style="background-color: #ff2741;color:#fff;width:100%;height: 100%;">
+      <a href="javascript:0" class="button button-clear" style="color:#fff;line-height: 44px;" ng-click="submit()">{{'确认预订'|T}}</a>
+    </div>
+  </div>
+</ion-view>

@@ -1,0 +1,107 @@
+<ion-view hide-tabs="true" hide-back-button="showDetail">
+  <ion-nav-title style="display:block">
+    <div style="background-color:#fff">
+      <span style="font-size: 14px;">{{'配菜套餐'|T}}</span>
+    </div>
+  </ion-nav-title>
+  <ion-nav-buttons side="right">
+    <button class="button button-icon button-clear button-positive" ng-if="!showDetail" ng-click="handleDetail()">
+      <i style="font-size: 15px;">{{'新增'|T}}</i>
+    </button>
+    <button class="button button-icon button-clear button-positive" ng-if="detailData.id" ng-click="clickDelete()">
+      <i style="font-size: 15px;color:#f0c78a;">{{'删除'|T}}</i>
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="left">
+    <button class="button back-button buttons button-clear header-item" ng-if="showDetail" ng-click="hideDetail()">
+        <i class="icon icon-back" style="vertical-align: middle;"></i>
+    </button>
+  </ion-nav-buttons>
+  <!-- 套餐列表 -->
+  <div class="main-container" style="background-color: #f1f2f5;bottom: 0">
+    <div style="margin-top:20px">
+      <div ng-if="mealSetList.length === 0" style="color: #aaa;font-size: 20px;text-align: center;line-height: 300px;">暂无配菜套餐，快来新增一个吧</div>
+      <div class="contact-list-item" ng-repeat="item in mealSetList" style="margin-top:5px" ng-click="handleDetail(item)">
+        <div style="width:80%;display:inline-block">
+          <div>{{item.templateName}}</div>
+          <div style="font-size:12px;color:#999;text-overflow:ellipsis;overflow: hidden;white-space: nowrap">{{formatContent(item.templateContent)}}</div>
+        </div>
+        <label class="toggle toggle-balanced" style="float:right;margin:auto">
+          <input type="checkbox" ng-click="$event.stopPropagation();onStatusChange($event, item)" ng-model="item.status" ng-checked="item.status">
+          <div class="track">
+            <div class="handle"></div>
+          </div>
+        </label>
+      </div>
+    </div>
+  </div>
+  <!-- 套餐设置 -->
+  <div class="d-modal isRight" style="top:44px;overflow-x: hidden;" ng-class="{'isRight':!showDetail,'isCenter':showDetail}" ng-click="yidian=false">
+    <div class="list" style="height: 100%;padding-top: 0;background-color: #f5f5f5">
+      <label class="item item-input" style="margin-bottom:10px">
+        <span style="font-size:16px;margin-right:10px">套餐名称</span>
+        <input type="text" placeholder="{{'请输入套餐名称'|T}}" ng-model="dishSetName" autocomplete="off"/>
+      </label>
+      <label class="item item-input">
+        <i class="icon ion-search placeholder-icon"></i>
+        <input type="text" placeholder="{{'输入名称或拼音首字母查找菜肴'|T}}" ng-change="selectCai()" ng-model="search" autocomplete="off">
+      </label>
+      <div class="row" style="max-height:calc(100% - 154px);padding: 0;padding-top:1px;overflow: auto;border-bottom: 1px solid #ddd;align-items: flex-start;">
+        <ion-scroll class="col-20" style="height: 100%;">
+          <div ng-repeat="item in businessInfo.dishs" ng-click="changeDalei(item);$event.stopPropagation();" class="item text-center cmbk" ng-class="{'cmbks':(category===item.id)}" style="padding:10px 0;font-size: 14px;">
+            {{item.dlmc}}
+          </div>
+        </ion-scroll>
+        <ion-scroll class="col-80" style="height: 100%;" delegate-handle="cmScroll">
+          <div ng-if="dishList.length === 0" style="color: #aaa;font-size: 20px;text-align: center;line-height: 300px;">当前类别无菜品</div>
+          <div ng-repeat="dish in dishList" class="item row" style="border: none;padding: 0 10px;">
+            <div class="col-40" style="overflow-x: hidden;">
+              <span style="line-height: 34px;font-size: 14px;">{{dish.cmmc}}</span>
+            </div>
+            <div class="col-20 text-left">
+              <span style="line-height: 36px;font-size: 16px;color:#ff2741;">¥{{dish.cmje}}</span>
+            </div>
+            <div class="col-40">
+              <span class="minus" ng-click="minusDish(dish);$event.stopPropagation();" ng-class="{'minusRight':dishSelected[dish.cmbh]}"></span>
+              <span class="num" ng-show="dishSelected[dish.cmbh]">{{dishSelected[dish.cmbh].selectNum}}</span>
+              <span class="plus" ng-click="plusDish(dish);$event.stopPropagation();"></span>
+            </div>
+          </div>
+        </ion-scroll>
+      </div>
+      <div class="row" style="padding:0;margin-top:-1px;border: 0;position: relative;">
+        <ion-scroll ng-if="yidian" class="dish-detail" ng-click="$event.stopPropagation();">
+          <div ng-if="!caiyaoNum" style="color: #aaa;font-size: 20px;text-align: center;line-height: 300px;">{{'购物车为空'|T}}</div>
+          <div ng-repeat="dish in dishSelected" class="item row" style="border: none;padding: 0 10px;">
+            <div class="col-40" style="overflow-x: hidden;">
+              <span style="line-height: 34px;font-size: 14px;">{{dish.cmmc}}</span>
+            </div>
+            <div class="col-20 text-left">
+              <span style="line-height: 36px;font-size: 16px;color:#ff2741;">¥{{dish.cmje}}</span>
+            </div>
+            <div class="col-40">
+              <span class="minus" ng-click="minusDish(dish);$event.stopPropagation();" ng-class="{'minusRight':dishSelected[dish.cmbh]}"></span>
+              <span class="num" ng-show="dishSelected[dish.cmbh]">{{dishSelected[dish.cmbh].selectNum}}</span>
+              <span class="plus" ng-click="plusDish(dish);$event.stopPropagation();"></span>
+            </div>
+          </div>
+        </ion-scroll>
+        <div class="col-60 order-dished-chart row" ng-click="preview();$event.stopPropagation();">
+          <div class="col-25 text-center disable-pointer-events" style="position: relative;">
+            <i class="chat-num disable-pointer-events">{{caiyaoNum}}</i>
+            <span class="icon ion-ios-cart-outline disable-pointer-events" style="font-size: 28px;font-weight: bold;"></span>
+          </div>
+          <div class="col-75 disable-pointer-events">
+            ¥ {{formatCaiyaoAll(caiyaoAll)}}
+          </div>
+        </div>
+        <div ng-click="clearChart();$event.stopPropagation();" class="col-20 order-clear-button">
+          {{'清空'|T}}
+        </div>
+        <div ng-click="saveDishSet();$event.stopPropagation();" class="col-20 order-dishes-button">
+          {{'保存'|T}}
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-view>

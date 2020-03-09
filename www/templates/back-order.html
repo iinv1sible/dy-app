@@ -1,0 +1,131 @@
+<ion-view hide-tabs="true" cache-view="false" ng-cloak>
+  <ion-nav-bar class="bar-stable bar" style="display:block;z-index:10">
+    <div class="title title-center header-item" style="background-color:#fff">
+      <span>{{'订单回访'|T}}</span>
+    </div>
+  </ion-nav-bar>
+  <button style="z-index:100" class="button back-button buttons button-clear header-item" ng-click="back()">
+    <i class="icon icon-back" style="vertical-align: middle;"></i>
+  </button>
+  <div class="backorder-con" style="height: 100%;overflow: auto;background-color:#f5f5f5">
+    <div class="list" ng-show="!data.isYanhui" data-tableAreaName={{data.tableAreaName}} data-tableNo={{data.tableNo}} data-resvOrder={{data.resvOrder}}>
+      <div class="item row">
+        <span class="myOrder-gray-font col">{{data.vipName}}{{data.vipSex}}{{data.vipPhone}}</span>
+        <a class="icon icon-call2" href="tel:{{'+'+(data.countryCode || '86') + data.vipPhone}}"></a>
+      </div>
+      <div class="item row">
+        <span class="myOrder-gray-font col">{{'用餐区域'|T}}:</span>
+        <span class="myOrder-gray-font">{{data.tableAreaName}} {{data.tableNo}}</span>
+      </div>
+      <div class="item row">
+        <span class="myOrder-gray-font col">{{'用餐时间'|T}}:</span>
+        <span class="myOrder-gray-font">{{data.resvDate}}</span>
+      </div>
+      <div class="item row">
+        <span class="myOrder-gray-font col">{{'消费金额'|T}}:</span>
+        <span class="myOrder-gray-font">{{data.payamount}}</span>
+      </div>
+      <div class="item row">
+        <span class="myOrder-gray-font col">{{'人均消费'|T}}:</span>
+        <span class="myOrder-gray-font">{{data.perPrice}}</span>
+      </div>
+    </div>
+    <div class="list" ng-show="data.isYanhui" data-tableAreaName={{data.tableAreaName}} data-tableNo={{data.tableNo}} data-resvOrder={{data.resvOrder}}>
+      <div class="item row">
+        <span class="myOrder-gray-font col">{{data.vipName}}{{data.vipSex}}{{data.vipPhone}}</span>
+        <a class="icon icon-call2" href="tel:{{'+'+(data.countryCode || '86') + data.vipPhone}}"></a>
+      </div>
+      <div class="item row">
+        <span class="myOrder-gray-font col">{{'宴会场地'|T}}:</span>
+        <span class="myOrder-gray-font">{{data.tableAreaName}} {{data.tableNo}}</span>
+      </div>
+      <div class="item row">
+        <span class="myOrder-gray-font col">{{'宴会时间'|T}}:</span>
+        <span class="myOrder-gray-font">{{data.resvDate}}</span>
+      </div>
+      <div class="item row">
+        <span class="myOrder-gray-font col">{{'预订桌数'|T}}:</span>
+        <span class="myOrder-gray-font">{{data.resvTableNum}}{{'桌'|T}}</span>
+      </div>
+      <div class="item row">
+        <span class="myOrder-gray-font col">{{'菜肴标准'|T}}:</span>
+        <span class="myOrder-gray-font">{{data.dishStandard}}</span>
+      </div>
+    </div>
+    <div class="list">
+      <div class="item row" ng-show="data.isYanhui">
+        <span class="myOrder-gray-font">{{'实收金额'|T}}:</span>
+        <input class="text-right input-style col" type="text" ng-model=data.actualPayAmount placeholder="{{'请输入实收金额'|T}}">
+      </div>
+      <div class="item row" ng-show="data.isYanhui">
+        <span class="myOrder-gray-font">{{'实开桌数'|T}}:</span>
+        <input class="text-right input-style col" type="text" ng-model=data.actualTableNum placeholder="{{'请输入实开桌数'|T}}">
+      </div>
+      <div class="item row">
+        <textarea rows="4" class="input-style textarea-style" ng-model="data.vipSuggestion" placeholder="{{'客户消费意见或建议'|T}}" ng-disabled="showState"></textarea>
+      </div>
+    </div>
+    <div class="list" style="margin-bottom: 100px;">
+    <div class="item row">
+      {{'吧台'|T}}
+      <i class="text-right col" ng-class="{'disable-pointer-events':showState}">
+        <span class="icon icon-check" ng-class="{'icon-check-r': data.bataiScore==1}" ng-click="changeGender(1,$event)" id="1">{{'满意'|T}}</span>
+        <span class="icon icon-check" ng-class="{'icon-check-r': data.bataiScore==2}" ng-click="changeGender(2,$event)" id="2">{{'一般'|T}}</span>
+        <span class="icon icon-check" ng-class="{'icon-check-r': data.bataiScore==3}" ng-click="changeGender(3,$event)" id="3">{{'差'|T}}</span>
+      </i>
+    </div>
+    <div class="item row">
+      {{'销售'|T}}
+      <i class="text-right col" ng-class="{'disable-pointer-events':showState}">
+        <span class="icon icon-check" ng-class="{'icon-check-r': data.salesScore==1}" ng-click="changeGender(4,$event)" id="4">{{'满意'|T}}</span>
+        <span class="icon icon-check" ng-class="{'icon-check-r': data.salesScore==2}" ng-click="changeGender(5,$event)" id="5">{{'一般'|T}}</span>
+        <span class="icon icon-check" ng-class="{'icon-check-r': data.salesScore==3}" ng-click="changeGender(6,$event)" id="6">{{'差'|T}}</span>
+      </i>
+    </div>
+    <div class="item row">
+      {{data.isYanhui?'宴会服务':'服务员'|T}}:
+      <i class="text-right col" ng-class="{'disable-pointer-events':showState}">
+        <span class="icon icon-check" ng-class="{'icon-check-r': data.serviceScore==1}" ng-click="changeGender(7,$event)" id="7">{{'满意'|T}}</span>
+        <span class="icon icon-check" ng-class="{'icon-check-r': data.serviceScore==2}" ng-click="changeGender(8,$event)" id="8">{{'一般'|T}}</span>
+        <span class="icon icon-check" ng-class="{'icon-check-r': data.serviceScore==3}" ng-click="changeGender(9,$event)" id="9">{{'差'|T}}</span>
+      </i>
+    </div>
+    <div class="item row" ng-show="data.isYanhui&&data.resvMeetingOrderTypeName=='婚宴预订'">
+      {{'婚庆服务'|T}}
+      <i class="text-right col" ng-class="{'disable-pointer-events':showState}">
+        <span class="icon icon-check" ng-class="{'icon-check-r':data.weddingCompanyScore==1}" ng-click="changeGender(15,$event)" id="15">{{'满意'|T}}</span>
+        <span class="icon icon-check" ng-class="{'icon-check-r':data.weddingCompanyScore==2}" ng-click="changeGender(16,$event)" id="16">{{'一般'|T}}</span>
+        <span class="icon icon-check" ng-class="{'icon-check-r':data.weddingCompanyScore==3}" ng-click="changeGender(17,$event)" id="17">{{'差'|T}}</span>
+      </i>
+    </div>
+    <div class="item row">
+      {{'菜品'|T}}
+      <i class="text-right col" ng-class="{'disable-pointer-events':showState}">
+        <span class="icon icon-check" ng-class="{'icon-check-r':data.dishScore==1}" ng-click="changeGender(10,$event)" id="10">{{'满意'|T}}</span>
+        <span class="icon icon-check" ng-class="{'icon-check-r':data.dishScore==2}" ng-click="changeGender(11,$event)" id="11">{{'一般'|T}}</span>
+        <span class="icon icon-check" ng-class="{'icon-check-r':data.dishScore==3}" ng-click="changeGender(12,$event)" id="12">{{'差'|T}}</span>
+      </i>
+    </div>
+    <div class="item row">
+      {{'客户投诉'|T}}
+      <i class="text-right col" ng-class="{'disable-pointer-events':showState}">
+        <span class="icon icon-check" ng-class="{'icon-check-r': tousuShow}" ng-click="changeGender(13,$event)" id="13">{{'有'|T}}</span>
+        <span class="icon icon-check" ng-class="{'icon-check-r': !tousuShow}" ng-click="changeGender(14,$event)" id="14">{{'无'|T}}</span>
+      </i>
+    </div>
+      <div class="item row" ng-show="tousuShow" style="border-top: 0;">
+        <textarea rows="4" class="input-style textarea-style light-placeholder" style="background: #f5f5f5;padding: 7px;border-radius: 0;" ng-model="data.vipComplaints" placeholder="{{'请输入投诉事项'|T}}" ng-disabled="showState"></textarea>
+      </div>
+      <div class="item row" ng-show="tousuShow" style="border-top: 0;">
+        <textarea rows="4" class="input-style textarea-style light-placeholder" style="background: #f5f5f5;padding: 7px;border-radius: 0;" ng-model="data.handleSuggestion" placeholder="{{'请输入处理结果'|T}}"></textarea>
+      </div>
+      <div class="item row row" ng-show="tousuShow">
+        <input type="text" class="input-style col" ng-disabled="showState" ng-model="data.handlerName" placeholder="{{'处理人'|T}}">
+        <input type="datetime-local" placeholder="{{'请输入处理日期'|T}}" class="text-right input-style col" ng-disabled="showState" ng-model="data.handledDate">
+      </div>
+    </div>
+  </div>
+  <div class="row bar bar-footer" style="background-color: #e8e8e8;border:0;padding: 0 20px 10px;">
+    <div class="text-center" style="background-color: #ff2741;color: #fff;width: 100%;height: 40px;line-height: 40px;border-radius: 4px;" ng-click="save()">{{'提交'|T}}</div>
+  </div>
+</ion-view>

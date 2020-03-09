@@ -1,0 +1,47 @@
+<ion-view hide-tabs="true">
+  <ion-nav-title>{{'有奖推荐'|T}}</ion-nav-title>
+  <ion-content>
+    <div class="list">
+      <div class="item item-divider" style="padding-top: 11px;padding-bottom: 11px;">
+        {{'推荐人信息'|T}}
+      </div>
+      <div class="item item-input row">
+        <span class="input-label">{{'您的姓名'|T}}</span>
+        <input type="text" class="text-right input-style" ng-model="data.userName" placeholder="{{'必填'|T}}" autofocus>
+      </div>
+      <div class="item item-input row">
+        <span class="input-label">{{'联系电话'|T}}</span>
+        <input type="tel" class="text-right input-style" ng-model="data.userPhone">
+      </div>
+      <div class="item item-divider" style="padding-top: 11px;padding-bottom: 11px;">
+        {{'推荐人信息'|T}}
+      </div>
+      <div class="item item-input row">
+        <span class="input-label">{{'客户单位'|T}}</span>
+        <input type="text" class="text-right input-style" placeholder="{{'必填'|T}}" ng-model="data.customerCompany">
+      </div>
+      <div class="item item-input row">
+        <span class="input-label">{{'客户姓名'|T}}</span>
+        <input type="text" class="text-right input-style" placeholder="{{'必填'|T}}" ng-model="data.customerName">
+      </div>
+      <div class="item item-input row">
+        <span class="input-label">{{'客户电话'|T}}</span>
+        <input type="tel" class="text-right input-style" placeholder="{{'必填'|T}}" ng-model="data.customerPhone">
+      </div>
+      <div class="item item-divider" style="padding-top: 11px;padding-bottom: 11px;">
+        {{'备注'|T}}
+      </div>
+      <div class="item item-input row">
+        <span class="input-label">{{'其他'|T}}</span>
+        <input type="text" class="text-right input-style" ng-model="data.detail">
+      </div>
+      <div style="border-bottom: 1px solid #ddd;background-color: #fff;padding-top:10px;padding-left:10px;">
+        <p style="word-wrap: break-word; word-break: normal;">
+          {{'成功推荐一个客户可获得超过500元的现金奖励。详询'|T}}
+          <a href="">13616885784 {{'何先生'|T}}</a>
+        </p>
+      </div>
+      <div ng-click="submit()" class="item button button-block button-assertive">{{'提交'|T}}</div>
+    </div>
+  </ion-content>
+</ion-view>

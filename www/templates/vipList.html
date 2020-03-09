@@ -1,0 +1,41 @@
+<ion-view hide-tabs="true">
+  <ion-nav-title>
+    {{'今日沉睡客户'|T}}
+  </ion-nav-title>
+  <!-- <ion-nav-buttons  side="left">
+    <button class="button back-button buttons button-clear header-item" ng-click="$ionicGoBack()">
+      <i class="icon icon-back" style="vertical-align: middle;"></i>
+    </button>
+  </ion-nav-buttons> -->
+  <ion-content>
+    <div style="background: #fff">
+      <span style="margin-left: 15px;line-height: 30px;">
+        {{'数据截止'|T}}{{thisDate|T}}&nbsp;&nbsp;00:00
+      </span>
+    </div>
+    <div class="list list-div-bottom" ng-repeat="item in vipList">
+      <div class="item item-divider myOrder-gray-font" style="background: #f5f5f5">
+        <span style="color: #999;font-size: 16px">
+            {{item.vipName|T}}&nbsp;&nbsp;{{item.vipSex == '男'? '先生':'女士'|T}}
+        </span>
+      </div>
+      <a href="javascript:0" class="item">
+        <div class="disable-pointer-events">
+          <span style="font-size: 14px">{{'累积消费:'|T}}{{item.payamount}}{{'元'|T}}</span>
+        </div>
+        <div class="disable-pointer-events" style="margin-top: 5px">
+          <span style="font-size: 14px">{{'消费次数:'|T}}{{item.paycount}}{{'次'|T}}</span>
+        </div>
+        <div>
+          <button  ng-click="goVip(item.vipId)" style="padding: 0 10px;margin-top: 5px;background-color: #a2a2a2" class="button button-small button-assertive right">{{'详情'|T}}</button>
+        </div>
+        <!--<div class="disable-pointer-events" style="padding-top:3px;">-->
+          <!--<span ng-show="isCanyin && (!order.unorderReason)" style="font-size:14px;color:#333;">{{'人均消费'|T}}:</span>-->
+          <!--<span ng-show="isYanhui && (!order.unorderReason)" style="font-size:14px;color:#333;">{{'桌均消费'|T}}:</span>-->
+          <!--<span ng-show="order.perPrice" style="color:#DA4C39;">¥{{order.perPrice}}</span>-->
+          <!--<span ng-show="order.unorderReason" style="font-size:14px;color:#333;">{{'退订原因'|T}}: {{order.unorderReason}}</span>-->
+        <!--</div>-->
+      </a>
+    </div>
+  </ion-content>
+</ion-view>

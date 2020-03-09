@@ -1,0 +1,171 @@
+<ion-view view-title="我的订单" hide-nav-bar>
+  <ion-nav-buttons  side="left">
+    <button ng-hide="showY" class="button button-icon" ng-click="goBack($event)">
+      <i style="color:#64B25D;font-size: 15px;">返回</i>
+    </button>
+  </ion-nav-buttons>
+  <div class="d-modal isRight" style="background-color: #efefef;top:40px;" ng-class="{'isRight':!showY,'isCenter':showY}">
+    <div class="list">
+      <a href="javascript:0" class="item item-icon-right tab-myOrder-detail-item1" style="border: 0;background-color: #fff;">
+      </a>
+      <div class="item item-text-wrap">
+        <span style="line-height: 24px;">
+          &nbsp;&nbsp;&nbsp;&nbsp;您已完成订金支付，请按下面的流程在
+          <span style="color:#D76959;">****年**月**日</span>
+          前完成余款支付
+        </span>
+      </div>
+      <div class="item clear state-change-div" style="padding-left: 10%;padding-top:0;padding-bottom: 0;">
+        <div class="clear state-change-main">
+          <i class="state-change-main-circle"></i>
+          <div class="clear state-change-item">
+            <p style="white-space: pre-wrap;">请在订单页确认您的订单详情，如有疑问，请联系0574-********</p>
+          </div>
+        </div>
+        <div class="clear state-change-main">
+          <i class="state-change-main-circle"></i>
+          <div class="clear state-change-item">
+            <p style="white-space: pre-wrap;">确认无误后，请将余款<span style="font-size: 14px;">(可在订单页面<span style="font-weight:600;color: #D76959;">待支付</span>一栏查看)</span>通过<span style="color:#D76959;font-weight: 600;">线下转账</span>的方式转入我公司账户：<br>6215***************<br>玉面无花郎</p>
+          </div>
+        </div>
+        <div class="clear state-change-main">
+          <i class="state-change-main-circle"></i>
+          <div class="clear state-change-item">
+            <p style="white-space: pre-wrap;">支付完成后，请务必保存好您的<span  style="color:#D76959;font-weight: 600;">支付凭证</span>，拍照截图均可。<br>然后进入我的订单，点击支付完成的订单下的<span  style="color:#D76959;font-weight: 600;">我已完成支付</span>按钮，将支付凭证上传后提交审核。</p>
+          </div>
+        </div>
+        <div class="clear state-change-main">
+          <i class="state-change-main-circle"></i>
+          <div class="clear state-change-item">
+            <p style="white-space: pre-wrap;">我们将在尽快确认您的付款信息，审核无误后，我们将在*个工作日内进行发货，并以短信形式通知。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div ng-click="hide()" class="item button button-positive button-block text-center" style="min-height: 0;">
+      我知道了
+    </div>
+  </div>
+  <ion-content>
+    <div class="list" ng-repeat="order in orderData">
+      <div class="item-divider" style="padding-left:12px;padding-right:12px;background-color: #fff;">
+        <span>{{order.orderDate}}</span>
+        <span class="right" style="color:#76A6DF;">{{order.txt}}</span>
+      </div>
+      <div class="item row" ng-click="goDetail(order.orderNo)" style="height:auto;background-color: #fafafa;border-width: 0;margin:0;">
+        <div class="col-33 disable-pointer-events" style="text-align: center;margin: auto;">
+          <img ng-src="{{order.imageUrl}}" height="73px"; alt="">
+        </div>
+        <div class="col-67 disable-pointer-events" style="padding-left: 15px;border-right:0;">
+          <p style="margin:0 0 10px;">{{order.productName}}</p>
+          <p style="margin:0 0 10px;"><span style="color:#D76959;font-weight: 600;">¥ {{order.singlePrice}}</span><span>/500克</span></p>
+          <p style="margin:0 0 10px;padding-right:10px;"><span style="color:#D76959;font-weight: 600;">¥ {{order.productPrice}}</span><span>/箱</span>
+            <span class="right" style=""> X{{order.productNum}}</span>
+          </p>
+        </div>
+      </div>
+      <div class="item tab-myOrder-detail-item" style="border-width:0;">
+        <span style="font-size: 14px;">合计</span>
+        <span class="right" style="font-size: 12px;">¥ <span style="font-size: 16px;">{{order.total.toFixed(2)}}</span> (含运费 ¥ {{order.expressTotal.toFixed(2)}})</span>
+      </div>
+      <div class="item tab-myOrder-detail-item" style="border-width:0;">
+        <span style="font-size: 14px;">待支付</span>
+        <span class="right" style="font-size: 12px;color:#D76959;">¥ <span style="font-size: 16px;">{{(order.total-order.payAmt).toFixed(2)}}</span></span>
+      </div>
+      <div class="item tab-myOrder-detail-item" ng-show="(order.orderStatus==2)">
+        <span class="right" ng-click="goSubmit(order.orderNo,order.total-order.payAmt)" style="font-size: 12px;border: 1px solid #aaa;padding:1px 8px;border-radius:15px;margin-left: 15px;">已完成支付</span>
+        <span ng-click="show()" class="right" style="font-size: 12px;border: 1px solid #aaa;padding:1px 8px;border-radius:15px">支付说明</span>
+      </div>
+    </div>
+    <!--<div class="list">
+      <div class="item-divider" style="padding-left:12px;background-color: #fff;">
+        <span>2017-08-22 09:24</span>
+        <span class="right" style="color:#D76959;">已付定金</span>
+      </div>
+      <div class="item row" ng-click="goDetail()" style="height:auto;background-color: #fafafa;border-width: 0;margin:0;">
+        <div class="col-33" style="text-align: center;margin: auto;">
+          <img src="img/fish.jpg" width="90%" alt="">
+        </div>
+        <div class="col-67" style="padding-left: 15px;border-right:0;">
+          <p style="margin:0 0 10px;">QP 美国板冻 冻带鱼</p>
+          <p style="margin:0 0 10px;"><span style="color:#D76959;font-weight: 600;">¥ 12.53</span><span>/500克</span></p>
+          <p style="margin:0 0 10px;padding-right:10px;"><span style="color:#D76959;font-weight: 600;">¥ 250.50</span><span>/箱</span>
+            <span class="right" style=""> X10</span>
+          </p>
+        </div>
+      </div>
+      <div class="item tab-myOrder-detail-item" style="border-width:0;">
+        <span style="font-size: 14px;">合计</span>
+        <span class="right" style="font-size: 12px;">¥ <span style="font-size: 16px;">30</span>.00 (含运费 ¥ 0.00)</span>
+      </div>
+      <div class="item tab-myOrder-detail-item" style="border-width:0;">
+        <span style="font-size: 14px;">待支付</span>
+        <span class="right" style="font-size: 12px;color:#D76959;">¥ <span style="font-size: 16px;">27</span>.00</span>
+      </div>
+      <div class="item tab-myOrder-detail-item">
+        <span class="right" style="font-size: 12px;border: 1px solid #aaa;padding:1px 8px;border-radius:15px;margin-left: 15px;">已完成支付</span>
+        <span ng-click="show()" class="right" style="font-size: 12px;border: 1px solid #aaa;padding:1px 8px;border-radius:15px">支付说明</span>
+      </div>
+    </div>
+    <div class="list">
+      <div class="item-divider" style="padding-left:12px;background-color: #fff;">
+        <span>2017-08-22 09:24</span>
+        <span class="right" style="color:#D76959;">已付定金</span>
+      </div>
+      <div class="item row" ng-click="goDetail()" style="height:auto;background-color: #fafafa;border-width: 0;margin:0;">
+        <div class="col-33" style="text-align: center;margin: auto;">
+          <img src="img/fish.jpg" width="90%" alt="">
+        </div>
+        <div class="col-67" style="padding-left: 15px;border-right:0;">
+          <p style="margin:0 0 10px;">QP 美国板冻 冻带鱼</p>
+          <p style="margin:0 0 10px;"><span style="color:#D76959;font-weight: 600;">¥ 12.53</span><span>/500克</span></p>
+          <p style="margin:0 0 10px;padding-right:10px;"><span style="color:#D76959;font-weight: 600;">¥ 250.50</span><span>/箱</span>
+            <span class="right" style=""> X10</span>
+          </p>
+        </div>
+      </div>
+      <div class="item tab-myOrder-detail-item" style="border-width:0;">
+        <span style="font-size: 14px;">合计</span>
+        <span class="right" style="font-size: 12px;">¥ <span style="font-size: 16px;">30</span>.00 (含运费 ¥ 0.00)</span>
+      </div>
+      <div class="item tab-myOrder-detail-item" style="border-width:0;">
+        <span style="font-size: 14px;">待支付</span>
+        <span class="right" style="font-size: 12px;color:#D76959;">¥ <span style="font-size: 16px;">27</span>.00</span>
+      </div>
+      <div class="item tab-myOrder-detail-item">
+        <span class="right" style="font-size: 12px;border: 1px solid #aaa;padding:1px 8px;border-radius:15px;margin-left: 15px;">已完成支付</span>
+        <span ng-click="show()" class="right" style="font-size: 12px;border: 1px solid #aaa;padding:1px 8px;border-radius:15px">支付说明</span>
+      </div>
+    </div>
+    <div class="list">
+      <div class="item-divider" style="padding-left:12px;background-color: #fff;">
+        <span>2017-08-22 09:24</span>
+        <span class="right" style="color:#D76959;">已付定金</span>
+      </div>
+      <div class="item row" ng-click="goDetail()" style="height:auto;background-color: #fafafa;border-width: 0;margin:0;">
+        <div class="col-33" style="text-align: center;margin: auto;">
+          <img src="img/fish.jpg" width="90%" alt="">
+        </div>
+        <div class="col-67" style="padding-left: 15px;border-right:0;">
+          <p style="margin:0 0 10px;">QP 美国板冻 冻带鱼</p>
+          <p style="margin:0 0 10px;"><span style="color:#D76959;font-weight: 600;">¥ 12.53</span><span>/500克</span></p>
+          <p style="margin:0 0 10px;padding-right:10px;"><span style="color:#D76959;font-weight: 600;">¥ 250.50</span><span>/箱</span>
+            <span class="right" style=""> X10</span>
+          </p>
+        </div>
+      </div>
+      <div class="item tab-myOrder-detail-item" style="border-width:0;">
+        <span style="font-size: 14px;">合计</span>
+        <span class="right" style="font-size: 12px;">¥ <span style="font-size: 16px;">30</span>.00 (含运费 ¥ 0.00)</span>
+      </div>
+      <div class="item tab-myOrder-detail-item" style="border-width:0;">
+        <span style="font-size: 14px;">待支付</span>
+        <span class="right" style="font-size: 12px;color:#D76959;">¥ <span style="font-size: 16px;">27</span>.00</span>
+      </div>
+      <div class="item tab-myOrder-detail-item">
+        <span class="right" style="font-size: 12px;border: 1px solid #aaa;padding:1px 8px;border-radius:15px;margin-left: 15px;">已完成支付</span>
+        <span ng-click="show()" class="right" style="font-size: 12px;border: 1px solid #aaa;padding:1px 8px;border-radius:15px">支付说明</span>
+      </div>
+    </div>-->
+  </ion-content>
+</ion-view>

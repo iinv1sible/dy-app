@@ -1,0 +1,153 @@
+[ng-cloak]{display: none;}
+.trans{display: none;}
+.trans.transp{display: block;}
+
+.platform-android .action-sheet-backdrop {-webkit-transition: background-color 150ms ease-in-out;transition: background-color 150ms ease-in-out;position: fixed;top: 0;left: 0;z-index: 11;width: 100%;height: 100%;background-color: rgba(0, 0, 0, 0);}
+.platform-android .action-sheet-backdrop.active {background-color: rgba(0, 0, 0, 0.4);}
+.platform-android .action-sheet-wrapper {-webkit-transform: translate3d(0, 100%, 0);transform: translate3d(0, 100%, 0);-webkit-transition: all cubic-bezier(0.36, 0.66, 0.04, 1) 500ms;transition: all cubic-bezier(0.36, 0.66, 0.04, 1) 500ms;position: absolute;bottom: 0;left: 0;right: 0;width: 100%;max-width: 500px;margin: auto;}
+.platform-android .action-sheet-up {-webkit-transform: translate3d(0, 0, 0);transform: translate3d(0, 0, 0);}
+.platform-android .action-sheet {margin-left: 8px;margin-right: 8px;width: auto;z-index: 11;overflow: hidden;}
+.platform-android .action-sheet .button {display: block;padding: 1px;width: 100%;border-radius: 0;border-color: #d1d3d6;background-color: transparent;color: #007aff;font-size: 21px;}
+.platform-android .action-sheet .button:hover {color: #007aff;}
+.platform-android .action-sheet .button.destructive {color: #ff3b30;}
+.platform-android .action-sheet .button.destructive:hover {color: #ff3b30;}
+.platform-android .action-sheet .button.active, .platform-android .action-sheet .button.activated {box-shadow: none;border-color: #d1d3d6;color:#007aff;background: #e4e5e7;}
+.platform-android .action-sheet-has-icons .icon {position: absolute;left: 16px;}
+.platform-android .action-sheet-title {padding: 16px;color: #8f8f8f;text-align: center;font-size: 13px;}
+.platform-android .action-sheet-group {margin-bottom: 8px;border-radius: 4px;background-color: #fff;overflow: hidden;}
+.platform-android .action-sheet-group .button {border-width: 1px 0px 0px 0px;}
+.platform-android .action-sheet-group .button:first-child:last-child {border-width: 0;}
+.platform-android .action-sheet-options {background: #f1f2f3;}
+.platform-android .action-sheet-cancel .button {font-weight: 500;}
+.platform-android .action-sheet-open {pointer-events: none;}
+.platform-android .action-sheet-open.modal-open .modal {pointer-events: none;}
+.platform-android .action-sheet-open .action-sheet-backdrop {pointer-events: auto;}
+.platform-android .action-sheet .action-sheet-title, .platform-android .action-sheet .button {text-align: center;}
+.platform-android .action-sheet-cancel {display: block;}
+/* Empty. Add your own CSS if you like */
+select {
+  /*Chrome和Firefox里面的边框是不一样的，所以复写了一下*/
+  border: solid 1px #000;
+  /*很关键：将默认的select选择框样式清除*/
+  appearance:none;-moz-appearance:none;-webkit-appearance:none;
+  /*在选择框的最右侧中间显示小箭头图片*/
+  /*background: url("http://ourjs.github.io/static/2015/arrow.png") no-repeat scroll right center transparent;*/
+  /*为下拉小箭头留出一点位置，避免被文字覆盖*/
+  padding-right: 14px;
+}
+/* .tab-item-active .tab-title{color:#787FFA;} */
+ion-tabs.tabs-color-active-positive .tab-item{color: #A2A4A8 !important;}
+
+/****shop****/
+.peiitem{position: relative;
+}
+.plus-day{position: absolute;right:15px;top:0;bottom:0;margin: auto;border:1px solid #EEA99F;width:25px;height:25px;text-align: center;font-size: 25px;line-height: 25px;border-radius: 50%;color:#EEA99F;}
+.price{font-size: 14px;margin-left: 10px;color:#DA7769;}
+.bar.bar-footer.row.book{z-index: 999;}
+input:disabled{opacity: 1;}
+.shop-li{display:inline-block;margin-right: 10px;border: 5px solid #fff;border-radius: 50%;opacity: 0.3;}
+.shop-li.white{opacity: 1;}
+.quyu1{background-color:rgb(255, 251, 240);padding:8px 4px;font-size: 14px;}
+.item.text-center.quyu1.quyu{color:#D76959;font-size: 16px;font-weight: 600;}
+.icon.shopping-icon{font-size: 28px;display: inline-block;height:50px;width:50px;line-height: 46px;text-align: center;border:2px solid #DDDDDD;border-radius: 50%;}
+.add-select{border: 3px solid #D76959;border-top: 2px solid #D76959;border-bottom: 2px solid #D76959;}
+.order-gray.order-red{color:#D76959;}
+.border-gray.border-red{color:#D76959;border-color:#D76959;}
+.order-gray{color:#ddd;}
+.border-gray{color:#ddd;}
+/*******动画***********/
+.otherSpan{animation:otherSpan 4s infinite linear;animation-direction:alternate;}
+@keyframes otherSpan
+{
+  0%   {opacity: 0;}
+  100% {opacity: 1;}
+}
+
+.main-container{
+  overflow-y:scroll;
+  overflow-x: hidden;
+  position: absolute;
+  top: 44px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin-top: -1px;
+  padding-top: 1px;
+  margin-bottom: -1px;
+  width: auto;
+  height: auto;
+  z-index: 1
+}
+
+.tab-chats.enStyle::before,.tab-chats.enStyle::after{display: none;}
+.tab-chats.enStyle .tab-chats-item{width:100%;border-bottom:1px solid rgba(52,50,61,0.15);}
+
+.slider-span{margin-left: 10px;}
+.slider-span .s-point{display: inline-block;width:10px;height: 10px;border-radius: 50%;background: #d6d4d4;margin-left: 5px;}
+.slider-span .s-point.current{background: #DB4F3B;}
+.item.disabled{color: #d8d8d8;}
+.btn-order{line-height:1.2;font-size:14px;text-align: left;border: 1px solid #ddd;border-radius: 5px;padding: 5px;}
+.btn-order + .btn-order{margin-top: 10px;}
+.white-popup .popup{background: #fff;border-radius: 4px;}
+.icon-arrow-right:after{content: "";background: url(../images/btn_enter@3x.png) no-repeat center center/100% 100%;width: 6px;height: 12px;position: relative;display: inline-block;}
+.icon-close-r::after{content: "";background: url(../images/btn_deletecustomer@3x.png) no-repeat center center/100% 100%;width: 25px;height: 25px;display: inline-block;}
+.modal-container{
+  position: relative;
+  height: 65%;
+  margin: 100px 50px 0;
+  border: 1px solid #999;
+  background-color: #fff;
+  border-radius: 11px 11px 0 0;
+}
+.modal-title{
+  border-radius: 11px 11px 0 0;
+  color: #555;
+  line-height: 33px;
+  background-color: #f7f7f7;
+}
+.share-cm-item{
+  margin-left: 14px;
+  display: flex;
+}
+.share-cm-title{
+  flex: 1;
+  margin-right: 5px;
+  word-break: break-all;
+  display: inline-block;
+}
+.share-remark{
+  color: #da7769;
+  margin-left: 30px;
+  margin-top: 10px;
+  text-align: right;
+  word-break: break-all;
+}
+.custom-icon-text{
+  border-radius:50%;
+  line-height: 32px;
+  font-size: 16px;
+  color: #fff;
+}
+
+.drop-down{
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 7px solid;
+  border-bottom: 0;
+  margin-top: 5px;
+}
+
+.drop-up{
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 7px solid;
+  border-top: 0;
+  margin-top: 5px;
+}
+
+.talk-item{background: #f1f1f1;padding: 10px;border-radius: 10px;position: relative;}
+.talk-item::before{content: "";position: absolute;bottom: 10px;left: -10px;border-right: 10px solid #f1f1f1;border-top: 10px solid transparent;border-bottom: 10px solid transparent;}

@@ -1,0 +1,23 @@
+<ion-view hide-tabs="true">
+  <ion-nav-title>{{'充值'|T}}</ion-nav-title>
+  <ion-content>
+    <div class="list">
+      <a ui-sref="#" class="item disable-pointer-events" style="margin-bottom: 10px;border: 0;padding: 10px 12px;color: red;">
+        <span>{{'请确认以下信息'|T}}</span>
+      </a>
+      <div class="item row" style="border-top: 0;">
+        <span class="input-label">{{'客户电话'|T}}<i>:</i></span>
+        <input id="vipPhone" type="tel" class="input-style col" ng-model="data.phone" ng-change="phoneChange()" placeholder="{{'请输入客户电话'|T}}" style="margin-right: 8px;display: inline-block;">
+      </div>
+      <div class="item row" style="border-top: 0;">
+        <span class="input-label">{{'会员卡号'|T}}<i>:</i></span>
+        <input id="cardNo" type="tel" class="input-style col" ng-model="data.cardNo" ng-change="cardNoChange()" placeholder="{{'请输入会员卡号'|T}}" style="margin-right: 8px;display: inline-block;">
+      </div>
+      <div class="item row" style="border-top: 0;">
+        <span class="input-label">{{'客户姓名'|T}}<i>:</i></span>
+        <span class="input-label">{{data.vipName}}</span>
+      </div>
+      <div ng-click="check()" class="list button button-block button-assertive" style="line-height: 38px;min-height: 38px;">{{'确认充值'|T}}</div>
+    </div>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,719 @@
+<ion-view hide-tabs="true">
+  <ion-nav-bar class="bar-stable bar" style="display:block;z-index:10">
+    <div class="title title-center header-item" style="background-color:#fff" ng-show="!showPei && !showDetail">{{'订单详情'|T}}</div>
+    <div class="title title-center header-item" style="background-color:#fff" ng-show="showPei">{{'筹备项目'|T}}</div>
+    <div class="title title-center header-item" style="background-color:#fff" ng-show="showDetail">{{'宴会详情'|T}}</div>
+    <div class="title title-center header-item" style="background-color:#fff" ng-show="showConfirm">{{'确认方式'|T}}</div>
+  </ion-nav-bar>
+  <!-- 右側按鈕 -->
+  <!-- <ion-nav-buttons  side="right"> -->
+    <!--<button class="button button-icon button-clear button-balanced " ng-if="showState&&(!type3)" ng-click="goBook()">-->
+      <!--<i style="color:#64B25D;font-size: 15px;">返回</i>-->
+    <!--</button>-->
+    <!--<button class="button button-icon button-clear button-balanced " ng-if="showState&&(type3)" ng-click="goOrder()">-->
+      <!--<i style="color:#64B25D;font-size: 15px;">返回</i>-->
+    <!--</button>-->
+    <button style="z-index:100;float:right" ng-if="enterC && !(showCai || showPei || showDetail || showHetong ||showTong || showConfirm) && (!enterS) && ((data.appUserId==info.id)||(info.operationType==1))" class="button button-icon button-clear button-positive" ng-click="updateY()">
+      <i style="font-size: 15px;color:#ff2741;">{{'提交'|T}}</i>
+    </button>
+    <a style="z-index:100;float:right" ng-if="showHetong" class="button button-icon button-clear button-positive" download="img" href="{{data.contractUrl}}">
+      <i style="font-size: 15px;color:#ff2741;">{{'下载'|T}}</i>
+    </a>
+    <a style="z-index:100;float:right" ng-if="showCai && data.dishDetailImgUrl" class="button button-icon button-clear button-positive" href="{{data.dishDetailImgUrl}}" download="img">
+      <i style="font-size: 15px;color:#ff2741;">{{'下载'|T}}</i>
+    </a>
+    <a style="z-index:100;float:right" ng-if="showCai && !data.dishDetailImgUrl && !isFromWechat" class="button button-icon" ng-click="share()">
+      <i style="font-size: 15px;color:#ff2741;">{{'分享菜单'|T}}</i>
+    </a>
+    <a style="z-index:100;float:right" ng-if="showDetail && data.ytype==='婚宴预订' && !enterS && showState" class="button button-icon" ng-click="showCustomer($event)">
+      <i style="font-size: 15px;color:#ff2741;">{{'添加客资'|T}}</i>
+    </a>
+  <!-- </ion-nav-buttons> -->
+    <!-- 左側按鈕 -->
+  <!-- <ion-nav-buttons  side="left"> -->
+    <button style="z-index:100" ng-if="enterC && !(showCai || showPei || showDetail || showHetong ||showTong || showConfirm) &&(!enterS) &&(!goBack)" class="button back-button buttons button-clear header-item" ng-click="goList($event)">
+      <i class="icon icon-back" style="vertical-align: middle;"></i>
+    </button>
+    <button style="z-index:100" ng-if="enterC && !(showCai || showPei || showDetail || showHetong ||showTong || showConfirm) && enterS &&(!goBack) && (!isFromWechat)" class="button back-button buttons button-clear header-item" ng-click="goOrder($event)">
+      <i class="icon icon-back" style="vertical-align: middle;"></i>
+    </button>
+    <button style="z-index:100" class="button back-button buttons button-clear header-item" ng-if="showTong &&(!goBack)" ng-click="hideTong()">
+      <i class="icon icon-back" style="vertical-align: middle;"></i>
+    </button>
+    <button style="z-index:100" ng-if="!(showCai || showPei || showDetail || showHetong || enterC || enterS ||showTong || showConfirm) &&(!goBack)" class="button back-button buttons button-clear header-item" ng-click="goBook($event)">
+      <i class="icon icon-back" style="vertical-align: middle;"></i>
+    </button>
+    <button style="z-index:100" ng-if="(showPei || showCai || showDetail || showConfirm)&&(!goBack)" class="button back-button buttons button-clear header-item" ng-click="goCenterBack()">
+      <i class="icon icon-back" style="vertical-align: middle;"></i>
+    </button>
+    <button style="z-index:100" ng-if="(showDetail||showPei||showCai || showConfirm)&&(goBack)" class="button back-button buttons button-clear header-item" ng-click="goCenterBack()">
+      <i class="icon icon-back" style="vertical-align: middle;"></i>
+    </button>
+    <button style="z-index:100" ng-if="(!showDetail)&&goBack&&(!showPei)&&(!showCai)&&(!showConfirm)" class="button back-button buttons button-clear header-item" ng-click="$ionicGoBack()">
+      <i class="icon icon-back" style="vertical-align: middle;"></i>
+    </button>
+  <!-- </ion-nav-buttons> -->
+  <div class="main-container" style="border-top: 1px solid #f1f2f5;bottom:{{(showCai || showPei || showDetail || enterC)?'0':''}}">
+    <div class="list" style="padding-top: 0;margin-bottom: 40px;">
+      <div ng-if="remind.length>0">
+        <a ui-sref="#" class="item item-divider disable-pointer-events">
+          {{'跟进提醒'|T}}
+        </a>
+        <div ng-repeat="item in remind" data-remindId={{item.remindId}} style="border-bottom: 1px solid #ccc;">
+          <div class="item row" style="min-height: 40px;">
+            <span>{{'跟进时间'|T}}：{{item.remindTime|limitTo:16}}</span>&nbsp;&nbsp;
+            <span>{{'跟进方式'|T}}：{{item.way}}</span>
+          </div>
+          <div class="item row" style="border-top: 0;min-height: 40px;">
+         <span style="white-space: normal;padding-right: 10px;width: 100%;">
+          {{'跟进事项'|T}}：{{item.remind}}
+         <div class="right">
+        <button class="button button-small button-assertive" style="min-height: 20px;line-height: 20px;" ng-click="edit1(item.remindId)">{{'编辑'|T}}</button>
+        <button class="button button-small button-positive"
+                style="margin-left: 10px;min-height: 20px;line-height: 20px;" ng-click="delete(item.remindId)">{{'删除'|T}}</button>
+        </div>
+        </span>
+          </div>
+        </div>
+      </div>
+      <div>
+      <!-- <a ui-sref="#" class="item item-divider disable-pointer-events">
+        {{'客户信息'|T}}
+      </a> -->
+      <div class="item row" style="border-top: 0;">
+        <span class="input-label">{{'客户电话'|T}}<i style="color: #DA4C39;">*</i></span>
+        <span ng-if="info.isInternational==1" class="icon icon-select" ng-click="openPopoverCountry($event)">{{countryName | T}}</span>
+        <input type="tel" class="text-right input-style col" ng-change=changeNum() ng-disabled="enterC" placeholder="{{'请输入客户电话'|T}}" ng-model="data.vipPhone" style="margin-right: 8px;">
+        <a ng-show="showState && !isFromWechat" ng-click="goRecord(data.appUserId,data.vipId)" href="javascript:0" class="tab-chats-his">
+          <!-- {{dangan|T}} -->
+        </a>
+        <a ng-hide="enterC" ng-click="blockTong()" href="javascript:0" class="tab-chats-his">
+          <!-- {{'通讯录'|T}} -->
+        </a>
+      </div>
+      <div class="item row">
+        <span class="input-label">{{'客户姓名'|T}}<i style="color: #DA4C39;">*</i></span>
+        <input type="text" class="text-right input-style col" style="margin-right:8px;" placeholder="{{'请输入客户姓名'|T}}" ng-model="data.vipName" ng-disabled="(enterC && suoding)||enterS">
+        <span class="icon icon-select" ng-click="openPopoverSex($event)">{{(data.man?'男士':'女士') | T}}</span>
+      </div>
+      <!-- <a ui-sref="#" class="item item-divider disable-pointer-events">
+        {{'预订信息'|T}}
+      </a> -->
+      <div class="item row">
+        <span class="input-label">{{'宴会时间'|T}}</span>
+        <input type="text" class="text-right input-style col" ng-model="data.resvDate" disabled>
+      </div>
+      <div class="item row">
+        <span class="input-label">{{'宴会餐别'|T}}</span>
+        <input type="text" class="text-right input-style col" ng-model="data.mealTypeName" disabled>
+      </div>
+      <div class="item row">
+        <span class="input-label">{{'宴会桌位'|T}}</span>
+        <input type="text" class="text-right input-style col" ng-model="data.tableNames" disabled>
+      </div>
+      <div ng-click="openPopoverType($event)"  class="item row">
+        <span class="input-label">{{'宴会类型'|T}}</span>
+        <span class="icon icon-select disable-pointer-events text-right input-style col">{{data.ytype}}</span>
+        <!-- <input  type="text" class="disable-pointer-events text-right input-style" ng-model="data.ytype"> -->
+      </div>
+      <div ng-hide="huiyi" ng-class="{'disable-pointer-events':enterS}" class="item row">
+        <span class="input-label">{{'宴会桌数'|T}}<i style="color: #ff2741;">*</i></span>
+        <input type="tel" class="text-right input-style col" ng-model="data.resvTableNum" placeholder="{{'请输入宴会桌数'|T}}">
+      </div>
+      <div ng-hide="huiyi" ng-class="{'disable-pointer-events':enterS}" class="item row">
+        <span class="input-label">{{'备用桌数'|T}}</span>
+        <input type="tel" class="text-right input-style col" ng-model="data.backupTableNum" placeholder="{{'请输入备用桌数'|T}}">
+      </div>
+      <div ng-show="huiyi" ng-class="{'disable-pointer-events':enterS}" class="item row">
+        <span class="input-label">{{'会议人数'|T}}<i style="color: #ff2741;">*</i></span>
+        <input type="tel" class="text-right input-style col" ng-model="data.resvTableNum" placeholder="{{'请输入会议人数'|T}}">
+      </div>
+      <div ng-click="openPopoverSource($event)" class="item row" ng-if="data.resvSourceName!=null">
+        <span class="input-label">{{'订单来源'|T}}</span>
+        <span class="icon icon-select disable-pointer-events text-right input-style col">{{data.resvSourceName}}</span>
+        <!-- <input type="text"  class="disable-pointer-events text-right input-style" ng-model="data.resvSourceName" > -->
+      </div>
+      <div ng-click="openPopoverSourceDetail($event)" class="item row" ng-if="sourceShow1&&sourceShow">
+        <span class="input-label">{{'来源明细'|T}}</span>
+        <input type="text"  class="disable-pointer-events text-right input-style col" ng-model="data.resvSourceDetailName" >
+      </div>
+      <div class="item row" id="resvSourceDetailName" ng-if="sourceShow1&&!sourceShow">
+        <span class="input-label">{{'来源明细'|T}}</span>
+        <input type="text" class="text-right input-style col" placeholder="{{'请输入推荐人'|T}}" ng-change="mouhu()" ng-model="data.resvSourceDetailName">
+      </div>
+      <div ng-click="openPopoverPeople($event)" class="item row" ng-class="{'disable-pointer-events':enterC}" style="margin-top: 10px;">
+        <span class="input-label">{{'接待员姓名'|T}}</span>
+        <span class="icon icon-select disable-pointer-events text-right input-style col">{{data.workerName}}</span>
+        <!-- <input type="text"  class="disable-pointer-events text-right input-style" ng-model="data.workerName" > -->
+      </div>
+      <!-- <a ui-sref="#" class="item item-divider disable-pointer-events">
+        {{'确认方式'|T}}
+      </a> -->
+      <div class="item row" ng-show="!enterC" ng-class="{'disable-pointer-events':enterS}" style="padding-top:11px;padding-bottom:11px;flex-wrap: wrap;">
+        <span class="input-label">{{'确认方式'|T}}</span>
+        <i class="span-gray col" style="font-size: 1em;text-align: right;">
+          <span class="icon icon-check" ng-class="{'icon-check-r': yajin}" ng-click="changeQue($event)" data-id="定金">{{'定金'|T}}</span>
+          <span class="icon icon-check" ng-class="{'icon-check-r': hetong}" ng-click="changeQue($event)" data-id="合同">{{'合同'|T}}</span>
+          <span class="icon icon-check" ng-class="{'icon-check-r': danbao}" ng-click="changeQue($event)" data-id="担保人">{{'担保人'|T}}</span>
+        </i>
+      </div>
+      <div ng-click="blockConfirm()" class="item item-icon-right row" ng-show="enterC">
+        <span class="input-label">{{'确认方式'|T}}</span>
+        <i class="icon icon-right-arrow"></i>
+      </div>
+      <div ng-show="danbao&&!enterC" ng-click="openPopoverDanbao($event)" ng-class="{'disable-pointer-events':enterS}" class="item row">
+        <span class="input-label">{{'选择担保人'|T}}<i style="color: #ff2741;">*</i></span>
+        <input type="text" class="text-right disable-pointer-events input-style col" ng-model="data.dbr" placeholder="{{'请选择担保人'|T}}">
+      </div>
+      <div ng-show="hetong&&!enterC" ng-click="blockModal()" class="item item-icon-right row">
+        <span class="input-label">{{'合同拍照'|T}}</span>
+        <i class="icon icon-right-arrow"></i>
+      </div>
+      <div ng-show="hetong&&!enterC" class="item row">
+        <span class="input-label">{{'合同编号'|T}}<i style="color: #ff2741;">*</i></span>
+        <input type="text" class="text-right input-style col" placeholder="{{'请输入合同编号'|T}}" ng-disabled="enterS" ng-model="data.contractNo">
+      </div>
+      <div ng-show="yajin&&!enterC" class="item row">
+        <span class="input-label">{{'定金金额'|T}}<i style="color: #ff2741;">*</i></span>
+        <input type="tel" class="text-right input-style col" ng-model="data.deposit" ng-disabled="enterS" placeholder="{{'请输入定金金额'|T}}">
+      </div>
+      <div ng-show="yajin&&!enterC" class="item row">
+        <span class="input-label">{{'定金类型'|T}}<i style="color: #ff2741;">*</i></span>
+        <a href="javascript:0" class="icon icon-select text-right input-style col" ng-click="openPopoverDepositType($event,1)">{{depositType|T}}</a>
+      </div>
+      <div ng-show="yajin&&!enterC" ng-class="{'disable-pointer-events':enterS}" class="item row">
+        <span class="input-label">{{'支付方式'|T}}<i style="color: #ff2741;">*</i></span>
+        <a href="javascript:0" class="icon icon-select text-right input-style col" ng-click="openPopoverConfirm($event,1)">{{payMethod|T}}
+        </a>
+      </div>
+      <div ng-show="yajin&&!enterC" class="item row">
+        <span class="input-label">{{'收据编号'|T}}</span>
+        <input type="text" class="text-right input-style col" placeholder="{{'请输入收据编号'|T}}" ng-disabled="enterS" ng-model="data.receiptNo">
+      </div>
+      <div ng-show="yajin&&depositCount<2&&!enterC" class="item item-icon-right row" ng-click="openDeposit(2)">
+        <span class="input-label">{{'第二次定金'|T}}</span>
+        <i class="icon icon-right-arrow" style="transform: rotate(90deg)"></i>
+      </div>
+      <div ng-show="yajin&&depositCount>1&&!enterC" class="item row">
+        <span class="input-label">{{'第二次定金金额'|T}}<i style="color: #ff2741;">*</i></span>
+        <input type="tel" class="text-right input-style col" ng-model="data.deposit1" ng-disabled="enterS" placeholder="{{'请输入定金金额'|T}}">
+      </div>
+      <div ng-show="yajin&&depositCount>1&&!enterC" class="item row">
+        <span class="input-label">{{'第二次定金类型'|T}}<i style="color: #ff2741;">*</i></span>
+        <a href="javascript:0" class="icon icon-select text-right input-style col" ng-click="openPopoverDepositType($event,2)">{{depositType1|T}}</a>
+      </div>
+      <div ng-show="yajin&&depositCount>1&&!enterC" ng-class="{'disable-pointer-events':enterS}" class="item row">
+        <span class="input-label">{{'第二次支付方式'|T}}<i style="color: #ff2741;">*</i></span>
+        <a href="javascript:0" class="icon icon-select text-right input-style col" ng-click="openPopoverConfirm($event,2)">{{payMethod1|T}}
+        </a>
+      </div>
+      <div ng-show="yajin&&depositCount>1&&!enterC" class="item row">
+        <span class="input-label">{{'第二次收据编号'|T}}</span>
+        <input type="text" class="text-right input-style col" placeholder="{{'请输入收据编号'|T}}" ng-disabled="enterS" ng-model="data.receiptNo1">
+      </div>
+      <div ng-show="yajin&&depositCount<3&&!enterC" class="item item-icon-right row" ng-click="openDeposit(3)">
+        <span class="input-label">{{'第三次定金'|T}}</span>
+        <i class="icon icon-right-arrow" style="transform: rotate(90deg)"></i>
+      </div>
+      <div ng-show="yajin&&depositCount>2&&!enterC" class="item row">
+        <span class="input-label">{{'第三次定金金额'|T}}<i style="color: #ff2741;">*</i></span>
+        <input type="tel" class="text-right input-style col" ng-model="data.deposit2" ng-disabled="enterS" placeholder="{{'请输入定金金额'|T}}">
+      </div>
+      <div ng-show="yajin&&depositCount>2&&!enterC" class="item row">
+        <span class="input-label">{{'第三次定金类型'|T}}<i style="color: #ff2741;">*</i></span>
+        <a href="javascript:0" class="icon icon-select text-right input-style col" ng-click="openPopoverDepositType($event,3)">{{depositType2|T}}</a>
+      </div>
+      <div ng-show="yajin&&depositCount>2&&!enterC" ng-class="{'disable-pointer-events':enterS}" class="item row">
+        <span class="input-label">{{'第三次支付方式'|T}}<i style="color: #ff2741;">*</i></span>
+        <a href="javascript:0" class="icon icon-select text-right input-style col" ng-click="openPopoverConfirm($event,3)">{{payMethod2|T}}
+        </a>
+      </div>
+      <div ng-show="yajin&&depositCount>2&&!enterC" class="item row">
+        <span class="input-label">{{'第三次收据编号'|T}}</span>
+        <input type="text" class="text-right input-style col" placeholder="{{'请输入收据编号'|T}}" ng-disabled="enterS" ng-model="data.receiptNo2">
+      </div>
+      <!-- <div ng-click="addYa()" ng-show="(data.confirmOrderType==1) && enterC && (!enterS) && (!showYaT)" class="item text-center row" style="border-width: 1px 0 1px 0">
+        <span class="col" style="font-size: 14px;color:#5CBBA4;">{{'添加定金记录'|T}}+</span>
+      </div> -->
+      <div ng-if="(data.status==2) && (info.meetingCheck==false)" class="item row" ng-class="{'disable-pointer-events':enterS}" style="padding-top:11px;padding-bottom:11px;">
+        <span class="input-label">{{'确认短信'|T}}</span>
+        <i class="span-gray col" style="font-size: 1em;text-align: right;">
+          <span class="icon icon-check" ng-click="data.sendSms=1" ng-class="{'icon-check-r':data.sendSms==1}">{{'发送'|T}}</span>
+          <span class="icon icon-check" ng-click="data.sendSms=0" ng-class="{'icon-check-r':data.sendSms==0}">{{'不发送'|T}}</span>
+        </i>
+      </div>
+      <!-- <a ui-sref="#" class="item item-divider disable-pointer-events">
+        {{'宴会详情明细'|T}}
+      </a> -->
+      <div class="item row" ng-class="{'disable-pointer-events':enterS}">
+        <span class="input-label">{{'菜肴标准'|T}}</span>
+        <input type="tel" class="text-right input-style col" ng-model="data.dishStandard" placeholder="{{'请输入菜肴桌均标准'|T}}">
+      </div>
+      <div ng-click="blockCai()" class="item item-icon-right row">
+        <span class="input-label">{{'宴会菜单'|T}}</span>
+        <i class="icon icon-right-arrow"></i>
+      </div>
+      <div class="item row" style="padding-top:11px;padding-bottom:11px;flex-wrap: wrap;" ng-class="{'disable-pointer-events':enterS}">
+        <span class="input-label">{{'承办方式'|T}}<i style="color: #ff2741;">*</i></span>
+        <i class="span-gray col" style="font-size: 1em;text-align: right;">
+          <span class="icon icon-check" ng-click="changePei($event)" ng-class="{'icon-check-r':data.cbf==1}" data-id="合作">{{'合作'|T}}</span>
+          <span class="icon icon-check" ng-click="changePei($event)" ng-class="{'icon-check-r':data.cbf==0}" data-id="自带">{{'自带'|T}}</span>
+          <span class="icon icon-check" ng-click="changePei($event)" ng-class="{'icon-check-r':data.cbf==2}" data-id="自营">{{'自营'|T}}</span>
+        </i>
+      </div>
+      <div ng-click="openPopover2($event)" ng-show="(data.cbf==1||data.cbf==0)&&data.ytype=='婚宴预订'" ng-class="{'disable-pointer-events':enterS}" class="item row">
+        <span class="input-label">{{'婚庆入场时间'|T}}</span>
+        <a ng-hide="type3" class="ng-binding col" style="text-align: right;">{{data.attendTimeStr|T}}</a>
+      </div>
+      <div ng-click="openPopover3($event)" ng-show="data.cbf==1&&data.ytype=='婚宴预订'"  class="item row">
+        <span class="input-label">{{'婚庆公司'|T}}</span>
+        <input  type="text" class="disable-pointer-events text-right input-style col" ng-model="data.weddingCompanyName" placeholder="{{'请选择婚庆公司'|T}}">
+      </div>
+      <div ng-click="blockPei()" ng-show="data.cbf" class="item item-icon-right row">
+        <span class="input-label">{{'筹备明细'|T}}</span>
+        <i class="icon icon-right-arrow"></i>
+      </div>
+      <div ng-click="blockDetail()" class="item item-icon-right row">
+        <span class="input-label">{{'宴会详情'|T}}</span>
+        <i class="icon icon-right-arrow"></i>
+      </div>
+      </div>
+    </div>
+  </div>
+  <div ng-hide="showCai || showPei || showDetail || enterC" class="row bar bar-footer" style="background-color: #e8e8e8;border:0;padding:0; ">
+    <div ng-click="cancel()" class="col-50 text-center" style="background-color: #ccc;width:100%;">
+      <a class="button button-clear" style="color:#fff;line-height: 44px;">{{'取消预订'|T}}</a>
+    </div>
+    <div ng-click="YBook()" class="col-50 text-center" style="background-color: #ff2741;color:#fff;width:100%;">
+      <a class="button button-clear" style="color:#fff;line-height: 44px;">{{'确认预订'|T}}</a>
+    </div>
+  </div>
+  <div class="d-modal isRight" style="top:44px;overflow-x: hidden;background: #e8e8e8" ng-class="{'isRight':!showPei,'isCenter':showPei}">
+    <div class="list" style="margin: 0;height: calc(100% - 196px);">
+      <!-- <a ui-sref="#" class="item item-divider disable-pointer-events">
+        {{'筹备项目'|T}}
+      </a> -->
+      <ion-scroll style="max-height: 100%;">
+        <div ng-class="{'disable-pointer-events':enterS}" ng-repeat="faci in businessInfo.facis" class="item row" style="padding:5px;">
+        <div style="flex: 1;padding-left: 12px;">
+          <span style="line-height: 34px;">{{faci.facisName}}</span>
+        </div>
+        <div class="col-10 text-right">
+          <span ng-show="faci.facisNum" style="line-height: 34px;font-size: 14px;color:#ff2741;">¥</span>
+        </div>
+        <div class="col-20">
+          <input ng-show="faci.facisNum" data-id={{faci.qiId}} value="{{faci.facisPrice}}" ng-blur="changePrice($event)" type="number" style="font-size: 14px;color:#ff2741;padding:0;line-height: 34px;" placeholder="{{'金额'|T}}">
+        </div>
+        <div class="col-40">
+          <span data-id={{faci.qiId}} class="minus" ng-click="gmjian($event)" ng-class="{'minusRight':faci.facisNum}"></span>
+          <span class="num" ng-show="faci.facisNum">{{faci.facisNum}}</span>
+          <span data-id={{faci.qiId}} class="plus" ng-click="gmjia($event)"></span>
+        </div>
+      </div>
+    </ion-scroll>
+    </div>
+    <!-- <a ui-sref="#" class="item item-divider disable-pointer-events">
+      {{'备注信息'|T}}
+    </a> -->
+    <div class="item row" style="padding: 12px;position:relative">
+      <textarea ng-click="clickRemark($event)" ng-readonly="disableReamrk" rows="5" style="width: 100%;padding: 10px 7px;border-radius: 4px;background-color: rgb(241, 242, 245);font-size: 12px;line-height: 20px;height: 120px;z-index:1" class="input-style" ng-model="data.notations" placeholder="{{'请输入备注'|T}}"></textarea>
+    </div>
+    <div ng-click="goCenter()" class="list button button-block button-assertive" style="width: 90%;margin: 5px auto;height: 40px;min-height: 0;line-height: 40px;">{{'完 成'|T}}</div>
+  </div>
+  <div class="d-modal isRight" style="top:44px;overflow-x: hidden;background: #e8e8e8;" ng-class="{'isRight':!showDetail,'isCenter':showDetail}">
+    <div ng-class="{'disable-pointer-events':enterS}" class="list" style="height: calc(100% - 50px);overflow-y: auto;margin: 0;">
+      <!-- <a ui-sref="#" class="item item-divider disable-pointer-events">
+        {{'详细信息'|T}}
+      </a> -->
+      <div ng-show="(data.ytype=='婚宴预订')" class="item row">
+        <span class="input-label">{{'新郎姓名'|T}}</span>
+        <input type="text" class="text-right input-style col" ng-model="data.groomName" placeholder="{{'请输入新郎姓名'|T}}">
+        <a ng-show="data.groomId" ng-click="goRecord(data.appUserId,data.groomId)" href="javascript:0" class="tab-chats-his">
+          <!-- {{'客户档案'|T}} -->
+        </a>
+      </div>
+      <div ng-show="(data.ytype=='婚宴预订')" class="item row">
+        <span class="input-label">{{'新郎电话'|T}}</span>
+        <input type="tel" class="text-right input-style col" ng-model="data.groomPhone" placeholder="{{'请输入新郎电话'|T}}">
+      </div>
+      <div ng-show="(data.ytype=='婚宴预订')" class="item row">
+        <span class="input-label">{{'新娘姓名'|T}}</span>
+        <input type="text" class="text-right input-style col" ng-model="data.brideName" placeholder="{{'请输入新娘姓名'|T}}">
+        <a ng-show="data.brideId" ng-click="goRecord(data.appUserId,data.brideId)" href="javascript:0" class="tab-chats-his">
+          <!-- {{'客户档案'|T}} -->
+        </a>
+      </div>
+      <div ng-show="(data.ytype=='婚宴预订')" class="item row">
+        <span class="input-label">{{'新娘电话'|T}}</span>
+        <input type="tel" class="text-right input-style col" ng-model="data.bridePhone" placeholder="{{'请输入新娘电话'|T}}">
+      </div>
+      <div ng-show="(data.ytype!='婚宴预订'&&data.ytype!='生日预订'&&data.ytype!='会议预订')" class="item row">
+        <span>{{'客户1姓名'|T}}</span>
+        <input type="text" class="text-right input-style" ng-model="data.groomName" placeholder="{{'请输入客户1姓名'|T}}">
+        <i class="span-gray col" style="font-size: 1em;">
+          <span class="icon icon-check" ng-click="changeGender1($event)" ng-class="{'icon-check-r':data.man1}" data-id="男士">{{'男士'|T}}</span>
+          <span class="icon icon-check" ng-click="changeGender1($event)" ng-class="{'icon-check-r':!data.man1}" data-id="女士">{{'女士'|T}}</span>
+        </i>
+      </div>
+      <div ng-show="(data.ytype!='婚宴预订'&&data.ytype!='生日预订'&&data.ytype!='会议预订')" class="item row">
+        <span class="input-label">{{'客户1电话'|T}}</span>
+        <input type="tel" class="text-right input-style col" ng-model="data.groomPhone" placeholder="{{'请输入客户1电话'|T}}">
+      </div>
+      <div ng-show="(data.ytype!='婚宴预订'&&data.ytype!='生日预订'&&data.ytype!='会议预订')" class="item row">
+        <span>{{'客户2姓名'|T}}</span>
+        <input type="text" class="text-right input-style" ng-model="data.brideName" placeholder="{{'请输入客户2姓名'|T}}">
+        <i class="span-gray col" style="font-size: 1em;">
+          <span class="icon icon-check" ng-click="changeGender2($event)" ng-class="{'icon-check-r':data.man2}" data-id="男士">{{'男士'|T}}</a>
+          <span class="icon icon-check" ng-click="changeGender2($event)" ng-class="{'icon-check-r':!data.man2}" data-id="女士">{{'女士'|T}}</a>
+        </i>
+      </div>
+      <div ng-show="(data.ytype!='婚宴预订'&&data.ytype!='生日预订'&&data.ytype!='会议预订')" class="item row">
+        <span class="input-label">{{'客户2电话'|T}}</span>
+        <input type="tel" class="text-right input-style col" ng-model="data.bridePhone" placeholder="{{'请输入客户2电话'|T}}">
+      </div>
+      <div ng-show="(data.ytype=='生日预订')" class="item row">
+        <span class="input-label">{{'寿星姓名'|T}}</span>
+        <input type="text" class="text-right input-style col" ng-model="data.groomName" placeholder="{{'请输入寿星姓名'|T}}">
+        <a ng-show="data.groomId" ng-click="goRecord(data.appUserId,data.groomId)" href="javascript:0" class="tab-chats-his">
+          <!-- {{dangan|T}} -->
+        </a>
+      </div>
+      <div ng-show="(data.ytype=='生日预订')" class="item row">
+        <span class="input-label">{{'寿星电话'|T}}</span>
+        <input type="tel" class="text-right input-style col" ng-model="data.groomPhone" placeholder="{{'请输入寿星电话'|T}}">
+      </div>
+      <div ng-show="(data.ytype=='会议预订')" class="item row">
+        <span class="input-label">{{'会议主题'|T}}</span>
+        <input type="text" class="text-right input-style col" ng-model="data.meetingTitle" placeholder="{{'请输入会议主题'|T}}">
+      </div>
+      <div ng-show="(data.ytype=='会议预订')" ng-click="openPopoverTableType($event)" class="item row">
+        <span class="input-label">{{'桌位类型'|T}}</span>
+        <input  type="text" class="disable-pointer-events input-style text-right col" ng-model="data.tableTypeName">
+      </div>
+      <div ng-click="openPopoverMeetingStartTime($event)" ng-show="(data.ytype=='会议预订')" class="item row">
+        <span class="input-label">{{'会议开始时间'|T}}</span>
+        <input   type="text" class="disable-pointer-events input-style text-right col" readonly placeholder="{{'请选择会议开始时间'|T}}"  data-id="1" ng-model=data.meetingStart>
+      </div>
+      <label ng-click="openPopoverMeetingEndTime($event)" ng-show="(data.ytype=='会议预订')" class="item row">
+        <span class="input-label">{{'会议结束时间'|T}}</span>
+        <input  type="text" class="disable-pointer-events input-style text-right col" readonly placeholder="{{'请选择会议结束时间'|T}}" data-id="2" ng-model=data.meetingEnd>
+      </label>
+      <div ng-show="(data.ytype=='会议预订') && kua" class="item row" ng-class="{'disable-pointer-events':enterS}" style="padding-top:11px;padding-bottom:11px">
+        {{'跨餐次'|T}}<i style="color: #ff2741;">*</i>
+        <i class="span-gray col" style="font-size: 1em;text-align: right;">
+          <span class="icon icon-check" ng-click="changeBan($event)" ng-class="{'icon-check-r':(data.kccTime==1)}" data-id="跨班次">{{'跨班次'|T}}</span>
+          <!-- <span class="icon icon-check" ng-click="changeBan($event)" ng-class="{'icon-check-r':(data.kccTime==2)}" data-id="全天">{{'全天'|T}}</span> -->
+        </i>
+      </div>
+      <div class="item row">
+        <span class="input-label">{{'家庭住址'|T}}</span>
+        <input type="text" class="text-right input-style col" ng-model="data.address" placeholder="{{'请输入家庭住址'|T}}">
+      </div>
+      <div class="item row">
+        <span class="input-label">{{'工作单位'|T}}</span>
+        <input type="text" class="text-right input-style col" ng-model="data.company" placeholder="{{'请输入工作单位'|T}}" >
+      </div>
+      <!-- <a ui-sref="#" class="item item-divider disable-pointer-events">
+        {{'优惠项目'|T}}
+      </a> -->
+      <div class="item row" style="padding: 12px;">
+        <textarea name="" id="" rows="5" style="width: 100%;padding: 10px 7px;border-radius: 4px;background-color: rgb(241, 242, 245);font-size: 12px;line-height: 20px;height: 120px;" class="input-style" ng-model="data.remark" placeholder="{{'请输入优惠项目'|T}}"></textarea>
+      </div>
+      <div id="customerDiv" style="margin-bottom: 12px;margin-top: 10px;">
+        <div ng-repeat="item in customerInfos" class="row" style="background:#fff;border-bottom:1px solid #ddd;padding:10px 12px;align-items:center;margin: 0;" ng-click="goCusDetail(item.vipId)">
+          <span class="icon icon-close-r" ng-show="showDetail && !enterS && showState" style="margin-right: 10px;" ng-click="delDetail(item.id, $event)" data-relation={{item.relation}}  data-customerName={{item.customerName}} data-customerSex={{item.customerSex}} data-customerPhone={{item.customerPhone}} data-remarks={{item.remarks}}></span>
+          <div class="col">
+            <div>关系 {{item.relation}}</div>
+            <div>客户 {{item.customerName}} {{item.customerSex=='男'?'先生':'女士'}} {{item.customerPhone}}</div>
+            <div>备注 {{item.remarks}}</div>
+          </div>
+          <span class="icon icon-arrow-right" ng-if="showState"></span>
+        </div>
+      </div>
+    </div>
+    <div ng-click="goCenter()" class="list button button-block button-assertive" style="width: 90%;margin: 5px auto;height: 40px;min-height: 0;line-height: 40px;">{{'完 成'|T}}</div>
+  </div>
+  <div class="d-modal isRight" style="top:44px;overflow-x: hidden;" ng-class="{'isRight':!showCai,'isCenter':showCai}">
+    <a ng-show="data.dishDetailUrl" href="{{data.dishDetailUrl}}" class="item item-icon-right row" style="height: 46px; padding-top: 0px; line-height: 46px;">
+      {{'配菜文档下载'|T}}
+      <i class="icon icon-right-arrow"></i>
+    </a>
+    <div ng-class="{'disable-pointer-events':enterS}" ng-file-select="onFileSelect1($files)" data-multiple="true" title="select file" class="item item-icon-right row" style="height: 46px; padding-top: 0px; line-height: 46px;">
+      {{'配菜拍照上传'|T}}
+      <i class="icon icon-right-arrow"></i>
+    </div>
+    <div ng-show='data.dishDetailImgUrl'>
+      <img ng-src="{{data.dishDetailImgUrl}}" ng-class="{'disable-pointer-events':enterS}" on-swipe-right="cleanPic()" width=100% alt="">
+    </div>
+    <div ng-hide='(data.dishDetailImgUrl || (businessInfo.dishs.length==0))' class="list" style="height:calc(100% - 46px)" ng-class="{'heightCai':data.dishDetailUrl}" ng-click="hideCai()">
+      <a ui-sref="#" class="item item-divider disable-pointer-events">
+        {{'配菜菜单'|T}}
+      </a>
+      <label ng-class="{'disable-pointer-events':enterS}" class="item item-input">
+          <i class="icon icon-search placeholder-icon"></i>
+        <input type="text" placeholder="{{'查找菜肴'|T}}" ng-change="selectCai()" ng-model="data.search" autocomplete="off">
+      </label>
+      <div class="row" style="height:calc(100% - 134px);padding: 0;padding-top:1px;overflow: auto;border-bottom: 1px solid #ddd;align-items: flex-start;">
+        <ion-scroll class="col-20" style="height: 100%;">
+          <div data-id="999" ng-click="seeTao($event);$event.stopPropagation();" class="item row text-center cmbk" ng-class="{'cmbks':showTao}" style="padding:10px 0;font-size: 14px;">
+            {{'自选套餐'|T}}
+          </div>
+          <div ng-repeat="dalei in businessInfo.dishs" ng-click="changeDalei($event)" data-id="{{dalei.myId}}" class="item row text-center cmbk" ng-class="{'cmbks':(dalei.select && !showTao)}" style="padding:10px 0;font-size: 14px;">
+            {{dalei.dlmc}}
+          </div>
+          <!--<div data-id="999" ng-click="seeYi($event)" class="item text-center cmbk" ng-class="{'cmbks':yidian}" style="padding:8px 0;font-size: 14px;">
+            已点菜肴
+          </div>-->
+        </ion-scroll>
+        <ion-scroll class="col-80" style="height: 100%;" delegate-handle="cmScroll">
+          <div ng-if="!showTao" ng-repeat="dish in dishList" class="item row" style="border: none;padding: 0 10px">
+            <div class="col-40" style="overflow-x: hidden;">
+              <span style="line-height: 34px;font-size: 14px;">{{dish.cmmc}}</span>
+            </div>
+            <div class="col-20 text-left">
+              <span style="line-height: 36px;font-size: 16px;color:#ff2741;">¥{{dish.cmje}}</span>
+            </div>
+            <div class="col-40">
+              <span data-id={{dish.myId}} data-daId={{dish.daId}} class="minus" ng-click="cyjian($event);$event.stopPropagation();" ng-class="{'minusRight':dish.cmsl,'disable-pointer-events':type3}"></span>
+              <span class="num" ng-show="dish.cmsl">{{dish.cmsl}}</span>
+              <span data-id={{dish.myId}} data-daId={{dish.daId}} class="plus" ng-click="cyjia($event);$event.stopPropagation();" ng-class="{'disable-pointer-events':type3}"></span>
+            </div>
+          </div>
+          <div ng-if="showTao" ng-repeat="dish in dishList" class="item row" style="border: none;padding: 0 10px">
+            <div class="col-50" style="overflow-x: hidden;">
+              <span style="line-height: 34px;font-size: 14px;">{{dish.name}}</span>
+            </div>
+            <div class="col-50">
+              <span data-id={{dish.id}} class="plus" ng-click="taocanjia($event);$event.stopPropagation();" ng-class="{'disable-pointer-events':type3}"></span>
+            </div>
+          </div>
+      </div>
+      <div class="row" style="padding:0;margin-top:-1px;border: 0;position: relative;">
+        <div ng-if="yidian" class="dish-detail" ng-click="$event.stopPropagation();">
+          <div ng-if="!caiyaoNum" style="color: #aaa;font-size: 20px;text-align: center;line-height: 300px;">{{'购物车为空'|T}}</div>
+          <div ng-repeat="dish in yidianList" class="item row" style="padding-top:5px;padding-bottom: 10px;">
+            <div class="col-40" style="overflow-x: hidden;">
+              <span style="line-height: 34px;font-size: 14px;">{{dish.cmmc}}</span>
+            </div>
+            <div class="col-20 text-left">
+              <span style="line-height: 36px;font-size: 16px;color:#ff2741;">¥{{dish.cmje}}</span>
+            </div>
+            <div class="col-40">
+              <span data-id={{dish.myId}} data-daId={{dish.daId}} class="minus" ng-click="cyjian($event);$event.stopPropagation();" ng-class="{'minusRight':dish.cmsl,'disable-pointer-events':type3}"></span>
+              <span class="num" ng-show="dish.cmsl">{{dish.cmsl}}</span>
+              <span data-id={{dish.myId}} data-daId={{dish.daId}} class="plus" ng-click="cyjia($event);$event.stopPropagation();" ng-class="{'disable-pointer-events':type3}"></span>
+            </div>
+          </div>
+        </div>
+        <div class="col-60 order-dished-chart row">
+          <div class="col-25 text-center" style="position: relative;" ng-click="seeChat();$event.stopPropagation();">
+            <i class="chat-num disable-pointer-events">{{caiyaoNum}}</i>
+            <span class="icon ion-ios-cart-outline disable-pointer-events" style="font-size: 28px;font-weight: bold;"></span>
+          </div>
+          <div class="col-75">
+            ¥ {{caiyaoAll}}
+          </div>
+        </div>
+        <div ng-click="clearChart();$event.stopPropagation();" class="col-20 order-clear-button">
+          {{'清空'|T}}
+        </div>
+        <div ng-click="goCenter();$event.stopPropagation();" class="col-20 order-dishes-button">
+          {{'选好了'|T}}
+        </div>
+    </div>
+  </div>
+  </div>
+  <div class="d-modal isRight" style="top:44px;overflow-x: hidden;" ng-class="{'isRight':!showTong,'isCenter':showTong}">
+    <div class="bar-subheader bar-stable item-input-inset" style="top:0;">
+      <label class="item-input-wrapper">
+        <i class="icon ion-ios-search placeholder-icon"></i>
+        <input type="search" name="" placeholder="{{'姓名、号码搜索'|T}}" ng-change="searchContact()" ng-model='tong.name'>
+      </label>
+    </div>
+    <ion-scroll style="max-height: calc(100% - 44px);">
+      <ion-list padding='false' ng-if="!searchNum">
+        <div ng-repeat="group in formatContacts  | orderBy:'key'" class="contact-list">
+          <div class="label" id={{"contact-"+group.key}}><strong>{{group.key}}</strong></div>
+          <ion-list>
+            <ion-item  ng-repeat="item in group.value | orderBy:'pinyinName'" data-name="{{item.displayName}}" data-number="{{item.phoneNumber}}" ng-click="callContact($event)" class="contact-name">
+              <span class="disable-pointer-events">{{item.displayName}}</span>
+              <span class="disable-pointer-events contact_time padding-right">{{item.phoneNumber}}</span>
+            </ion-item>
+
+          </ion-list>
+        </div>
+      </ion-list>
+      <ion-list padding="false" ng-if="searchNum">
+        <ion-item  ng-repeat="item in searchArr" data-name="{{item.displayName}}" data-number="{{item.phoneNumber}}"  ng-click="callContact($event)" class="contact-name">
+          <span class="disable-pointer-events">{{item.displayName}}</span>
+          <span class="contact_time padding-right disable-pointer-events">{{item.phoneNumber}}</span>
+        </ion-item>
+      </ion-list>
+      <!-- <a href="javascript:0" class="item item-icon-right row" style="border: 0;background-color: #e8e8e8;">
+      </a>
+      <a href="javascript:0" class="item item-icon-right row" style="border: 0;background-color: #e8e8e8;">
+      </a>
+      <a href="javascript:0" class="item item-icon-right row" style="border: 0;background-color: #e8e8e8;">
+      </a>
+      <a href="javascript:0" class="item item-icon-right row" style="border: 0;background-color: #e8e8e8;">
+      </a>
+      <a href="javascript:0" class="item item-icon-right row" style="border: 0;background-color: #e8e8e8;">
+      </a> -->
+    </ion-scroll>
+    <!--<div ng-if="showTong" class="citybox-shortcuts" id="indicator">
+      <a href="" ng-click="goWhere('contact-A')">A</a>
+      <a href="" ng-click="goWhere('contact-B')">B</a>
+      <a href="" ng-click="goWhere('contact-C')">C</a>
+      <a href="" ng-click="goWhere('contact-D')">D</a>
+      <a href="" ng-click="goWhere('contact-E')">E</a>
+      <a href="" ng-click="goWhere('contact-F')">F</a>
+      <a href="" ng-click="goWhere('contact-G')">G</a>
+      <a href="" ng-click="goWhere('contact-H')">H</a>
+      <a href="" ng-click="goWhere('contact-I')">I</a>
+      <a href="" ng-click="goWhere('contact-J')">J</a>
+      <a href="" ng-click="goWhere('contact-K')">K</a>
+      <a href="" ng-click="goWhere('contact-L')">L</a>
+      <a href="" ng-click="goWhere('contact-M')">M</a>
+      <a href="" ng-click="goWhere('contact-N')">N</a>
+      <a href="" ng-click="goWhere('contact-O')">O</a>
+      <a href="" ng-click="goWhere('contact-P')">P</a>
+      <a href="" ng-click="goWhere('contact-Q')">Q</a>
+      <a href="" ng-click="goWhere('contact-R')">R</a>
+      <a href="" ng-click="goWhere('contact-S')">S</a>
+      <a href="" ng-click="goWhere('contact-T')">T</a>
+      <a href="" ng-click="goWhere('contact-U')">U</a>
+      <a href="" ng-click="goWhere('contact-V')">V</a>
+      <a href="" ng-click="goWhere('contact-W')">W</a>
+      <a href="" ng-click="goWhere('contact-X')">X</a>
+      <a href="" ng-click="goWhere('contact-Y')">Y</a>
+      <a href="" ng-click="goWhere('contact-Z')">Z</a>
+    </div>-->
+  </div>
+  <div class="t-modal" ng-if="showSharePre" style="opacity:1;background-color:transparent;z-index:100000">
+    <div class="modal-container">
+      <div class="modal-title">分享菜单到微信</div>
+      <div style="overflow-y:scroll;height:300px;font-family:'SimSun';height: calc(100% - 80px)">
+        <div style="padding:15px;width:100%" id="shareImgCon">
+          <div style="font-size:16px;margin-bottom:10px;font-weight:bolder">{{(businessInfo.dishInformation || {}).dish_title || (data.businessName + '预点菜排菜单')}}</div>
+          <div style="text-align:left;font-size:11px;">
+            <div style="line-height: 15px;display:flex;">
+              <span>桌位：</span>
+              <span style="flex:1;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">{{shareAreaTable}}</span>
+              <span style="margin-left:5px;display:inline-block;width:70px" ng-if="data.ytype!=='会议预订'">桌数：{{data.resvTableNum || '-'}} 桌</span>
+              <span style="margin-left:5px;display:inline-block;width:70px" ng-if="data.ytype==='会议预订'">人数：{{data.resvTableNum || '-'}} 人</span>
+            </div>
+            <div style="margin-bottom:10px;display:flex;">
+              <span style="flex:1;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">日期：{{data.resvDate}} {{data.resvWeekDay|T}}</span>
+              <span style="margin-left:5px;display:inline-block;width:70px">餐别：{{data.mealTypeName}}</span>
+            </div>
+            <div ng-repeat="(key,item) in shareMenuList">
+              {{key}}：
+              <div class="share-cm-item" ng-repeat="cm in item">
+                <span class="share-cm-title">{{cm.cmmc}}</span>
+                <span style="margin:auto 5px;display:inline-block;width:20px">{{cm.cmsl}}</span>
+                <span style="margin:auto 5px;display:inline-block;width:50px" ng-if="businessInfo.dish_show_price===1">￥{{cm.cmje}}</span>
+              </div>
+            </div>
+            <div ng-if="businessInfo.dish_show_price===1"><span style="float:right">合计：<span style="margin:auto 5px;display:inline-block;width:50px">￥{{caiyaoAll}}</span></span></div>
+            <div style="clear:both"></div>
+            <div class="share-remark"><pre>{{(businessInfo.dishInformation || {}).dish_remark || (data.businessName + '，欢迎您前来就餐')}}</pre></div>
+            <div style="clear:both"></div>
+          </div>
+        </div>
+      </div>
+      <div style="background-color: #e8e8e8;border:0;padding:0;display: flex;position:absolute;bottom:0;width:100%">
+        <div class="col-50 text-center" style="background-color: #ccc;width:100%;color:#fff;line-height: 44px;" ng-click="cancelShare()">
+          {{'取消'|T}}
+        </div>
+        <div class="col-50 text-center" style="background-color: #DB4F3B;color:#fff;width:100%;color:#fff;line-height: 44px;" ng-click="weixinImg()">
+          {{'分享'|T}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 确认方式详情 -->
+  <div class="d-modal isRight" style="top:44px;overflow-x: hidden;background: #e8e8e8;" ng-class="{'isRight':!showConfirm,'isCenter':showConfirm}">
+    <div class="list" style="height: {{enterS?'100%':'calc(100% - 50px)'}};overflow-y: auto;margin: 0;">
+      <div class="item row" ng-class="{'disable-pointer-events':enterS}" style="padding-top:11px;padding-bottom:11px;flex-wrap: wrap;">
+        <span class="input-label">{{'确认方式'|T}}</span>
+        <i class="span-gray col" style="font-size: 1em;text-align: right;">
+          <span class="icon icon-check" ng-class="{'icon-check-r': yajin}" ng-click="changeQue($event)" data-id="定金">{{'定金'|T}}</span>
+          <span class="icon icon-check" ng-class="{'icon-check-r': hetong}" ng-click="changeQue($event)" data-id="合同">{{'合同'|T}}</span>
+          <span class="icon icon-check" ng-class="{'icon-check-r': danbao}" ng-click="changeQue($event)" data-id="担保人">{{'担保人'|T}}</span>
+        </i>
+      </div>
+      <div class="item row" style="margin-top: 10px;" ng-class="{'disable-pointer-events':enterS}">
+        <span class="input-label">{{'第一次定金金额'|T}}<i style="color: #ff2741;">*</i></span>
+        <input type="tel" class="text-right input-style col" ng-model="data.deposit" ng-disabled="enterS" placeholder="{{'请输入定金金额'|T}}">
+      </div>
+      <div class="item row" ng-class="{'disable-pointer-events':enterS}">
+        <span class="input-label">{{'第一次定金类型'|T}}<i style="color: #ff2741;">*</i></span>
+        <a href="javascript:0" class="icon icon-select text-right input-style col" ng-click="openPopoverDepositType($event,1)">{{depositType|T}}</a>
+      </div>
+      <div ng-class="{'disable-pointer-events':enterS}" class="item row">
+        <span class="input-label">{{'第一次支付方式'|T}}<i style="color: #ff2741;">*</i></span>
+        <a href="javascript:0" class="icon icon-select text-right input-style col" ng-click="openPopoverConfirm($event,1)">{{payMethod|T}}
+        </a>
+      </div>
+      <div class="item row" ng-class="{'disable-pointer-events':enterS}">
+        <span class="input-label">{{'第一次收据编号'|T}}</span>
+        <input type="text" class="text-right input-style col" placeholder="{{'请输入收据编号'|T}}" ng-disabled="enterS" ng-model="data.receiptNo">
+      </div>
+      <div class="item row" style="margin-top: 10px;" ng-class="{'disable-pointer-events':enterS}">
+        <span class="input-label">{{'第二次定金金额'|T}}<i style="color: #ff2741;">*</i></span>
+        <input type="tel" class="text-right input-style col" ng-model="data.deposit1" ng-disabled="enterS" placeholder="{{'请输入定金金额'|T}}">
+      </div>
+      <div class="item row" ng-class="{'disable-pointer-events':enterS}">
+        <span class="input-label">{{'第二次定金类型'|T}}<i style="color: #ff2741;">*</i></span>
+        <a href="javascript:0" class="icon icon-select text-right input-style col" ng-click="openPopoverDepositType($event,2)">{{depositType1|T}}</a>
+      </div>
+      <div ng-class="{'disable-pointer-events':enterS}" class="item row">
+        <span class="input-label">{{'第二次支付方式'|T}}<i style="color: #ff2741;">*</i></span>
+        <a href="javascript:0" class="icon icon-select text-right input-style col" ng-click="openPopoverConfirm($event,2)">{{payMethod1|T}}
+        </a>
+      </div>
+      <div class="item row" ng-class="{'disable-pointer-events':enterS}">
+        <span class="input-label">{{'第二次收据编号'|T}}</span>
+        <input type="text" class="text-right input-style col" placeholder="{{'请输入收据编号'|T}}" ng-disabled="enterS" ng-model="data.receiptNo1">
+      </div>
+      <div class="item row" style="margin-top: 10px;" ng-class="{'disable-pointer-events':enterS}">
+        <span class="input-label">{{'第三次定金金额'|T}}<i style="color: #ff2741;">*</i></span>
+        <input type="tel" class="text-right input-style col" ng-model="data.deposit2" ng-disabled="enterS" placeholder="{{'请输入定金金额'|T}}">
+      </div>
+      <div class="item row" ng-class="{'disable-pointer-events':enterS}">
+        <span class="input-label">{{'第三次定金类型'|T}}<i style="color: #ff2741;">*</i></span>
+        <a href="javascript:0" class="icon icon-select text-right input-style col" ng-click="openPopoverDepositType($event,3)">{{depositType2|T}}</a>
+      </div>
+      <div ng-class="{'disable-pointer-events':enterS}" class="item row">
+        <span class="input-label">{{'第三次支付方式'|T}}<i style="color: #ff2741;">*</i></span>
+        <a href="javascript:0" class="icon icon-select text-right input-style col" ng-click="openPopoverConfirm($event,3)">{{payMethod2|T}}
+        </a>
+      </div>
+      <div class="item row" ng-class="{'disable-pointer-events':enterS}">
+        <span class="input-label">{{'第三次收据编号'|T}}</span>
+        <input type="text" class="text-right input-style col" placeholder="{{'请输入收据编号'|T}}" ng-disabled="enterS" ng-model="data.receiptNo2">
+      </div>
+      <div ng-click="blockModal()" class="item item-icon-right row" style="margin-top: 10px;" ng-class="{'disable-pointer-events':enterS}">
+        <span class="input-label">{{'合同拍照'|T}}</span>
+        <i class="icon icon-right-arrow"></i>
+      </div>
+      <div class="item row" ng-class="{'disable-pointer-events':enterS}">
+        <span class="input-label">{{'合同编号'|T}}<i style="color: #ff2741;">*</i></span>
+        <input type="text" class="text-right input-style col" placeholder="{{'请输入合同编号'|T}}" ng-disabled="enterS" ng-model="data.contractNo">
+      </div>
+      <div ng-click="openPopoverDanbao($event)" ng-class="{'disable-pointer-events':enterS}" class="item row" style="margin-top: 10px;">
+        <span class="input-label">{{'选择担保人'|T}}<i style="color: #ff2741;">*</i></span>
+        <input type="text" class="text-right disable-pointer-events input-style col" ng-model="data.dbr" placeholder="{{'请选择担保人'|T}}">
+      </div>
+    </div>
+    <div ng-show="!enterS" ng-click="confirmDone()" class="list button button-block button-assertive" style="width: 90%;margin: 5px auto;height: 40px;min-height: 0;line-height: 40px;">{{'完 成'|T}}</div>
+  </div>
+  <div ng-if="showModal" on-swipe-right="hideModal()" class="t-modal" style="opacity: 1;background-color: #fff;z-index: 200000;">
+    <img ng-click="hideModal()" ng-src={{data.contractUrl}} style="opacity: 1;position: absolute;top: 0;bottom: 0;right:0;left:0;margin: auto;" class="" width="100%" alt="">
+    <div class="bar bar-footer book-footBar-style text-center" style="padding:0 0 0;background-color: #e8e8e8;">
+      <button onclick="this.value = null" ng-class="{'disable-pointer-events':enterS}" class="button button-block button-assertive" ng-file-select="onFileSelect($files)" data-multiple="true" title="select file" style="font-size:16px;">{{'获取合同照片'|T}}</button>
+    </div>
+  </div>
+
+</ion-view>

@@ -1,0 +1,21 @@
+<ion-view hide-tabs="true">
+  <ion-nav-title>{{'客户标签'|T}}</ion-nav-title>
+  <ion-content>
+    <div class="list" style="margin-bottom:0;">
+      <div class="item custom-info-tag-item" id="customTag">
+        <a class="button button-balanced button-small custom-info-tag-a" style="background: #95809e !important;color: #fff !important;border: 0 !important;" on-hold="remove($event)" ng-repeat="tag in tagList" data-id={{tag.id}} >{{tag.tagName}}</a>
+        <a class="button button-stable button-outline button-small custom-info-tag-a" ng-click="addTagShow()">{{'添加标签'|T}}</a>
+      </div>
+      <div class="item item-input-inset" ng-show="addShowTag" style="border-color: transparent;background: transparent;">
+        <div style="background: #fff;border-radius: 4px;display: flex;width: 100%;">
+          <label class="item-input-wrapper" style="border-radius: 0;background: #fff;">
+            <input type="text" placeholder="{{'请输入标签内容'|T}}" autofocus ng-model="data.tagName">
+          </label>
+          <a class="button button-small button-stable" style="margin: 0;background: #fff;color: #ff2741;" ng-click="addTagName()">
+            {{'确认添加'|T}}
+          </a>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

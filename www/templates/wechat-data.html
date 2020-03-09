@@ -1,0 +1,120 @@
+<ion-view hide-tabs="true">
+  <ion-nav-title>
+    <div class="row top-tab">
+      <div class="col text-center top-tab-item">
+        <a href="javascript:0" ng-class="{'active':showType==1}" class="button-stable book-footBar-font-style" ng-click="changePage(1)">
+          {{'日常状况'|T}}
+        </a>
+      </div>
+      <div class="col text-center top-tab-item">
+        <a href="javascript:0" ng-class="{'active':showType==2}" class="button-stable book-footBar-font-style" ng-click="changePage(2)">
+          {{'营销业绩'|T}}
+        </a>
+      </div>
+    </div>
+  </ion-nav-title>
+  <div ng-style="{'left':isInfoDataShow?'0':'100%','right':isInfoDataShow?'0':'-100%'}" style="position: fixed;background: #fff;z-index: 12;bottom: 0;top: 100px;padding: 20px;transition: all 1s">
+    <div style="margin-bottom: 20px;font-size: 20px;">日期：{{params.startResvdata}} ~ {{params.endResvdata}}</div>
+    <div style="margin-bottom: 20px;font-size: 20px;">普通订单：{{data.orderNum}}单</div>
+    <div style="margin-bottom: 20px;font-size: 20px;">上座率：{{data.tableRank}}</div>
+    <div style="margin-bottom: 20px;font-size: 20px;">营销排行：
+      <div style="padding-left: 50px;color: #aaa;font-size: 18px;margin-top: 10px;" ng-repeat="item in appUserDataInfo track by $index">{{item.appUserName}} (订单量：{{item.orderNum||''}})</div>
+    </div>
+    <div style="margin-bottom: 20px;font-size: 20px;">回访投诉：{{data.callNum}}条</div>
+  </div>
+  <ion-content style="border-top: 1px solid #ccc;background: #fff;">
+    <div style="position: absolute;right: 20px;top: 9px;z-index: 10;border: 1px solid #333;padding: 5px 10px;border-radius: 5px;" ng-click="showInfoData()">{{isInfoDataShow?'收起':'展开'}}数据</div>
+    <div ng-show="showType==1">
+      <div class="chart-item" style="width: 100%;border-radius: 0;">
+        <div class="item item-chart-title"> {{type + '数据'|T}}</div>
+        <div class="tab-chats row item" style="padding-bottom: 20px;">
+          <div ng-click="showData(1)" class="tab-chats-item col" ng-style="{'background':showDataType==1?'#eee':'#fff'}">
+            <div class="tab-chats-font">{{'普通订单'|T}}</div>
+            <span class="tab-chats-span">{{data.orderNum}}</span>
+          </div>
+          <div ng-click="showData(2)" class="tab-chats-item col" ng-hide="type=='上周'" ng-style="{'background':showDataType==2?'#eee':'#fff'}">
+            <div class="tab-chats-font">{{'客户数量'|T}}</div>
+            <span class="tab-chats-span">{{data.vipNum}}</span>
+          </div>
+          <div ng-click="showData(3)" class="tab-chats-item col" ng-style="{'background':showDataType==3?'#eee':'#fff'}">
+            <div class="tab-chats-font">{{'上座率'|T}}</div>
+            <span class="tab-chats-span">{{data.tableRank}}</span>
+          </div>
+          <div ng-click="showData(4)" class="tab-chats-item col" ng-style="{'background':showDataType==4?'#eee':'#fff'}">
+            <div class="tab-chats-font">{{'回访投诉'|T}}</div>
+            <span class="tab-chats-span">{{data.callNum}}</span>
+          </div>
+          <div ng-click="showData(5)" class="tab-chats-item col" ng-hide="type=='上周'" ng-style="{'background':showDataType==5?'#eee':'#fff'}">
+            <div class="tab-chats-font">{{'客户资料完整度'|T}}</div>
+            <span class="tab-chats-span">{{data.percentRank}}</span>
+          </div>
+        </div>
+      </div>
+      <highchart config="chartLineConfig" style="width:100%;height:300px;" ng-show="showDataType!=4 && showDataType!=5"></highchart>
+      <div style="text-align: center;" ng-show="showDataType==5">
+        <span class="slider-span">
+          <i ng-click="changeBar(1)" class="s-point" ng-class="{'current': barType==1}" style="width: 16px;height: 16px;"></i>
+          <i ng-click="changeBar(2)" class="s-point" ng-class="{'current': barType==2}" style="margin-left: 20px;width: 16px;height: 16px;"></i>
+        </span>
+      </div>
+      <div on-swipe-left="changeBar(2)" on-swipe-right="changeBar(1)">
+        <highchart config="chartBarConfig" style="width:100%;height:300px;" ng-show="showDataType==5"></highchart>
+      </div>
+      <highchart config="chartPieConfig1" style="width:100%;height:300px;margin-top: 50px;" ng-show="showDataType==5"></highchart>
+      <div style="text-align: center;margin-top: 50px;" ng-show="showDataType==5">
+        <span class="slider-span">
+          <i ng-click="changePie(1)" class="s-point" ng-class="{'current': pieType==1}" style="width: 16px;height: 16px;"></i>
+          <i ng-click="changePie(2)" class="s-point" ng-class="{'current': pieType==2}" style="margin-left: 20px;width: 16px;height: 16px;"></i>
+        </span>
+      </div>
+      <div on-swipe-left="changePie(2)" on-swipe-right="changePie(1)">
+        <highchart config="chartPieConfig2" style="width:100%;height:300px;" ng-show="showDataType==5"></highchart>
+      </div>
+      <div style="padding: 0 0 20px 0;background: #fff;" ng-show="showDataType==4">
+        <table class="dataTable" style="width: 100%;text-align: center;">
+          <tr>
+            <th>序号</th>
+            <th>日期</th>
+            <th>顾客姓名</th>
+            <th>所属营销</th>
+            <th>备注</th>
+          </tr>
+          <tr ng-repeat="item in tableData track by $index">
+            <td>{{$index+1}}</td>
+            <td>{{item.callDate}}</td>
+            <td>{{item.vipName}}</td>
+            <td>{{item.appUserName}}</td>
+            <td>{{item.vipComplaints}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div ng-show="showType==2">
+      <div class="item item-chart-title ng-binding">荣誉榜（上月）</div>
+      <div class="row" style="text-align: center;position: relative;">
+        <div style="width: 100%;margin-bottom: 30px;">订单数量排行</div>
+        <div class="col" ng-repeat="item in appUserData2 track by $index" ng-class="{'item-rank1': $index == 0,'item-rank2': $index == 1,'item-rank3': $index == 2}" ng-show="$index < 3">
+          <span style="width: 50px;height: 50px;border-radius: 50%;text-align: center;line-height: 50px;margin: 0 auto;display: block;color: #fff;border: 1px solid #ccc;background: #8c7c7c">{{item.appUserName?item.appUserName.substr(0,1):'暂无'}}</span>
+          <span class="icon-rank"></span>
+          <span>{{item.appUserName?item.appUserName:'无'}} <span style="color: #76A6DF">{{item.orderNum||''}}</span></span>
+        </div>
+      </div>
+      <!-- <div class="row" style="text-align: center;position: relative;">
+        <div style="width: 100%;margin-bottom: 30px;">跟进数量排行</div>
+        <div class="col" ng-repeat="item in appUserData track by $index" ng-class="{'item-rank1': $index == 0,'item-rank2': $index == 1,'item-rank3': $index == 2}">
+          <span style="width: 50px;height: 50px;border-radius: 50%;text-align: center;line-height: 50px;margin: 0 auto;display: block;color: #fff;border: 1px solid #ccc;">{{item.name.substr(0,1)}}</span>
+          <span class="icon-rank"></span>
+          <span>{{item.name}} <span style="color: #76A6DF">{{item.count}}</span></span>
+        </div>
+      </div> -->
+      <div class="row" style="text-align: center;position: relative;">
+        <div style="width: 100%;margin-bottom: 30px;">新增客户排行</div>
+        <div class="col" ng-repeat="item in appUserData1 track by $index" ng-class="{'item-rank1': $index == 0,'item-rank2': $index == 1,'item-rank3': $index == 2}" ng-show="$index < 3">
+          <span style="width: 50px;height: 50px;border-radius: 50%;text-align: center;line-height: 50px;margin: 0 auto;display: block;color: #fff;border: 1px solid #ccc;background: #8c7c7c">{{item.app_user_name?item.app_user_name.substr(0,1):'暂无'}}</span>
+          <span class="icon-rank"></span>
+          <span>{{item.app_user_name?item.app_user_name:'无'}} <span style="color: #76A6DF">{{item.vipNum||''}}</span></span>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

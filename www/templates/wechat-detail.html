@@ -1,0 +1,14 @@
+<ion-view hide-tabs="true">
+  <ion-nav-title>
+    数据报表
+  </ion-nav-title>
+  <ion-content style="border-top: 1px solid #ccc;background: #fff;padding: 10px 20px;">
+    <div style="margin-bottom: 20px;font-size: 20px;">请查收你{{data.orderDate}}的宴会情况</div>
+    <div style="margin-bottom: 20px;font-size: 20px;">宴会订单：{{data.orderNum}}单</div>
+    <div style="margin-bottom: 20px;font-size: 20px;padding-left: 20px;color: #aaa;">完成订单：{{data.finishOrderNum}}单</div>
+    <div style="margin-bottom: 20px;font-size: 20px;padding-left: 20px;color: #aaa;">新增订单：{{data.confirmOrderNum}}单</div>
+    <div style="margin-bottom: 20px;font-size: 20px;">新增线索：{{data.keyNum}}条</div>
+    <div style="margin-bottom: 20px;font-size: 20px;">回访投诉：{{data.callNum}}条</div>
+    <div style="margin-bottom: 20px;font-size: 20px;">跟进记录：{{data.remindNum}}条</div>
+  </ion-content>
+</ion-view>

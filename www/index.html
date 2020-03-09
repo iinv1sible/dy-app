@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <link rel="apple-touch-icon-precomposed" sizes="180x180" href="./icon-60@3x.png">
+    <meta name="apple-mobile-web-app-title" content="易订">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title></title>
+
+    <link rel="manifest" href="manifest.json">
+
+    <!-- un-comment this code to enable service worker -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js')
+          .then(() => console.log('service worker installed'))
+          .catch(err => console.log('Error', err));
+      }
+    </script>
+
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/newui-style.css" rel="stylesheet">
+    <link href="css/calender.css" rel="stylesheet">
+    <link href="css/ios.css" rel="stylesheet">
+
+
+
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+
+    <!-- ionic/angularj
+    s js -->
+
+    <script src="lib/ionic/js/ionic.bundle.min.js"></script>
+    <script src="lib/ion-sticky/ion-sticky.js"></script>
+    <script src="lib/jQuery/dist/jquery.min.js"></script>
+    <script src="lib/highcharts-release/highcharts.js"></script>
+    <script src="lib/highcharts-ng/dist/highcharts-ng.min.js"></script>
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="lib/ngCordova/dist/ng-cordova.min.js"></script>
+    <script src="lib/ionic-datepicker/dist/ionic-datepicker.bundle.min.js"></script>
+    <script src="cordova.js"></script>
+    <script src="lib/angular-local-storage/dist/angular-local-storage.min.js"></script>
+    <script src="lib/angular-qiniu-upload/src/qupload.js"></script>
+    <script src="lib/ocLazyLoad.min.js"></script>
+    <script src="lib/jweixin-1.4.0.js"></script>
+    <script src=""></script>
+    <!-- your app's js -->
+    <script src="js/app.js"></script>
+    <script src="js/T.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/controllers/dashCtrl.js"></script>
+    <script src="templates/tour/tour.js"></script>
+    <script src="lib/three/three.min.js"></script>
+    <script src="lib/three/photo-sphere-viewer.js"></script>
+    <script src="lib/angular-translate/angular-translate.min.js"></script>
+    <script src="lib/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
+    <script src="lib/html2canvas.min.js"></script>
+  </head>
+  <body ng-app="eomApp">
+    <!--
+      The nav bar that will be updated as we navigate between views.
+    -->
+    <ion-nav-bar class="bar-stable">
+      <ion-nav-back-button class="button-clear button-balanced">
+        <i class="icon icon-back" style="vertical-align: middle;"></i>
+      </ion-nav-back-button>
+      <!--<i class="back" style="position: absolute;top:0;left:0;width:30px;height:30px;background-color: red;"></i>-->
+    </ion-nav-bar>
+    <!--
+      The views will be rendered in the <ion-nav-view> directive below
+      Templates are in the /templates folder (but you could also
+      have templates inline in this html file if you'd like).
+    -->
+    <ion-nav-view></ion-nav-view>
+  </body>
+</html>

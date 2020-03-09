@@ -1,0 +1,103 @@
+<ion-view overflow-scroll="true">
+  <ion-nav-title>{{'统计'|T}}</ion-nav-title>
+  <ion-content style="background:#ccc;border-top: 1px solid #ddd;">
+    <div ng-show="showA">
+      <div class="chart-item" style="width: 100%;border-radius: 0;">
+      <div class="item item-chart-title">
+        {{'数据预览'|T}}
+        <a href="javascript:0" class="tab-chats-select" ng-click="openPopover($event,1)" style="float: right;">
+          {{time|T}}
+          <i class="chats-corner"></i>
+        </a>
+      </div>
+
+      <div class="item text-center row item-chart-title" ng-if="timeShow" style="border-right:0;padding:0 8px;background: #fff;">
+        <div class="col-40">
+          <i class="icon icon-cal-g"></i>
+          <span ng-click="openDatePicker(1,1)">{{getRankingData.starttime}}</span>
+        </div>
+        <div class="col-10" style="line-height: 40px;">
+          {{'至'|T}}
+        </div>
+        <div class="col-40">
+          <i class="icon icon-cal-g"></i>
+          <span ng-click="openDatePicker(1,2)">{{getRankingData.endtime}}</span>
+        </div>
+      </div>
+      <div class="tab-chats row item">
+        <div ng-click="goCdetail(0)" class="tab-chats-item col">
+          <span class="tab-chats-span">{{count1}}</span>
+          <div class="tab-chats-font">{{'普通新客'|T}}</div>
+        </div>
+        <div ng-click="goCdetail(1)" class="tab-chats-item col">
+          <span class="tab-chats-span">{{count2}}</span>
+          <div class="tab-chats-font">{{'宴会新客'|T}}</div>
+        </div>
+        <div ng-click="goOdetail(0)" class="tab-chats-item col">
+          <span class="tab-chats-span">{{count3}}</span>
+          <div class="tab-chats-font">{{'普通订单'|T}}</div>
+        </div>
+        <div ng-click="goOdetail(1)" class="tab-chats-item col">
+          <span class="tab-chats-span">{{count4}}</span>
+          <div class="tab-chats-font">{{'宴会订单'|T}}</div>
+        </div>
+      </div>
+      </div>
+    </div>
+    <div ng-show="boss">
+      <div class="chart-title">{{'开台统计'|T}}</div>
+        <!--<div ng-show="chartK" class="item" style="padding-top: 11px;padding-bottom: 11px;">-->
+          <!--<i class="tab-account-icon left-center" style="background-image: url('img/ico_customs@3x.png');"></i>-->
+          <!--客户来源比例-->
+        <!--</div>-->
+        <!--<highchart ng-show="chartK" id="chartPieK" config="chartPieConfigK" style="width:100%;height:300px;"></highchart>-->
+      <div class="chart-item">
+      <div class="item item-chart-title">
+        
+        <a href="javascript:0" class="tab-chats-week" >
+          {{'第'|T}}<span style="color:#ff2741;">{{weekNum}}</span>{{'周'|T}}
+        </a>
+      </div>
+      <div on-swipe-right="minusWeek()" on-swipe-left="addWeek()">
+        <highchart id="chartPieA" config="chartPieConfigA" style="width:auto;height:300px;"></highchart>
+      </div>
+      </div>
+      <div class="chart-title">{{'订单渠道统计'|T}}</div>
+      <div class="chart-item">
+      <div class="item item-chart-title">
+          <div style="float: right;">
+          <a href="javascript:0" class="tab-chats-select" ng-click="openPopover($event,7)">
+            {{bTime|T}}
+            <i class="chats-corner"></i>
+          </a>
+          <a href="javascript:0" class="tab-chats-select" ng-click="openPopover($event,8)">
+            {{bType|T}}
+            <i class="chats-corner"></i>
+          </a>
+          </div>
+        </div>
+
+      <div class="item text-center row item-chart-title" ng-if="btimeShow" style="border-right:0;padding:0 8px;">
+        <div class="col-40">
+          <i class="icon icon-cal-g"></i>
+          <span ng-click="openDatePicker(3,1)">{{getChartData.starttime}}</span>
+        </div>
+        <div class="col-10" style="line-height: 40px;">
+          {{'至'|T}}
+        </div>
+        <div class="col-40">
+          <i class="icon icon-cal-g"></i>
+          <span ng-click="openDatePicker(3,2)">{{getChartData.endtime}}</span>
+        </div>
+      </div>
+
+        <highchart id="chartPieY" config="chartPieConfigY" style="width:100%;height:300px;"></highchart>
+      </div>
+        <!--<div ng-show="waibuShow" class="item" style="padding-top: 11px;padding-bottom: 11px;">-->
+          <!--<i class="tab-account-icon left-center" style="background-image: url('img/ico_customs@3x.png');"></i>-->
+          <!--客户外部来源-->
+        <!--</div>-->
+        <!--<highchart ng-show="waibuShow" id="chartPieK" config="chartPieConfigK" style="width:100%;height:300px;"></highchart>-->
+    </div>
+  </ion-content>
+</ion-view>

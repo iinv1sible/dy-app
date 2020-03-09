@@ -1,0 +1,24 @@
+<ion-view hide-tabs="true">
+  <ion-nav-title></ion-nav-title>
+  <ion-content scroll="false" style="background: #fff">
+    <h2 class="login-title">{{'忘记密码'|T}}</h2>
+    <div class="span-gray" style="font-size: 15px;padding: 0 25px;">
+      <div class="list">
+        <div class="item-input login-input">
+          <span class="input-label text-center" style="width:60px;">
+            +86
+          </span>
+          <input type="text"  ng-model="data.app_user_phone" placeholder="{{'请输入手机号'|T}}">
+        </div>
+        <div class="item-input login-input">
+          <input type="text" ng-model="data.num"  ng-change="write()" placeholder="{{'请输入验证码'|T}}">
+          <a href="javascript:0" ng-click="getNum()" ng-class={'disable-pointer-events':buttonDis} class="btn-link" style="position: absolute;right:0;">
+            {{text|T}}
+          </a>
+        </div>
+      </div>
+      <div ng-click="next()"  ng-class={'disabled':(nextT||numT)} class="list button button-block button-assertive" style="line-height: 38px;min-height: 38px;">{{'下一步'|T}}</div>
+    </div>
+  </ion-content>
+
+</ion-view>

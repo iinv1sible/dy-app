@@ -1,0 +1,134 @@
+<ion-view overflow-scroll="false">
+  <ion-nav-title>
+    <div class="row top-tab">
+      <div class="col-33 text-center top-tab-item" ng-hide="showH">
+        <a href="javascript:0" ng-class="{'active':orderShow&&getBusinessRankingData.orderType!=1}" class=" button-stable book-footBar-font-style ng-binding" ng-click="showRanking($event,1)">
+          {{'销售量排行'|T}}
+        </a>
+      </div>
+      <div class="col-33 text-center top-tab-item" ng-hide="showH">
+        <a href="javascript:0" ng-click="showRanking($event,2)" ng-class="{'active':orderShow&&getBusinessRankingData.orderType==1}" class=" button-stable book-footBar-font-style ng-binding">
+          {{'销售金额排行'|T}}
+        </a>
+      </div>
+      <div class="text-center top-tab-item" ng-class="{'col-50':showH,'col-34':!showH}" ng-show="showH">
+        <a href="javascript:0" ng-click="showRanking($event,4)" ng-class="{'active':businessShow}" class=" button-stable book-footBar-font-style ng-binding">
+          {{'门店排行'|T}}
+        </a>
+      </div>
+      <div class="text-center top-tab-item" ng-class="{'col-50':showH,'col-34':!showH}">
+        <a href="javascript:0" ng-click="showRanking($event,3)" ng-class="{'active':vipShow}" class=" button-stable book-footBar-font-style ng-binding">
+          {{'客户排行'|T}}
+        </a>
+      </div>
+    </div>
+  </ion-nav-title>
+  <ion-content style="background: #ccc;border-top: 1px solid #ddd;">
+    <div class="item row">
+      <div class="col">
+        <span ng-click="orderShow?choose($event,5):(businessShow?choose($event,3):choose($event,1))" data-id="0" class="rank-tab-item" ng-class="{'active':(cTime=='本周'&&orderShow)||(hTime=='本周'&&businessShow)||(time=='本周'&&vipShow)}" style="margin-right: 30px;">{{'本周'|T}}</span>
+        <span ng-click="orderShow?choose($event,5):(businessShow?choose($event,3):choose($event,1))" data-id="1" class="rank-tab-item" ng-class="{'active':(cTime=='本月'&&orderShow)||(hTime=='本月'&&businessShow)||(time=='本月'&&vipShow)}" style="margin-right: 30px;">{{'本月'|T}}</span>
+        <span ng-click="orderShow?choose($event,5):(businessShow?choose($event,3):choose($event,1))" data-id="2" class="rank-tab-item" ng-class="{'active':(cTime=='全部'&&orderShow)||(hTime=='全部'&&businessShow)||(time=='全部'&&vipShow)}">{{'全部'|T}}</span>
+      </div>
+      <div>
+        <a href="javascript:0" class="tab-chats-select" ng-click="orderShow?openPopover($event,6):(businessShow?openPopover($event,4):openPopover($event,2))">
+          {{(orderShow?cType:(businessShow?hType:type))|T}}
+          <i class="chats-corner"></i>
+        </a>
+      </div>
+      <i class="icon icon-cal" ng-click="orderShow?choose($event,5):(businessShow?choose($event,3):choose($event,1))" data-id="3"></i>
+    </div>
+    <div>
+      <div class="item-chart-title text-center row" ng-if="(orderShow&&ctimeShow) || (businessShow&&htimeShow) || (vipShow&&timeShow)" style="border-right:0;padding:0 8px;background: #fff;min-height: 40px;">
+          <div class="col-40">
+            <i class="icon icon-cal-g"></i>
+            <span ng-click="(orderShow||businessShow)?openDatePicker(2,1):openDatePicker(1,1)">{{orderShow?getBusinessRankingData.starttime:(businessShow?getBusinessRankingData.starttime:getRankingData.starttime)}}</span>
+          </div>
+          <div class="col-10" style="line-height: 40px;">
+            {{'至'|T}}
+          </div>
+          <div class="col-40">
+            <i class="icon icon-cal-g"></i>
+            <span ng-click="(orderShow||businessShow)?openDatePicker(2,2):openDatePicker(1,2)">{{orderShow?getBusinessRankingData.endtime:(businessShow?getBusinessRankingData.endtime:getRankingData.endtime)}}</span>
+          </div>
+        </div>
+    </div>
+    <div class="bg-ranking">
+      <div class="rank-item" ng-click="goRankRecord($event)" ng-repeat="(index,sale) in saleList" data-appUserId={{sale.appUserId}} ng-class="{'rank1':{{index==0}},'rank2':{{index==1}},'rank3':{{index==2}}}" ng-if="orderShow&&(index==0||index==1||index==2)">
+        <i class="disable-pointer-events tab-custom-icon text-center" style="margin: 0 auto 13px;background-color:{{sale.color}};">{{sale.appUserName[0]}}</i>
+        <p class="disable-pointer-events">{{sale.appUserName}}</p>
+        <p class="disable-pointer-events myOrder-gray-font">{{sale.appUserPhone}}</p>
+        <p class="disable-pointer-events">
+          <span class="icon icon-order-r">{{sale.orderNum}}{{'单'|T}}</span>
+          <span class="myOrder-gray-font">¥{{sale.orderAmt.toFixed(0)}}</span>
+        </p>
+      </div>
+      <div class="rank-item" ng-click="goChatDetail($event)" ng-repeat="(index,business) in businessList" data-businessId={{business.businessId}} ng-class="{'rank1':{{index==0}},'rank2':{{index==1}},'rank3':{{index==2}}}" ng-if="businessShow&&(index==0||index==1||index==2)" ng-show="showH">
+        <i class="disable-pointer-events tab-custom-icon text-center" style="margin: 0 auto 13px;background-color:{{business.color}};">{{business.businessName[0]}}</i>
+        <p class="disable-pointer-events">{{business.businessName}}</p>
+        <p class="disable-pointer-events">
+          <span class="myOrder-gray-font">{{business.totalOrder}}{{'次'|T}}|</span>
+          <span class="myOrder-gray-font">{{business.totalYdt}}{{'次'|T}}|</span>
+          <span class="myOrder-gray-font">{{business.totalApp}}{{'次'|T}}</span>
+        </p>
+      </div>
+      <div class="rank-item" ng-click="goRecord($event)" ng-repeat="(index,custom) in customList" data-vipId={{custom.vipId}} ng-class="{'rank1':{{index==0}},'rank2':{{index==1}},'rank3':{{index==2}}}" ng-if="vipShow&&(index==0||index==1||index==2)">
+        <i class="disable-pointer-events tab-custom-icon text-center" style="margin: 0 auto 13px;background-color:{{custom.color}};">{{custom.vipName[0]}}</i>
+        <p class="disable-pointer-events">{{custom.vipName}}</p>
+        <p class="disable-pointer-events myOrder-gray-font">{{custom.vipPhone}}</p>
+        <p class="disable-pointer-events">
+          <span class="icon icon-order-r">{{custom.resvtimes}}{{'单'|T}}</span>
+          <span class="myOrder-gray-font">¥{{custom.payamount.toFixed(0)}}</span>
+        </p>
+      </div>
+    </div>
+    <div ng-show="boss">
+      <div class="list" ng-if="orderShow">
+        <div ng-click="goRankRecord($event)" ng-repeat="(index,sale) in saleList" data-appUserId={{sale.appUserId}} ng-if="index!=0&&index!=1&&index!=2" class="row item" style="margin-bottom: 5px;">
+          <i class="disable-pointer-events" style="font-size:16px;color:#ccc;margin-right:12px;font-weight:bold">{{index+1}}</i>
+          <i class="disable-pointer-events tab-custom-icon text-center" style="background-color:{{sale.color}};">{{sale.appUserName[0]}}</i>
+          <div class="disable-pointer-events col" style="margin-left: 12px;">
+            <div class="myOrder-black-font">{{sale.appUserName}}</div>
+            <div class="myOrder-gray-font">{{sale.appUserPhone}}</div>
+          </div>
+          <div class="disable-pointer-events" style="text-align: right">
+            <div class="icon icon-order-g">{{sale.orderNum}}{{'单'|T}}</div>
+            <div class="myOrder-gray-font">{{'销售额'|T}}¥{{sale.orderAmt.toFixed(0)}}</div>
+          </div>
+        </div>
+      </div>
+      <div ng-show="showH" class="list" ng-if="businessShow">
+        <div ng-repeat="(index, business) in businessList" ng-if="index!=0&&index!=1&&index!=2" style="margin-bottom: 5px;">
+          <div ng-click="goChatDetail($event)" data-businessId={{business.businessId}} class="item row">
+            <i class="disable-pointer-events" style="font-size:16px;color:#ccc;margin-right:12px;font-weight:bold">{{index+1}}</i>
+            <i class="disable-pointer-events tab-custom-icon text-center" style="background-color:{{business.color}};">{{business.businessName[0]}}</i>
+            <div class="disable-pointer-events col" style="margin-left: 12px;">
+              <div class="myOrder-black-font">{{business.businessName}}</div>
+              <div class="myOrder-gray-font">{{business.totalOrder}}{{'次'|T}}</div>
+            </div>
+            <div class="disable-pointer-events" style="text-align: right">
+              <div class="myOrder-gray-font">{{business.totalYdt}}{{'次'|T}}</div>
+              <div class="myOrder-gray-font">{{business.totalApp}}{{'次'|T}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="list" ng-if="vipShow">
+        <div ng-repeat="(index, custom) in customList" ng-if="index!=0&&index!=1&&index!=2" style="margin-bottom: 5px;">
+          <div ng-click="goRecord($event)" data-vipId={{custom.vipId}} class="item row">
+            <i class="disable-pointer-events" style="font-size:16px;color:#ccc;margin-right:12px;font-weight:bold">{{index+1}}</i>
+            <i class="disable-pointer-events tab-custom-icon text-center" style="background-color:{{custom.color}};">{{custom.vipName[0]}}</i>
+            <div class="disable-pointer-events col" style="margin-left: 12px;">
+              <div class="myOrder-black-font">{{custom.vipName}}</div>
+              <div class="myOrder-gray-font">{{custom.vipPhone}}</div>
+            </div>
+            <div class="disable-pointer-events" style="text-align: right">
+              <div class="icon icon-order-g">{{custom.resvtimes}}{{'单'|T}}</div>
+              <div class="myOrder-gray-font">{{'销售额'|T}}¥{{custom.payamount.toFixed(0)}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</ion-content>
+</ion-view>

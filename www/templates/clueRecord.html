@@ -1,0 +1,75 @@
+<ion-view hide-tabs="true">
+  <ion-nav-title>{{'写跟进'|T}}</ion-nav-title>
+    <ion-nav-buttons  side="right">
+      <button class="button button-icon" ng-click="saveRecord()">
+        <i style="color:#76A6DF;font-size: 15px;">{{'保存'|T}}</i>
+      </button>
+    </ion-nav-buttons>
+    <ion-content>
+      <div class="list"  style="margin-bottom: 0;">
+        <div class="item row">
+          <span class="input-label">{{'时间'|T}}</span>
+          <input type="datetime-local" placeholder="请输入咨询时间" class="text-right input-style col" style="border:1px solid #DDDDDD;" ng-model="data.recordDate">
+        </div>
+        <div class="item row">
+          <span class="input-label">{{'方式'|T}}</span>
+          <i class="text-right col" ng-class={'disable-pointer-events':showState} ng-disabled="showState">
+            <span class="icon icon-check" ng-class="{'icon-check-r': data.way=='电话'}" ng-click="changeMessage($event)" data-id="电话">{{'电话'|T}}</span>
+            <span class="icon icon-check" ng-class="{'icon-check-r': data.way=='微信'}" ng-click="changeMessage($event)" data-id="微信">{{'微信'|T}}</span>
+            <span class="icon icon-check" ng-class="{'icon-check-r': data.way=='面谈'}" ng-click="changeMessage($event)" data-id="面谈">{{'面谈'|T}}</span>
+          </i>
+        </div>
+        <div class="item row item-text">
+          <!-- <span class="input-label">{{'内容备注'|T}}</span> -->
+          <textarea class="input-style textarea-style" placeholder="{{'请输入内容'|T}}" ng-model="data.record"></textarea>
+          <p class="text-sub">{{'限150字'|T}}</p>
+        </div>
+      </div>
+      <div href="javascript:0" class="item row">
+        <span class="input-label">{{'跟进提醒'|T}}</span>
+        <div class="text-right col">
+        <label class="toggle toggle-balanced" style="top: 2px;">
+          <input type="checkbox" ng-model="data.showTag" ng-checked="data.showTag">
+          <div class="track">
+            <div class="handle"></div>
+          </div>
+        </label>
+        </div>
+      </div>
+      <div class="list"  style="margin-bottom: 0;" ng-if="data.showTag">
+        <div class="item row">
+          <span class="input-label">{{'跟进时间'|T}}</span>
+          <!--<input type="text" class="input-style" ng-model="data.remindTime" ng-show="showState" ng-disabled="showState">-->
+          <input type="datetime-local" placeholder="请输入咨询时间" class="text-right input-style col" style="border:1px solid #DDDDDD;" ng-model="data.remindDate" ng-disabled="showState">
+        </div>
+        <div class="item row">
+          <span class="input-label">{{'跟进方式'|T}}</span>
+          <i class="text-right col" ng-class={'disable-pointer-events':showState} ng-disabled="showState">
+             <span class="icon icon-check" ng-class="{'icon-check-r': data.remindWay=='电话'}" ng-click="changeMessage1($event)" data-id="电话">{{'电话'|T}}</span>
+             <span class="icon icon-check" ng-class="{'icon-check-r': data.remindWay=='微信'}" ng-click="changeMessage1($event)" data-id="微信">{{'微信'|T}}</span>
+             <span class="icon icon-check" ng-class="{'icon-check-r': data.remindWay=='面谈'}" ng-click="changeMessage1($event)" data-id="面谈">{{'面谈'|T}}</span>
+          </i>
+        </div>
+        <div class="item row">
+          <span class="input-label">{{'跟进事项'|T}}</span>
+          <i class="text-right col" ng-class={'disable-pointer-events':showState} ng-disabled="showState">
+             <span class="icon icon-check" ng-class="{'icon-check-r':remindData[0].isCheck}" ng-click="changeMessage2(0,$event)" data-id="邀约">{{'邀约'|T}}</span>
+             <span class="icon icon-check" ng-class="{'icon-check-r':remindData[1].isCheck}" ng-click="changeMessage2(1,$event)" data-id="场地">{{'场地'|T}}</span>
+             <span class="icon icon-check" ng-class="{'icon-check-r':remindData[2].isCheck}" ng-click="changeMessage2(2,$event)" data-id="餐标">{{'餐标'|T}}</span>
+          </i>
+        </div>
+        <div class="item row">
+          <i class="col" ng-class={'disable-pointer-events':showState} style="white-space: normal;" ng-disabled="showState">
+             <span class="icon icon-check" ng-class="{'icon-check-r':remindData[3].isCheck}" ng-click="changeMessage2(3,$event)" data-id="菜品">{{'菜品'|T}}</span>
+             <span class="icon icon-check" ng-class="{'icon-check-r':remindData[4].isCheck}" ng-click="changeMessage2(4,$event)" data-id="定金">{{'定金'|T}}</span>
+             <span class="icon icon-check" ng-class="{'icon-check-r':remindData[5].isCheck}" ng-click="changeMessage2(5,$event)" data-id="合同">{{'合同'|T}}</span>
+             <span class="icon icon-check" ng-class="{'icon-check-r':remindData[6].isCheck}" ng-click="changeMessage2(6,$event)" data-id="筹备">{{'筹备'|T}}</span>
+             <span class="icon icon-check" ng-class="{'icon-check-r':remindData[7].isCheck}" ng-click="changeMessage2(7,$event)" data-id="回访">{{'回访'|T}}</span>
+             <span class="icon icon-check" ng-class="{'icon-check-r':remindData[8].isCheck}" ng-click="changeMessage2(8,$event)" data-id="周年提醒">{{'周年提醒'|T}}</span>
+          </i>
+        </div>
+      </div>
+    </ion-content>
+
+  </ion-view>
+

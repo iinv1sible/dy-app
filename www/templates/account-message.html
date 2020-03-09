@@ -1,0 +1,26 @@
+<ion-view hide-tabs="true">
+  <ion-nav-title>
+    {{'消息中心'|T}}
+  </ion-nav-title>
+  <ion-content>
+    <div class="list tab-account-list">
+      <a ui-sref="tab.account-message-detail({detailId:1})" class="item item-icon-left item-icon-right">
+        <i class="tab-account-message-icon left-center" style="background-image: url('img/ico_msg_1@3x.png')"></i>
+        {{'餐饮'|T}}
+        <span class="badge badge-assertive">0</span>
+      </a>
+      <a ui-sref="tab.account-message-detail({detailId:2})" class="item item-icon-left item-icon-right">
+        <i class="tab-account-message-icon left-center" style="background-image: url('img/ico_msg_2@3x.png')"></i>
+        {{'宴会'|T}}
+        <span class="badge badge-assertive">0</span>
+      </a>
+    </div>
+    <div  class="list tab-account-list">
+      <a href="#/tab/account/message" class="item item-icon-left item-icon-right">
+        <i class="tab-account-icon left-center" style="background-image: url('img/ico_order@3x.png');background-color: #B287D8 "></i>
+        {{'发布消息(未确定)'|T}}
+        <i class="icon icon-right-arrow"></i>
+      </a>
+    </div>
+  </ion-content>
+</ion-view>

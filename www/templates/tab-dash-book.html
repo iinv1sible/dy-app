@@ -1,0 +1,293 @@
+<ion-view hide-tabs="true" ng-cloak cache-view="false">
+  <ion-nav-title>
+    <div>
+      <span style="font-size: 14px;">{{info.businessName.slice(0,9)}}</span>
+    </div>
+  </ion-nav-title>
+  <ion-nav-buttons side="right">
+    <i ng-click="choice()" class="button button-small button-clear" style="border: none;color:#999;font-size: 15px;">
+      <i class="icon icon-filter">{{'筛选'|T}}</i>
+    </i>
+    <i ng-class="{'sanjiao1':filterShow,'sanjiao':!filterShow}"></i>
+    <button class="button button-icon button-clear button-balanced " ng-if=false>
+      <i style="color:#64B25D;font-size: 15px;"><ion-nav-title>{{'完成'|T}}</ion-nav-title></i>
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-buttons  side="left">
+    <button class="button back-button buttons button-clear header-item" ng-click="goIndex()" ng-hide="filterShow">
+      <i class="icon icon-back" style="vertical-align: middle;"></i>
+    </button>
+  </ion-nav-buttons>
+  <div  ng-show="showModal" class="t-modal trans" ng-class="{'transp':showModal}" style="opacity:1;background-color:transparent;">
+    <div class="imgDiv" style="overflow: hidden;">
+        <span class="icon icon-close-r" style="position: absolute;top: 5px;right: 5px;z-index: 5;" ng-click="hideModal()"></span>
+      <div style="position: relative;height:300px;display: flex;flex-direction: column;text-align: center;align-items: center;justify-content: center;">
+        <img ng-src={{tablePic}} ng-show="tablePic" class="disable-pointer-events responsive-sm" width="100%" height="100%" alt="">
+        <img src="../images/img_nopic@3x.png" ng-hide="tablePic" class="disable-pointer-events responsive-sm" width="30%" height="30%" alt="">
+        <div ng-hide="tablePic" style="color: #ccc;font-size: 20px;margin-top: 10px;">暂无上传图片</div>
+      </div>
+      <div class="imgContent" style="overflow-y: auto;">
+        <div class="row" style="overflow-x: hidden;flex-flow: row wrap;align-items: flex-start;">
+          <div class="col-50">
+            <span class="bold">{{'台位名称'|T}}：</span><span>{{tableName}}</span>
+          </div>
+          <div class="col-50">
+            <span class="bold">{{'类型'|T}}：</span><span>{{tType}}</span>
+          </div>
+          <div class="col-50">
+            <span class="bold">{{'最大人数'|T}}：</span><span>{{maxPeopleNum}}</span>
+          </div>
+          <div class="col-50">
+            <span class="bold">{{'最大桌数'|T}}：</span><span>{{maxTableNum}}</span>
+          </div>
+          <div class="col-50">
+            <span class="bold">{{'最低消费'|T}}：</span><span>{{minAmount}}</span>
+          </div>
+          <div class="col-90">
+            <span class="bold">{{'设备'|T}}：</span><span>{{device}}</span>
+          </div>
+          <div class="col-70">
+            <span class="bold">{{'台位描述'|T}}：</span><span>{{tableRemark}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="row bar bar-footer" style="background-color: #f1f2f5;border:0;padding:0; ">
+        <div class="col-50 text-center" style="background-color: #ccc;width:100%;line-height: 44px;font-size: 16px;color: #fff" ng-click="goTableEdit()">{{'编辑台位信息'|T}}
+        </div>
+        <div class="col-50 text-center" style="background-color: #ff2741;color:#fff;width:100%;line-height: 44px;font-size: 16px;" ng-click="shareTable()">{{'分享'|T}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="t-modal" ng-if="showBill" style="opacity:1;background-color:transparent;z-index:100000">
+    <div class="modal-container">
+      <div class="modal-title">{{billInfo.title}} <img src="images/share.png" style="position: absolute;right: 10px;top: -3px;height: 35px;" alt="" ng-click="weixinImg()"> </div>
+      <div style="overflow-y:scroll;height:300px;font-family:'SimSun';height: calc(100% - 80px)">
+        <div style="padding:15px;width:100%" id="shareImgCon">
+          <div style="text-align:left;font-size:11px;">
+            <div style="line-height: 15px;display:flex;">
+              <span>桌位：</span>
+              <span style="flex:1;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">{{billInfo.tableName}}</span>
+              <span style="margin-left:5px;display:inline-block;width:70px">人数：{{billInfo.peopleNumber || '-'}} 人</span>
+            </div>
+            <div style="margin-bottom:10px;display:flex;">
+              <span style="flex:1;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">日期：{{billInfo.resvDate}} {{billInfo.resvWeekDay|T}}</span>
+              <span style="margin-left:5px;display:inline-block;width:70px">餐别：{{billInfo.mealTypeName}}</span>
+            </div>
+            <div style="margin-bottom:10px;display:flex;">
+                <span style="margin-left:5px;display:inline-block;width:90px">{{'类别'|T}}</span>
+                <span style="margin-left:5px;display:inline-block;width:90px">{{'数量'|T}}</span>
+                <span style="margin:auto 5px;display:inline-block;width:30px">{{'金额'|T}}</span>
+            </div>
+            <div style="margin-bottom:10px;display:flex;" ng-repeat="billDetail in billInfo.billList">
+              <span style="margin-left:5px;display:inline-block;width:90px">{{billDetail.goodsName}}</span>
+              <span style="margin-left:5px;display:inline-block;width:90px">{{billDetail.goodsNumber}}</span>
+              <span style="margin:auto 5px;display:inline-block;width:30px">{{billDetail.goodsPrice}}</span>
+            </div>
+            <hr />
+            <div style="margin-bottom:10px;display:flex;">
+              <span style="margin-left:5px;display:inline-block;width:90px">{{'合计'|T}}</span>
+              <span style="margin-left:5px;display:inline-block;width:90px">{{billInfo.goodsSumNum}}</span>
+              <span style="margin:auto 5px;display:inline-block;width:30px">{{billInfo.billTotal}}</span>
+            </div>
+            <div style="clear:both"></div>
+            <div class="share-remark"><pre>{{billInfo.remark}}</pre></div>
+            <div class="share-remark"><pre>{{(billInfo.businessName + '欢迎您的下次光临')}}</pre></div>
+            <div style="clear:both"></div>
+          </div>
+        </div>
+      </div>
+      <div style="background-color: #e8e8e8;border:0;padding:0;display: flex;position:absolute;bottom:0;width:100%">
+        <div class="col-50 text-center" style="background-color: #ccc;width:100%;color:#fff;line-height: 44px;" ng-click="cancelPay()">
+          {{'取消'|T}}
+        </div>
+        <div class="col-50 text-center" style="background-color: #DB4F3B;color:#fff;width:100%;color:#fff;line-height: 44px;" ng-click="payForTable()">
+          {{'买单'|T}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="list" style="margin-bottom: 0;top:44px">
+    <div class="item item-divider row" style="padding-top:0;padding-bottom:0;background: #fff;">
+      <div class="col-33 text-center" style="height:44px;line-height: 44px">
+          <a href="javascript:0" class="icon icon-select"  ng-click="showCalender()">
+            {{dateString}}
+          </a>
+      </div>
+      <div class="col-33 text-center" style="height:44px;line-height: 44px">
+        <a href="javascript:0" ng-click="openPopover($event,2)" class="icon icon-select">
+          {{meal|T}}
+        </a>
+      </div>
+      <div class="col-34 text-center" style="height:44px;line-height: 44px">
+        <a href="javascript:0" ng-click="openPopover($event,3)" class="icon icon-select">
+          {{area|T}}
+        </a>
+      </div>
+    </div>
+  </div>
+  <ion-content on-swipe-left="left()" on-swipe-right="right()" delegate-handle="tableScroll" id="table-scroll" overflow-scroll="false" style="border-top: 1px solid #ddd;top:92px">
+    <ion-refresher
+      on-refresh="refresh()"
+      pulling-text="{{'下拉刷新'|T}}">
+    </ion-refresher>
+    <div class="row row-wrap" ng-if="tableAreaShow" style="padding: 0">
+      <div ng-repeat="table in tableAreas" class="row row-wrap" style="padding: 5px">
+        <div class="item-input tab-myOrder-detail-item" style="width: 100%;color:#999" ng-if="(table.id == tableAreaId)||(tableAreaId =='')&&showArea&&table.tableNum">
+          {{table.tableAreaName}} &nbsp;<label class="marginL20" style="color: #999;">{{table.remark}}</label>
+        </div>
+        <div class="col-25 text-center table-div" ng-repeat="item in seat" ng-if="(item.tableAreaId == table.id)">
+          <span ng-show=(item.isMvp==1) style="position: absolute;left: 60px;top: 15px;" class="disable-pointer-events icon-vip"></span>
+          <img on-hold="showSeat($event)" ng-src="{{item.isOper>0?('images/tab-seat1'+item.status+(item.orders.length>1?'1':'')+'.png'):'images/tab-seat0.png'}}" ng-click="selected($event)" data-orders={{item.orders}} data-isLockerRoom={{item.isLockerRoom}} data-isOper={{item.isOper}} data-ttype={{item.tType}} data-isMvp={{item.isMvp}} data-minamount={{item.minAmount}} data-tableremark={{item.tableRemark}} data-isKbc={{item.isKbc}} data-isChangeTable={{item.isChangeTable}} data-confirm={{item.confirm}} data-resvOrderType={{item.resvOrderType}} data-batchNo={{item.batchNo}} data-resvOrder={{item.resvOrder}} data-tableAreaName={{item.tableAreaName}} data-tableAreaId={{item.tableAreaId}} data-picUrl={{item.tableUrl}} data-picId={{item.picId}} data-maxPeopleNum={{item.maxPeopleNum}} data-maxTableNum={{item.maxTableNum}} data-tableNum={{item.tableNum}} data-tableName={{item.tableName}} data-seat={{item.tableId}} data-state={{item.status}} data-picUrl={{item.picUrl}} data-television={{item.television}} data-sofa={{item.sofa}} data-washroom={{item.washroom}} data-roomArea={{item.room_area}} data-floorHeight={{item.floor_height}} data-remark={{item.remark}} data-resvNum="{{item.resvNum}}" data-appUserId={{item.appUserId}} data-isSendConfirmSms="{{item.isSendConfirmSms}}" data-select="0" width="90%" alt="">
+          <span style="font-size: 14px;" class="disable-pointer-events table-span-first">
+            <i ng-show="item.isChangeTable==1&&!item.resvOrder" class="vertical-middle icon-changeT"></i> <!--换桌标识-->
+            <i ng-show=item.flag style="font-size:15px;color: {{colorArr[item.flag%10]}};" class="vertical-middle icon ion-ios-infinite"></i>
+            <!--连台标识-->
+            <i class="icon ion-alert" style="color:#DA4C39;" ng-show="((item.status ==0)&&(item.nextStatus!=0)&&(info.kbc))"></i>
+            <span ng-show="item.status>0">{{item.vipName}}</span>
+            <span ng-show="item.status==0">{{item.maxPeopleNum}}人</span>
+            <i ng-show='item.remark || item.orderTag || item.facilities' class="vertical-middle icon-remarks"></i> <!--备注标签设备标识-->
+          </span>
+          <span class="disable-pointer-events table-span-second">
+            <i style="line-height: 24px;white-space:nowrap;font-size: 14px;color:{{item.status!=0?'#333':'#333'}}"><span style="background:{{item.isActualTable==2&&item.proTableName?'#E1C290':''}}">{{item.tableName}}</span>&nbsp;<span ng-show="item.tableNum>1" style="color:red;font-size: 9px;">{{item.tableNum}}桌</span></i><br>
+            <i style="white-space:nowrap;color:{{item.status!=0?'#333':'#666'}}">{{item.tableAreaName}} <span ng-show=item.actualNum style="color:red">{{item.actualNum}}</span><span ng-show='item.resvNum && (!item.actualNum)' style="color:red">{{item.resvNum}}</span></i><br>
+            <!--<i ng-show=item.resvNum style="color:#DA4C39;"><i>/</i>{{item.resvNum}}人</i>-->
+        </span>
+          <span class="disable-pointer-events table-span-third">
+          <span ng-show=item.peicai*1 ng-class="{'purple':(item.picUrl||item.isDc),'red':(!(item.picUrl||item.isDc))}">{{'配'|T}}</span> <!--配菜标识-->
+          <span style="font-size: 14px;" ng-hide=((item.appUserName=='无')&&(item.status!=0))>{{item.appUserName|T}}</span><span style="font-size: 14px;" ng-show=((item.appUserName=='无')&&(item.status!=0))>{{'预订台'|T}}</span>
+          <i ng-show=item.confirm*1 ng-class="{'icon-star-p':(item.confirm!=1),'icon-star-r':(item.confirm==1)}"></i> <!--餐前确认标识-->
+          <!--<i class="icon ion-heart" ng-show=(item.isMvp==1) ng-class={'red':true}></i>-->
+        </span>
+        </div>
+      </div>
+    </div>
+    <div class="row row-wrap" ng-if="!tableAreaShow" style="padding: 0">
+        <!--<div class="item-input tab-myOrder-detail-item" style="width: 100%;color:#999" ng-show="(table.id == tableAreaId)||(tableAreaId =='')&&showArea">-->
+          <!--{{table.tableAreaName}} &nbsp;<label class="marginL20" style="color: #999;">{{table.remark}}</label>-->
+        <!--</div>-->
+      <div class="row row-wrap" style="padding: 5px">
+        <div class="col-25 text-center table-div" ng-repeat="item in seat">
+          <span ng-show=(item.isMvp==1) style="position: absolute;left: 60px;top: 15px;" class="disable-pointer-events icon-vip"></span>
+          <img on-hold="showSeat($event)" ng-src="{{item.isOper>0?('images/tab-seat1'+item.status+(item.orders.length>1?'1':'')+'.png'):'images/tab-seat0.png'}}" ng-click="selected($event)" data-orders={{item.orders}} data-isLockerRoom={{item.isLockerRoom}} data-isOper={{item.isOper}} data-ttype={{item.tType}} data-isMvp={{item.isMvp}} data-minamount={{item.minAmount}} data-tableremark={{item.tableRemark}} data-isKbc={{item.isKbc}} data-isChangeTable={{item.isChangeTable}} data-confirm={{item.confirm}} data-resvOrderType={{item.resvOrderType}} data-batchNo={{item.batchNo}} data-resvOrder={{item.resvOrder}} data-tableAreaName={{item.tableAreaName}} data-tableAreaId={{item.tableAreaId}} data-picUrl={{item.tableUrl}} data-picId={{item.picId}} data-maxPeopleNum={{item.maxPeopleNum}} data-maxTableNum={{item.maxTableNum}} data-tableNum={{item.tableNum}} data-tableName={{item.tableName}} data-seat={{item.tableId}} data-state={{item.status}} data-picUrl={{item.picUrl}} data-television={{item.television}} data-sofa={{item.sofa}} data-washroom={{item.washroom}} data-roomArea={{item.room_area}} data-floorHeight={{item.floor_height}} data-remark={{item.remark}} data-resvNum="{{item.resvNum}}" data-appUserId={{item.appUserId}} data-isSendConfirmSms="{{item.isSendConfirmSms}}" data-select="0" width="90%" alt="">
+          <span style="font-size: 14px;" class="disable-pointer-events table-span-first">
+            <i ng-show="item.isChangeTable==1&&!item.resvOrder" class="vertical-middle icon-changeT"></i> <!--换桌标识-->
+            <i ng-show=item.flag style="font-size:15px;color: {{colorArr[item.flag%10]}};" class="vertical-middle icon ion-ios-infinite"></i>
+            <i class="icon ion-alert" style="color:#DA4C39;" ng-show="((item.status ==0)&&(item.nextStatus!=0)&&(info.kbc))"></i>
+          <span ng-show="item.status>0">{{item.vipName}}</span>
+          <span ng-show="item.status==0">{{item.maxPeopleNum}}人</span><i ng-show='item.remark || item.orderTag || item.facilities' style="font-size:15px;color: #DA4C39;" class="vertical-middle icon ion-chatbubble-working"></i></span>
+          <span class="disable-pointer-events table-span-second">
+          <i style="line-height: 24px;white-space:nowrap;font-size: 14px;color:{{item.status!=0?'#333':'#333'}}"><span style="background:{{item.isActualTable==2&&item.proTableName?'#E1C290':''}}">{{item.tableName}}</span>&nbsp;<span ng-show="item.tableNum>1" style="color:red;font-size: 9px;">{{item.tableNum}}桌</span></i><br>
+          <i style="white-space:nowrap;color:{{item.status!=0?'#333':'#666'}}">{{item.tableAreaName}} <span ng-show=item.actualNum style="color:red">{{item.actualNum}}</span><span ng-show='item.resvNum && (!item.actualNum)' style="color:red">{{item.resvNum}}</span></i><br>
+            <!--<i ng-show=item.resvNum style="color:#DA4C39;"><i>/</i>{{item.resvNum}}人</i>-->
+        </span>
+          <span class="disable-pointer-events table-span-third">
+          <span ng-show=item.peicai*1 ng-class="{'purple':(item.picUrl||item.isDc),'red':(!(item.picUrl||item.isDc))}">{{'配'|T}}</span>
+          <span style="font-size: 14px;" ng-hide=((item.appUserName=='无')&&(item.status!=0))>{{item.appUserName|T}}</span><span style="font-size: 14px;" ng-show=((item.appUserName=='无')&&(item.status!=0))>{{'预订台'|T}}</span>
+          <i ng-show=item.confirm*1 ng-class="{'icon-star-p':(item.confirm!=1),'icon-star-r':(item.confirm==1)}"></i> <!--餐前确认标识-->
+            <!--<i class="icon ion-heart" ng-show=(item.isMvp==1) ng-class={'red':true}></i>-->
+        </span>
+        </div>
+      </div>
+    </div>
+    <div class="list" ng-if="!canLoad">
+      <a href="javascript:0" class="item item-icon-right tab-myOrder-detail-item1" style="border: 0;background-color: #e8e8e8;">
+      </a>
+      <a href="javascript:0" class="item item-icon-right tab-myOrder-detail-item1" style="border: 0;background-color: #e8e8e8;">
+      </a>
+      <a href="javascript:0" class="item item-icon-right tab-myOrder-detail-item1" style="border: 0;background-color: #e8e8e8;">
+      </a>
+    </div>
+    <ion-infinite-scroll
+      ng-if="canLoad"
+      immediate-check="false"
+      distance="2%"
+      on-infinite="doInfinite()">
+    </ion-infinite-scroll>
+  </ion-content>
+  <div class="c-modalB" ng-show="calender"></div>
+  <div class="c-modal hideC" ng-class="{'hideC':!calender}" on-swipe-left="addMonth()" on-swipe-right="minusMonth()">
+    <div class="row">
+      <div class="col-offset-10 col-40 text-center">
+        <span class="right icon icon-arrow-right" ng-click="addYear()" style="width: 20%;"></span>
+        <span class="left icon icon-arrow-left" ng-click="minusYear()" style="width: 20%;"></span>
+        <span style="font-size: 15px;margin:5px 0;">{{dateYear}}</span>
+      </div>
+      <div class="col-offset-10 col-40 text-center">
+        <span class="right icon icon-arrow-right" ng-click="addMonth()" style="width: 20%;"></span>
+        <span class="left icon icon-arrow-left" ng-click="minusMonth()" style="width: 20%;"></span>
+        <span style="font-size: 15px;margin:5px 0;">{{dateMonth+1+"月"|T}}</span>
+      </div>
+    </div>
+    <div class="row" style="padding: 0 0 5px;border-top: 0;">
+      <div ng-repeat="weekDay in weekList" class="weekList">
+        <span style="color: #999;">{{weekDay}}</span>
+      </div>
+    </div>
+    <div class="row row-wrap">
+      <div ng-repeat="date in dateList" class="dateList" ng-click="hideCalender($event)" data-id="{{date.id}}" data-date="{{date.ylr}}" ng-class="{'disable-pointer-events':(date.color=='#ccc')}">
+        <p class="disable-pointer-events" style="margin-bottom: 3px;color:{{date.color}};">{{date.ylr}}</p>
+        <p class="disable-pointer-events" style="color:{{date.color}}">{{date.nlr}}</p>
+      </div>
+    </div>
+    <div class="row" style="border-top: 0;padding: 10px 20px;text-align: center;">
+      <span class="dateButton" ng-click="dateCancel()" style="background-color: #ccc">{{'取 消'|T}}</span>
+      <span class="dateButton" ng-click="dateToday()" style="background-color: #ff2741;margin-left: 30px;">{{'今 日'|T}}</span>
+    </div>
+  </div>
+  <div style="position: fixed;top: 44px;left: 0;right: 0;bottom: 0;background: #fff;padding: 20px 15px 20px 25px;z-index: 999;overflow-y: auto;" ng-show="filterShow">
+    <div>
+      <div style="color: #666;margin-bottom: 6px;">{{'桌位状态'|T}}</div>
+      <div style="margin-bottom: 10px;">
+        <div>
+          <span class="button button-assertive button-small button-outline" ng-class="{active:filterData.status==='空闲'}" style="min-width: 70px;    margin: 0 10px 10px 0;" ng-click="active('status',$event)" data-text="空闲">{{'空闲'|T}}</span>
+          <span class="button button-assertive button-small button-outline" ng-class="{active:filterData.status==='已预订'}" style="min-width: 70px;    margin: 0 10px 10px 0;" ng-click="active('status',$event)" data-text="已预订">{{'已预订'|T}}</span>
+          <span class="button button-assertive button-small button-outline" ng-class="{active:filterData.status==='已入座'}" style="min-width: 70px;    margin: 0 10px 10px 0;" ng-click="active('status',$event)" data-text="已入座">{{'已入座'|T}}</span>
+          <span class="button button-assertive button-small button-outline" ng-class="{active:filterData.status==='配菜'}" style="min-width: 70px;    margin: 0 10px 10px 0;" ng-click="active('status',$event)" data-text="配菜">{{'配菜'|T}}</span>
+          <span class="button button-assertive button-small button-outline" ng-class="{active:filterData.status==='未确认订单'}" style="min-width: 70px;margin: 0 10px 10px 0;" ng-click="active('status',$event)" data-text="未确认订单">{{'未确认订单'|T}}</span>
+        </div>
+      </div>
+      <div style="color: #666;margin-bottom: 6px;">{{'桌位类型'|T}}</div>
+      <div style="margin-bottom: 10px;">
+        <span class="button button-assertive button-small button-outline" ng-class="{active:filterData.tTypes0}" style="min-width: 70px;margin: 0 10px 10px 0;" ng-click="active('tTypes0',$event)">{{'包厢'|T}}</span>
+        <span class="button button-assertive button-small button-outline" ng-class="{active:filterData.tTypes1}" style="min-width: 70px;margin: 0 10px 10px 0;" ng-click="active('tTypes1',$event)">{{'散台'|T}}</span>
+        <span class="button button-assertive button-small button-outline" ng-class="{active:filterData.tTypes2}" style="min-width: 70px;margin: 0 10px 10px 0;" ng-click="active('tTypes2',$event)">{{'卡座'|T}}</span>
+      </div>
+      <div style="color: #666;margin-bottom: 6px;">{{'提供设备'|T}}</div>
+      <div style="margin-bottom: 10px;">
+        <span class="button button-assertive button-small button-outline" ng-class="{active:filterData.washroom}" style="min-width: 70px;margin: 0 10px 10px 0;" ng-click="active('washroom',$event)">{{'独卫'|T}}</span>
+        <span class="button button-assertive button-small button-outline" ng-class="{active:filterData.sofa}" style="min-width: 70px;margin: 0 10px 10px 0;" ng-click="active('sofa',$event)">{{'沙发'|T}}</span>
+        <span class="button button-assertive button-small button-outline" ng-class="{active:filterData.television}" style="min-width: 70px;margin: 0 10px 10px 0;" ng-click="active('television',$event)">{{'电视'|T}}</span>
+      </div>
+      <div style="color: #666;margin-bottom: 6px;">{{'容纳人数（人）'|T}}</div>
+      <div style="margin-bottom: 10px;">
+        <input type="tel" style="border: 1px solid #d0d0d0;padding: 0 10px;display: inline-block;width: 100px;border-radius: 4px;" ng-model="cData.minPeopleNum" /><span style="margin: 0 10px">——</span>
+        <input type="tel" style="border: 1px solid #d0d0d0;padding: 0 10px;display: inline-block;width: 100px;border-radius: 4px;" ng-model="cData.maxPeopleNum" />
+      </div>
+      <div style="color: #666;margin-bottom: 6px;">{{'最低消费（元/桌）'|T}}</div>
+      <div style="margin-bottom: 10px;">
+        <input type="tel" style="border: 1px solid #d0d0d0;padding: 0 10px;display: inline-block;width: 100px;border-radius: 4px;" ng-model="cData.minAmount" /><span style="margin: 0 10px">——</span>
+        <input type="tel" style="border: 1px solid #d0d0d0;padding: 0 10px;display: inline-block;width: 100px;border-radius: 4px;" ng-model="cData.maxAmount" />
+      </div>
+    </div>
+    <div style="text-align: center;margin-top: 30px;">
+      <button class="button button-small button-stable" style="width: 100px;" ng-click="activeNull()">{{'重置'|T}}</button>
+      <button class="button button-small button-assertive" style="width: 100px;margin-left: 20px;" ng-click="choiceSubmit()">{{'确定'|T}}</button>
+    </div>
+  </div>
+  <div class="bar bar-footer row book" style="background-color: #fff;padding:0;" ng-hide="filterShow">
+    <div class="tab-dash-book-circle text-center" ng-class="{'onClick':onClick}" ng-click="book()" ng-if="!isYp">
+      <img src="images/btn_booking@3x.png" width="100%" height="50%" alt="">
+    </div>
+    <div class="tab-dash-book-circle text-center" ng-class="{'onClick':onClick}" ng-click="book()" ng-if="isYp" style="overflow: hidden;background: #c30d23;border: 5px solid #fff;">
+      <img src="images/logo-jdw.png" style="position: absolute;left: 32px;top: 18px;width: 76px;height: 44px;" alt="">
+    </div>
+    <div class="col-33 book-footBar-style text-center">
+      <a href="javascript:0" class="button button-clear book-footBar-font-style" on-hold="showSeat" ng-click="seeDetail()">{{'查看详情'|T}}</a>
+    </div>
+    <div class="col-33 book-footBar-style"></div>
+    <div class="col-33 book-footBar-style text-center">
+      <a href="javascript:0" class="button button-clear book-footBar-font-style" ng-click="openPopover($event,4)">{{'更多操作'|T}}</a>
+    </div>
+  </div>
+</ion-view>

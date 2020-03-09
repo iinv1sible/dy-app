@@ -1,0 +1,72 @@
+<ion-view title="新增地址" hide-tabs="true">
+  <ion-content>
+    <div class="list">
+      <div class="item item-input tab-myOrder-detail-item">
+        <span class="input-label" style="width:80px;">收货人</span>
+        <input type="text" class="input-style" ng-model="data.destPerson" placeholder="请输入收货人姓名">
+      </div>
+      <div class="item item-input tab-myOrder-detail-item">
+        <span class="input-label" style="width:80px;">手机号码</span>
+        <input type="tel" class="input-style" ng-model="data.destPhone" placeholder="请输入11位手机号码">
+      </div>
+      <div ng-click="showPro()" class="item item-icon-right tab-myOrder-detail-item" style="padding-top: 12px;padding-bottom: 12px;">
+        <span style="width:80px;display: inline-block;">选择地区</span>
+        <span class="input-style" style="font-size: 14px;color: #111;">{{province+' '+city+' '+district}}</span>
+        <i class="icon icon-right-arrow"></i>
+      </div>
+      <div class="item item-input tab-myOrder-detail-item">
+        <span class="input-label" style="width:80px;">详细地址</span>
+        <input type="text" class="input-style" ng-model="data.area" placeholder="请输入详细地址" >
+      </div>
+    </div>
+    <div ng-click="newAdd()" class="item button button-positive button-block text-center" style="min-height: 0;">
+      保存
+    </div>
+  </ion-content>
+  <div class="c-modalB" ng-show="showProvince"></div>
+  <div class="c-modal hideC" ng-class="{'hideC':!showProvince}">
+    <div class="row" style="max-height:351px;padding: 0;padding-top:1px;overflow: auto;">
+      <ion-scroll class="col-33" style="margin-right: 1px;max-height:200px;">
+        <div ng-repeat="pro in pros" ng-click="selectPro($event)" data-id="{{pro.pid}}" class="item text-center quyu1" ng-class="{'quyu':pro.select}">
+          {{pro.name}}
+        </div>
+      </ion-scroll>
+      <ion-scroll  class="col-33" data-id="{{city.pid}}" style="max-height:200px;">
+        <div ng-repeat="city in cities" ng-click="selectCity($event)" data-id="{{city.cid}}" class="item text-center quyu1" ng-class="{'quyu':city.select}">
+          {{city.name}}
+        </div>
+      </ion-scroll>
+      <ion-scroll class="col-33" style="max-height:200px;">
+        <div ng-repeat="district in districts" ng-click="selectDistrict($event)" data-id="{{district.did}}" class="item text-center quyu1" ng-class="{'quyu':district.select}">
+          {{district.name}}
+        </div>
+      </ion-scroll>
+    </div>
+    <!--<div class="row">
+      <div class="col-offset-10 col-40 text-center">
+        <span class="right" ng-click="addYear()">></span>
+        <span class="left" ng-click="minusYear()"><</span>
+        <span style="font-size: 15px;margin:5px 0;">{{dateYear}}年</span>
+      </div>
+      <div class="col-offset-10 col-40 text-center">
+        <span style="font-size: 15px;margin:5px 0;">{{dateMonth+1}}月</span>
+      </div>
+    </div>
+    <div class="row" style="border-bottom: 1px solid #999;margin-bottom: 10px;padding:10px 0;">
+      <div ng-repeat="weekDay in weekList" class="weekList">
+        <span style="color: #999;">{{weekDay}}</span>
+      </div>
+    </div>
+    <div class="row row-wrap">
+      <div ng-repeat="date in dateList" class="dateList" ng-click="hideCalender($event)" data-id="{{date.id}}" data-date="{{date.ylr}}" ng-class="{'disable-pointer-events':(date.color=='#ccc')}">
+        <p class="disable-pointer-events" style="margin-bottom: 3px;color:{{date.color}};">{{date.ylr}}</p>
+        <p class="disable-pointer-events" style="color:{{date.color}}">{{date.nlr}}</p>
+      </div>
+    </div>-->
+    <div class="row" style="margin-top:10px;">
+      <div class="col-offset-33 col-33">
+        <span class="dateButton" ng-click="cancel()" style="background-color: #76A6DF;">取 消</span>
+      </div>
+    </div>
+  </div>
+</ion-view>

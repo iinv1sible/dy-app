@@ -1,0 +1,90 @@
+<ion-view view-title="一月一品" hide-nav-bar>
+  <ion-nav-buttons  side="left">
+    <button class="button button-icon" ui-sref="tab.dash">
+      <i style="color:#64B25D;font-size: 15px;">返回</i>
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-buttons  side="right">
+    <!--<button class="button button-icon button-positive button-clear" ui-sref="tab.dash">
+      <i style="font-size: 15px;">历史商品</i>
+    </button>-->
+  </ion-nav-buttons>
+    <div class="bar bar-header row" style="margin-top:44px;height:auto;background-color: #fff;box-shadow: 0 2px 2px #D76959;">
+      <div class="col-33" style="text-align: center;margin: auto;">
+        <img ng-src={{picUrl}} height="73px" alt="" ng-click="showModal()">
+      </div>
+      <div class="col-67" style="padding-left: 15px;">
+        <p>{{data.productName}}</p>
+        <p><span style="color:#D76959;font-weight: 600;">¥ {{data.singlePrice}}</span><span>/500克</span></p>
+        <p><span style="color:#D76959;font-weight: 600;">¥ {{data.price}}</span><span>/箱</span></p>
+      </div>
+    </div>
+  <div ng-click="hideModal()" on-swipe-left="nextPic()" on-swipe-right="prePic()" class="shop-modal" ng-class="{'block':shopModal}">
+    <img ng-src={{picUrl}} style="position: absolute;top: 80px;bottom: 0;right:0;left:0;margin: auto;" class="disable-pointer-events" width="80%" alt="">
+    <div style="position: absolute;bottom: 20px;right:0;left:0;margin: auto;z-index: 500;" class="disable-pointer-events">
+      <ul class="list" ng-show="shopModal" style="text-align: center;margin: 0 auto;">
+        <li class="shop-li" ng-repeat="img in imgList" ng-class="{'white':img.hover}"></li>
+      </ul>
+    </div>
+  </div>
+  <ion-content>
+    <div class="list" style="padding-top:100px;padding-bottom:90px;">
+      <div class="item item-input tab-myOrder-detail-item" style="border-width:0;">
+        <span class="input-label" style="font-size: 14px;">到货日期</span>
+        <span style="color:#666;font-size: 14px;">{{data.destDate}}</span>
+      </div>
+      <div class="item item-input tab-myOrder-detail-item" style="border-width:0;">
+        <span class="input-label" style="font-size: 14px;">包装规格</span>
+        <span style="color:#666;font-size: 14px;">{{data.packing}}</span>
+      </div>
+      <div class="item item-input tab-myOrder-detail-item" style="border-width:0;">
+        <span class="input-label" style="font-size: 14px;">产品规格</span>
+        <span style="color:#666;font-size: 14px;">{{data.specification}}</span>
+      </div>
+      <div class="item item-input tab-myOrder-detail-item">
+        <span class="input-label">配送区域</span>
+        <span class="right" style="font-size: 12px;color: #999;">{{data.destArea}}</span>
+      </div>
+      <div class="item item-input tab-myOrder-detail-item">
+        <span class="input-label">配送时间</span>
+        <span class="right" style="font-size: 12px;color: #999;">{{data.startDate}}</span>
+      </div>
+      <div class="item item-input tab-myOrder-detail-item">
+        <span class="input-label">配送费用</span>
+        <span class="right" style="font-size: 12px;color: #999;">{{data.expressAmt}}</span>
+      </div>
+      <div class="item item-input tab-myOrder-detail-item">
+        <span class="input-label">动态参考指数</span>
+        <span class="right" style="font-size: 12px;color: #999;">{{data.params}}</span>
+      </div>
+      <div ui-sref="otherOrder" class="item item-input tab-myOrder-detail-item item-icon-right">
+        <span class="input-label">成交记录</span>
+        <span class="right" style="font-size: 12px;">
+          <span class="ion-ios-volume-high" style="font-size:24px;line-height:24px;color:#D76959;"></span>
+          <span class="otherSpan" style="vertical-align: text-bottom;margin-left: 10px;">{{otherOrder[otherNum]}}</span>
+        </span>
+        <i class="icon icon-right-arrow" style="font-size: 14px;color: #999;"></i>
+      </div>
+      <div class="item item-input tab-myOrder-detail-item">
+        <span class="input-label">发票信息</span>
+        <span class="right" style="font-size: 12px;color: #999;">{{data.receipt}}</span>
+      </div>
+    </div>
+  </ion-content>
+  <div class="row bar bar-footer row-wrap" style="border:0;padding:0;height:90px;box-shadow: 0 -2px 2px #D76959;">
+    <div class="col-60 text-left" style="padding-left: 10px;padding-top:5px;padding-bottom: 5px;">
+      <span style="line-height: 34px;font-size: 14px;color:#999;">起发量:{{data.startNum}} 已售:{{data.saleNum}} 库存:{{data.productNum-data.saleNum}}</span>
+    </div>
+    <div class="col-40 peiitem" style="padding-top:8px;padding-bottom: 8px;">
+      <span ng-click="jian()" class="minus minusRight" style="right:35px;">-</span>
+      <input ng-model="count" class="text-center" type="tel" style="color:#333;border-radius:3px;display: inline-block;height:24px;position: absolute;right:40px;top:0;bottom:0;border: 1px solid #aaa;width:40px;margin: auto;">
+      <span ng-click="jia()" class="plus">+</span>
+    </div>
+    <div ui-sref="shopOrder" class="col-50 text-center" style="background-color: #ccc;width:100%;">
+      <a href="javascript:0" class="button button-clear" style="color:#fff;line-height: 44px;">我的订单</a>
+    </div>
+    <div class="col-50 text-center" style="background-color: #DB4F3B;color:#fff;width:100%;">
+      <a href="javascript:0" class="button button-clear" ng-click="buy()" style="color:#fff;line-height: 44px;">立即购买</a>
+    </div>
+  </div>
+</ion-view>

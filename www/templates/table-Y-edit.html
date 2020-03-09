@@ -1,0 +1,52 @@
+<ion-view hide-tabs="true">
+  <ion-nav-title>{{'桌位修改'|T}}</ion-nav-title>
+  <ion-nav-buttons side="right">
+    <a class="button button-small button-clear" ng-click="saveAll()" style="border: none;color:#64B25D;font-size: 14px;">
+      {{'保存'|T}}
+    </a>
+  </ion-nav-buttons>
+  <ion-content>
+    <div class="list">
+      <label class="item row">
+        <span class="input-label">{{'台位名称'|T}}</span>
+        <input class="text-right col" type="text" ng-model=data.tableName>
+      </label>
+      <!--<label class="item row" ng-click="openPopover($event)">-->
+        <!--<span class="input-label">{{'台位类型'|T}}</span>-->
+        <!--<i class="icon icon-select col text-right">{{data.tType}}</i>-->
+        <!--&lt;!&ndash;<input class="text-right" &ndash;&gt;-->
+               <!--&lt;!&ndash;ng-disabled=true type="text" ng-model=data.tType>&ndash;&gt;-->
+      <!--</label>-->
+      <label class="item row">
+        <span class="input-label">{{'容纳桌数'|T}}</span>
+        <input class="text-right col" 
+                type="tel" ng-model=data.maxPeopleNum placeholder="{{'无'}}">{{data.maxPeopleNum == ''?'':'人'|T}}
+      </label>
+      <label class="item row">
+        <span class="input-label">{{'面积'|T}}</span>
+        <input class="text-right col" 
+               type="tel" ng-model=data.roomArea placeholder="{{'无'}}">{{data.roomArea == ''?'':'平米'|T}}
+      </label>
+      <label class="item row">
+        <span class="input-label">{{'层高'|T}}</span>
+        <input class="text-right col" 
+                type="tel" ng-model=data.floorHeight placeholder="{{'无'}}">{{data.floorHeight == ''?'':'米'|T}}
+      </label>
+      <a href="javascript:0" class="item row" ng-click="chooseDevice()">
+        <span class="input-label">{{'属性'|T}}</span>
+        <i class="icon icon-select col text-right">{{data.device}}</i>
+      </a>
+      <label class="item row">
+        <span class="input-label">{{'描述'|T}}</span>
+        <input class="text-right col" 
+                type="text" ng-model=data.tableRemark placeholder="{{'无'|T}}">
+      </label>
+      <a href="javascript:0" ng-class={'disable-pointer-events':lock} ng-file-select="onFileSelect($files)" data-multiple="true" title="select file" class="item row" id="custom-photo">
+        <i class="tab-account-person-photo">
+          <img ng-src={{data.tableUrl}} class="responsive-sm" style="width:100%;height:100%;" alt="">
+        </i>
+        <i class="icon  icon-select col text-right">{{'桌位图片'|T}}</i>
+      </a>
+    </div>
+  </ion-content>
+</ion-view>

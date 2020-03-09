@@ -1,0 +1,45 @@
+<ion-view hide-tabs="true">
+  <ion-nav-title>{{'商务合作'|T}}</ion-nav-title>
+  <ion-nav-buttons  side="left">
+    <button class="button back-button buttons button-clear header-item" ng-click="goBack()">
+        <i class="icon icon-back" style="vertical-align: middle;"></i>
+    </button>
+  </ion-nav-buttons>
+  <ion-content>
+    <div class="list">
+      <div class="item item-divider">
+        {{'合作方式'|T}}
+      </div>
+      <ion-checkbox class="row" ng-model="checkbox.one" ng-checked="checkbox.one">{{'区域销售合作'|T}}</ion-checkbox>
+      <ion-checkbox class="row" ng-model="checkbox.two" ng-checked="checkbox.two">{{'平台广告发布'|T}}</ion-checkbox>
+      <ion-checkbox class="row" ng-model="checkbox.three" ng-checked="checkbox.three">{{'软件产品对接'|T}}</ion-checkbox>
+      <ion-checkbox class="row" ng-model="checkbox.four" ng-checked="checkbox.four">{{'其他'|T}}</ion-checkbox>
+      <div class="item item-divider">
+        {{'详细信息'|T}}
+      </div>
+      <div class="item row">
+        <span class="input-label">{{'您的姓名'|T}}</span>
+        <input type="text" class="text-right input-style col" ng-model="data.customerName" placeholder="{{'必填'|T}}">
+      </div>
+      <div class="item row">
+        <span class="input-label">{{'公司名称'|T}}</span>
+        <input type="text" class="text-right input-style col" ng-model="data.departmentName">
+      </div>
+      <div class="item row">
+        <span class="input-label">{{'联系电话'|T}}</span>
+        <input type="tel" class="text-right input-style col" placeholder="{{'必填'|T}}" ng-model="data.phone">
+      </div>
+      <div class="item row">
+        <span class="input-label">{{'所属区域'|T}}</span>
+        <input type="text" ng-model="data.position" class="text-right input-style col">
+      </div>
+      <div class="item row" style="margin-bottom:90px;">
+        <span class="input-label">{{'合作描述'|T}}</span>
+        <input type="text" ng-model="data.detail" class="text-right input-style col">
+      </div>
+    </div>
+  </ion-content>
+  <div class="row bar bar-footer" style="background-color: transparent;border:0;padding: 0 20px 10px;">
+    <div class="text-center ng-binding" style="background-color: #ff2741;color: #fff;width: 100%;height: 40px;line-height: 40px;border-radius: 4px;" ng-click="submit()">{{'提交'|T}}</div>
+  </div>
+</ion-view>

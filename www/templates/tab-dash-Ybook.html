@@ -1,0 +1,288 @@
+<ion-view hide-tabs="true" cache-view="false" ng-cloak>
+  <ion-nav-title>
+    <div>
+      <span style="font-size: 14px;">{{info.businessName.slice(0,9)}}</span>
+    </div>
+  </ion-nav-title>
+  <ion-nav-buttons side="right">
+    <button class="button button-icon button-clear button-balanced " ng-if=false ng-hide="dbclickTip&&showModal">
+      <i style="color:#64B25D;font-size: 15px;">{{'完成'|T}}</i>
+    </button>
+    <button class="button button-icon button-clear button-balanced " style="width:100px;line-height:1;font-size: 13px;color:#ccc" ng-click="changeDetail()" ng-hide="dbclickTip&&showModal">
+      <i style="color:#ccc;font-size: 15px;" class="icon-change"></i><span style="width: 60px;display: inline-block;margin: 0;">{{changeName|T}}</span>
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-buttons  side="left">
+    <button class="button back-button buttons button-clear header-item" ng-click="goIndex()" ng-if="!showBack" ng-hide="dbclickTip&&showModal">
+      <i class="icon icon-back" style="vertical-align: middle;"></i>
+    </button>
+    <button class="button back-button buttons button-clear header-item" ng-click="$ionicGoBack()" ng-if="showBack" ng-hide="dbclickTip&&showModal">
+      <i class="icon icon-back" style="vertical-align: middle;"></i>
+    </button>
+  </ion-nav-buttons>
+  <!--<div  ng-show="showModal" class="t-modal trans" ng-class="{'transp':showModal}" style="opacity: 1;background-color:transparent;">-->
+    <!--<div class="imgDiv" style="overflow: hidden;">-->
+        <!--<span class="closeImg" ng-click="hideModal()">-->
+                  <!--×-->
+        <!--</span>-->
+      <!--<div style="position: relative;height:300px;border-bottom: 1px solid #ccc;" id="imgYan">-->
+
+      <!--</div>-->
+      <!--<div class="imgContent" style="overflow-y: auto;">-->
+        <!--<div class="row" style="overflow-x: hidden;flex-flow: row wrap;">-->
+          <!--<div class="col-33">-->
+            <!--<span class="bold">{{'面积'|T}}：</span><span>{{roomArea}}</span>-->
+          <!--</div>-->
+          <!--<div class="col-33">-->
+            <!--<span class="bold">{{'立柱'|T}}：</span><span>{{pillar}}</span>-->
+          <!--</div>-->
+          <!--<div class="col-33" ng-if="floorHeight">-->
+            <!--<span class="bold">{{'层高'|T}}：</span><span>{{floorHeight}}</span>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+  <div ng-show="showModal" class="t-modal trans" ng-class="{'transp':showModal}" style="opacity:1;background-color:transparent;">
+    <div class="imgDiv" style="overflow: hidden;">
+        <span class="icon icon-close-r" style="position: absolute;top: 5px;right: 5px;z-index: 5;" ng-click="hideModal()"></span>
+      <div style="position: relative;height:300px;display: flex;flex-direction: column;text-align: center;align-items: center;justify-content: center;" id="imgYan" ng-show="tablePic">
+      </div>
+      <div style="position: relative;height:300px;display: flex;flex-direction: column;text-align: center;align-items: center;justify-content: center;" ng-hide="tablePic">
+        <img src="../images/img_nopic@3x.png" class="disable-pointer-events responsive-sm" width="30%" height="30%" alt="">
+        <div style="color: #ccc;font-size: 20px;margin-top: 10px;">暂无上传图片</div>
+      </div>
+      <div class="imgContent" style="overflow-y: auto;">
+        <div class="row" style="overflow-x: hidden;flex-flow: row wrap;align-items: flex-start;">
+          <div class="col-50">
+            <span class="bold">{{'宴会厅名称'|T}}：</span><span>{{tableName}}</span>
+          </div>
+          <div class="col-50">
+            <span class="bold">{{'层高'|T}}：</span><span>{{floorHeight}}{{'米'|T}}</span>
+          </div>
+          <div class="col-50">
+            <span class="bold">{{'面积'|T}}：</span><span>{{roomArea}}{{'平米'|T}}</span>
+          </div>
+          <div class="col-50">
+            <span class="bold">{{'容纳桌数'|T}}：</span><span>{{maxPeopleNum}}</span>
+          </div>
+          <div class="col-90">
+            <span class="bold">{{'设备'|T}}：</span><span>{{device}}</span>
+          </div>
+          <div class="col-70">
+            <span class="bold">{{'描述'|T}}：</span><span>{{tableRemark}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="row bar bar-footer" style="background-color: #f1f2f5;border:0;padding:0; ">
+        <div class="col-50 text-center" style="background-color: #ccc;width:100%;line-height: 44px;font-size: 16px;color: #fff" ng-click="goTableEdit()">{{'编辑台位信息'|T}}
+        </div>
+        <div class="col-50 text-center" style="background-color: #ff2741;color:#fff;width:100%;line-height: 44px;font-size: 16px;" ng-click="shareTable()">{{'分享'|T}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div ng-show="dbclickTip&&showModal" ng-click="clickTip()" class="t-modal trans" ng-class="{'transp':dbclickTip&&showModal}" style="opacity: 0.7;background-color: #000;">
+    <div class="modal-tip">
+      <div style="height:50px">
+        <img src="img/dbclick.png" class="tip-pointer"></img>
+      </div>
+      <div style="color: #fff;text-align: center;">双击图片全屏查看</div>
+    </div>
+  </div>
+  <ion-content overflow-scroll="true" ng-show="showDetail" style="border-top: 1px solid #ddd;">
+    <div class="list list-div-bottom" style="background-color: #fffef8;">
+      <div class="item row" style="border-right: none;">
+        <div class="col-33 text-center">
+          <span class="span-gray" style="font-size:14px;">{{'待预订'|T}}</span><br>
+          <div class="meeting blue"></div>
+        </div>
+        <div class="col-33 text-center">
+          <span class="span-gray" style="font-size:14px;">{{'已确认'|T}}</span><br>
+          <div class="meeting green"></div>
+        </div>
+        <div class="col-33 text-center">
+          <span class="span-gray" style="font-size:14px;">{{'已锁厅'|T}}</span><br>
+          <div class="meeting red"></div>
+        </div>
+
+      </div>
+    </div>
+    <div class="list" style="padding: 0;margin: 0;border-width: 1px 0;">
+      <div class="item item-divider row" style="padding-top:0;padding-bottom:0;border-bottom: 1px solid #d8d8d8;border-top: 1px solid #d8d8d8;background: #fff;">
+        <div class="col-40 text-center" style="margin-left: 5%;">
+          <i class="icon icon-cal-g" style="vertical-align: middle"></i>
+          <a href="javascript:0" class="button button-stable button-clear book-footBar-font-style" style="display: inline-block;vertical-align: middle;" ng-click="showCalender()">
+            {{showTime}}
+          </a>
+        </div>
+        <div class="col-10" style="line-height: 48px;">
+          {{'至'|T}}
+        </div>
+        <div class="col-40 text-center">
+          <i class="icon icon-cal-g" style="vertical-align: middle"></i>
+          <a href="javascript:0" class="button button-stable button-clear book-footBar-font-style" style="display: inline-block;vertical-align: middle;">
+            {{showTime1}}
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="table-list">
+      <div class="area-row"><!-- top=$(".table-body")垂直滚动距离 -->
+        <!--<div class="table-item area-item text-center"><div style="font-size: 14px;">宴会厅</div><div style="font-size: 12px;">20桌</div></div>-->
+        <div class="table-item area-item text-center" ng-repeat="item in seat" ng-style="{'width': 30*mealTypes.length+'px'}"><div style="font-size: 14px;">{{item.tableName.substr(0,4)}}</div><div style="font-size: 12px;">{{item.maxPeopleNum}}{{'桌'|T}}</div></div>
+        <!--<div class="table-item area-item text-center"><div style="font-size: 14px;">宴会厅</div><div style="font-size: 12px;">20桌</div></div>-->
+        <!--<div class="table-item area-item text-center"><div style="font-size: 14px;">宴会厅</div><div style="font-size: 12px;">20桌</div></div>-->
+        <!--<div class="table-item area-item text-center disabled"><div style="font-size: 14px;">宴会厅</div><div style="font-size: 12px;">20桌</div></div>-->
+        <!--<div class="table-item area-item text-center"><div style="font-size: 14px;">宴会厅</div><div style="font-size: 12px;">20桌</div></div>-->
+        <!--<div class="table-item area-item text-center"><div style="font-size: 14px;">宴会厅</div><div style="font-size: 12px;">20桌</div></div>-->
+        <!--<div class="table-item area-item text-center"><div style="font-size: 14px;">宴会厅</div><div style="font-size: 12px;">20桌</div></div>-->
+      </div>
+      <div class="date-row"><!-- left=$(".table-body")水平滚动距离 -->
+        <div class="date-item text-center" ng-repeat="list in list"><div style="font-size: 14px;color:{{list.color}}">{{list.date1}}</div><div style="font-size: 12px;color:{{list.color}}">{{list.nlr}}</div></div>
+        <!--<div class="date-item text-center"><div style="font-size: 14px;">25</div><div style="font-size: 12px;">圣诞节</div></div>-->
+        <!--<div class="date-item text-center disabled"><div style="font-size: 14px;">25</div><div style="font-size: 12px;">圣诞节</div></div>-->
+        <!--<div class="date-item text-center"><div style="font-size: 14px;">25</div><div style="font-size: 12px;">圣诞节</div></div>-->
+        <!--<div class="date-item text-center"><div style="font-size: 14px;">25</div><div style="font-size: 12px;">圣诞节</div></div>-->
+        <!--<div class="date-item text-center"><div style="font-size: 14px;">25</div><div style="font-size: 12px;">圣诞节</div></div>-->
+        <!--<div class="date-item text-center"><div style="font-size: 14px;">25</div><div style="font-size: 12px;">圣诞节</div></div>-->
+      </div>
+      <div class="table-body">
+        <div class="table-row table-con" ng-repeat="item in list">
+          <div class="table-item text-center" ng-style="{'width':30*mealTypes.length+'px'}" ng-repeat="look in seat" ng-click="chooseTable($event)" data-resvDate={{item.date}} data-isOper={{look.isOper}} data-isLockerRoom={{look.isLockerRoom}} data-ttype={{look.tType}} data-minamount={{look.minAmount}} data-tableremark={{look.tableRemark}} data-confirm={{look.confirm}} data-tableAreaName={{look.tableAreaName}} data-tableAreaId={{look.tableAreaId}} data-picUrl={{look.tableUrl}} data-television={{look.television}} data-sofa={{look.sofa}} data-washroom={{look.washroom}} data-picId={{look.picId}} data-zuoshu="{{look.zuoshu}}" data-maxPeopleNum={{look.maxPeopleNum}} data-tableName={{look.tableName}} data-seat={{look.tableId}} data-state={{look.estatus}} data-picUrl={{look.tableUrl}} data-remark={{look.remark}} data-id={{look.id}} data-appUserId={{look.appUserId}} data-select="0" data-roomArea={{look.roomArea}} data-floorHeight={{look.floorHeight}} data-pillar="{{look.pillar}}">
+              <div class="table-meal" id="{{item.date+look.tableId+type.id}}" ng-repeat="type in mealList"></div>
+            <!--<div class="table-meal" ng-class="{'blue':(item.date==look.resvDate&&look.estatus==1&&(look.mealTypeName.indexOf('中')!= -1||look.mealTypeName.indexOf('午')!= -1)),'red':(item.date==look.resvDate&&look.estatus==5&&(look.mealTypeName.indexOf('中')!= -1||look.mealTypeName.indexOf('午')!= -1)),'green':(item.date==look.resvDate&&look.estatus==2&&(look.mealTypeName.indexOf('中')!= -1||look.mealTypeName.indexOf('午')!= -1))}">{{(item.date==look.resvDate&&(look.mealTypeName.indexOf('中')!= -1||look.mealTypeName.indexOf('午')!= -1))?'午'+((look.orderCou==0?look.preorderCou:look.orderCou)==0?'':(look.orderCou==0?look.preorderCou:look.orderCou)):''}}</div>-->
+            <!--<div class="table-meal" ng-class="{'blue':(item.date==look.resvDate&&look.estatus==1&&(look.mealTypeName.indexOf('晚')!= -1)),'red':(item.date==look.resvDate&&look.estatus==5&&(look.mealTypeName.indexOf('晚')!= -1)),'green':(item.date==look.resvDate&&look.estatus==2&&(look.mealTypeName.indexOf('晚')!= -1))}">{{(item.date==look.resvDate&&look.mealTypeName.indexOf('晚')!= -1)?'晚'+((look.orderCou==0?look.preorderCou:look.orderCou)==0?'':(look.orderCou==0?look.preorderCou:look.orderCou)):''}}</div>-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+  <ion-content on-swipe-left="left()" on-swipe-right="right()" ng-show="!showDetail" style="border-top: 1px solid #ddd;">
+    <ion-refresher
+      on-refresh="refresh()"
+      pulling-text="{{'下拉刷新'|T}}">
+    </ion-refresher>
+
+    <div class="list list-div-bottom" style="background-color: #fffef8;">
+      <div class="item row" style="border-right: none;text-align: center;">
+        <div class="col-25">
+          <i class="tab-dash-circle" style="border-color:#64b25d;"></i>
+          <span class="span-gray" style="font-size:14px;">{{'全部'|T}}</span><br>
+          <span class="span-black" style="font-size:22px;color:#64b25d;">{{top1}}</span>
+        </div>
+        <div class="col-25">
+          <i class="tab-dash-circle" style="border-color:#E5AD51;"></i>
+          <span class="span-gray" style="font-size:14px;">{{'空闲'|T}}</span><br>
+          <span class="span-black" style="font-size:22px;color:#E5AD51;">{{top2}}</span>
+        </div>
+        <div class="col-25">
+          <i class="tab-dash-circle" style="border-color:#439e84;"></i>
+          <span class="span-gray" style="font-size:14px;">{{'待确认'|T}}</span><br>
+          <span class="span-black" style="font-size:22px;color:#439e84;">{{top3}}</span>
+        </div>
+
+        <div class="col-25">
+          <i class="tab-dash-circle" style="border-color:#db4f3b;"></i>
+          <span class="span-gray" style="font-size:14px;">{{'已确认'|T}}</span><br>
+          <span class="span-black" style="font-size:22px;color:#db4f3b;">{{top4}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="list" style="margin-bottom: 0;">
+      <div class="item item-divider row" style="padding-top:0;padding-bottom:0;background: #fff;">
+        <div class="col-33 text-center" style="height:44px;line-height: 44px">
+            <a href="javascript:0" class="icon icon-select" ng-click="showCalender()">
+              {{showTime}}
+            </a>
+        </div>
+        <div class="col-33 text-center" style="height:44px;line-height: 44px">
+          <a href="javascript:0" ng-click="openPopover($event,2)" class="icon icon-select">
+            {{meal}}
+          </a>
+        </div>
+        <div class="col-34 text-center" style="height:44px;line-height: 44px">
+          <a href="javascript:0" ng-click="openPopover($event,3)" class="icon icon-select">
+            {{area|T}}
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="row row-wrap">
+      <div class="col-25 text-center table-div" ng-repeat="item in seat">
+        <img on-hold="showSeat($event)" ng-class="{'table-select':item.selected}" ng-src="{{item.isOper>0?('images/tab-seat1'+item.estatus+'.png'):'images/tab-seat0.png'}}" height="110" ng-click="selected($event)" data-isOper={{item.isOper}} data-led={{item.led}} data-catwalk={{item.catwalk}} data-light={{item.light}} data-isLockerRoom={{item.isLockerRoom}} data-ttype={{item.tType}} data-minamount={{item.minAmount}} data-tableremark={{item.tableRemark}} data-confirm={{item.confirm}} data-tableAreaName={{item.tableAreaName}} data-tableAreaId={{item.tableAreaId}} data-picUrl={{item.tableUrl}} data-television={{item.television}} data-sofa={{item.sofa}} data-washroom={{item.washroom}} data-picId={{item.picId}} data-zuoshu="{{item.zuoshu}}" data-maxPeopleNum={{item.maxPeopleNum}} data-tableName={{item.tableName}} data-seat={{item.tableId}} data-state={{item.estatus}} data-picUrl={{item.tableUrl}} data-remark={{item.remark}} data-id={{item.id}} data-appUserId={{item.appUserId}} data-select="0" data-roomArea={{item.roomArea}} data-floorHeight={{item.floorHeight}} data-pillar="{{item.pillar}}" width="90%" alt="">
+        <span class="disable-pointer-events table-span-first"><span ng-show=item.orderCou>{{'已确认'|T}}:{{item.orderCou}}</span><span class="icon icon-cancel" style="margin-left: 5px;" ng-show=item.isToCancael></span><i ng-show="item.remark.indexOf(1)!=-1" style="font-size:15px;color: #DA4C39;" class="vertical-middle icon ion-chatbubble-working"></i></span>
+        <span class="disable-pointer-events table-span-second" style="bottom: 35%;">
+          <i style="line-height: 24px;white-space:nowrap;color:{{item.estatus!=0?'#333':'#333'}}">{{item.tableName}}</i><br>
+          <i style="white-space:nowrap;color:{{item.estatus!=0?'#333':'#666'}}">{{item.tableAreaName}}</i><br>
+          <i style="color:{{item.estatus!=0?'#666':'#666'}}">{{item.maxPeopleNum}}{{'桌'|T}}</i><i ng-show=item.zuoshu style="color:#DA4C39;"><i>/</i>{{item.zuoshu}}<i ng-if="item.huiyishu == 0">{{'桌'|T}}</i><i ng-if="item.huiyishu == 1">{{'人'|T}}</i></i>
+        </span>
+        <span class="disable-pointer-events table-span-third">
+          <span ng-show="item.isCook > 0" ng-class={'red':true}>{{'厨'|T}}</span>
+          <span ng-hide=item.preorderCou>{{'无待预订'|T}}</span><span ng-show=item.preorderCou>{{'待预订'|T}}:{{item.preorderCou}}</span>
+          <span ng-show="item.cbf==1" class="icon icon-zy"></span>
+        </span>
+      </div>
+    </div>
+    <div class="list">
+      <a href="javascript:0" class="item item-icon-right tab-myOrder-detail-item1" style="border: 0;background-color: #e8e8e8;">
+      </a>
+      <a href="javascript:0" class="item item-icon-right tab-myOrder-detail-item1" style="border: 0;background-color: #e8e8e8;">
+      </a>
+      <a href="javascript:0" class="item item-icon-right tab-myOrder-detail-item1" style="border: 0;background-color: #e8e8e8;">
+      </a>
+    </div>
+  </ion-content>
+  <div class="c-modalB" ng-show="calender"></div>
+  <div class="c-modal hideC" ng-class="{'hideC':!calender}" on-swipe-left="addMonth()" on-swipe-right="minusMonth()">
+    <div class="row">
+      <div class="col-offset-10 col-40 text-center">
+        <span class="right icon icon-arrow-right" ng-click="addYear()" style="width: 20%;"></span>
+        <span class="left icon icon-arrow-left" ng-click="minusYear()" style="width: 20%;"></span>
+        <span style="font-size: 15px;margin:5px 0;">{{dateYear}}</span>
+      </div>
+      <div class="col-offset-10 col-40 text-center">
+        <span class="right icon icon-arrow-right" ng-click="addMonth()" style="width: 20%;"></span>
+        <span class="left icon icon-arrow-left" ng-click="minusMonth()" style="width: 20%;"></span>
+        <span style="font-size: 15px;margin:5px 0;">{{dateMonth+1+"月"|T}}</span>
+      </div>
+    </div>
+    <div class="row" style="padding: 0 0 5px;border-top: 0;">
+      <div ng-repeat="weekDay in weekList" class="weekList">
+        <span style="color: #999;">{{weekDay}}</span>
+      </div>
+    </div>
+    <div class="row row-wrap">
+      <div ng-repeat="date in dateList" class="dateList" ng-click="hideCalender($event)" data-id="{{date.id}}" data-date="{{date.ylr}}" data-datej="{{date.yylr}}" ng-class="{'disable-pointer-events':(date.color=='#ccc')}">
+        <p class="disable-pointer-events" style="margin-bottom: 3px;color:{{date.color}};">{{date.ylr}}</p>
+        <p class="disable-pointer-events" style="color:{{date.color}}">{{date.nlr}}</p>
+      </div>
+    </div>
+    <!-- 吉日图例 { -->
+    <div style="padding: 0 20px;text-align: center;" ng-if="info.isLuckyDay">
+      <span style="margin-right: 20px;"><i style="width: 20px;height: 10px;background: #f7663c;display: inline-block;margin-right: 5px;"></i>{{'上上吉'|T}}</span>
+      <span style="margin-right: 20px;"><i style="width: 20px;height: 10px;background: #ecba36;display: inline-block;margin-right: 5px;"></i>{{'上吉'|T}}</span>
+      <span><i style="width: 20px;height: 10px;background: #38ce4a;display: inline-block;margin-right: 5px;"></i>{{'吉'|T}}</span>
+    </div>
+    <!-- } 吉日图例 -->
+    <div class="row" style="border-top: 0;padding: 10px 20px;text-align: center;">
+      <span class="dateButton" ng-click="dateCancel()" style="background-color: #ccc">{{'取 消'|T}}</span>
+      <span class="dateButton" ng-click="dateToday()" style="background-color: #ff2741;margin-left: 30px;">{{'今 日'|T}}</span>
+    </div>
+  </div>
+  <div class="bar bar-footer row book" style="background-color: #fff;padding:0;">
+    <div class="tab-dash-book-circle text-center" ng-class="{'onClick':onClick}" ng-click="book()" ng-if="!isYp">
+      <img src="images/btn_booking@3x.png" width="100%" height="50%" alt="">
+    </div>
+    <div class="tab-dash-book-circle text-center" ng-class="{'onClick':onClick}" ng-click="book()" ng-if="isYp" style="overflow: hidden;background: #c30d23;border: 5px solid #fff;">
+      <img src="images/logo-jdw.png" style="position: absolute;left: 32px;top: 18px;width: 76px;height: 44px;" alt="">
+    </div>
+    <div class="col-33 book-footBar-style text-center">
+      <a href="javascript:0" class="button button-clear book-footBar-font-style" on-hold="showSeat" ng-click="seeDetail()">{{'查看详情'|T}}</a>
+    </div>
+    <div class="col-33 book-footBar-style"></div>
+    <div class="col-33 book-footBar-style text-center">
+      <a href="javascript:0" class="button button-clear book-footBar-font-style" ng-click="openPopover($event,4)">{{'更多操作'|T}}</a>
+    </div>
+  </div>
+</ion-view>

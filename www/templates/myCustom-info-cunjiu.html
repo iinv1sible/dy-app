@@ -1,0 +1,63 @@
+<ion-view hide-tabs="true" overflow-scroll="true">
+  <ion-nav-title>{{'存酒信息'|T}}</ion-nav-title>
+  <ion-nav-buttons side="left">
+    <button class="button back-button buttons button-clear header-item" ng-click="goback()" ng-if="!edit">
+      <i class="icon icon-back" style="vertical-align: middle;"></i>
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <button class="button button-small button-clear" ng-click="goCunjiuLog()" ng-if="!edit">
+      <i style="font-size: 15px;color:#387ef5;">{{'存取记录'|T}}</i>
+    </button>
+  </ion-nav-buttons>
+  <ion-content class="wines-content" style="height:{{type3?'auto':''}}">
+    <div style="padding:50px 0 0;text-align: center;font-size: 20px;" ng-if="vipWines.length==0 && !edit">客户暂无存酒信息</div>
+    <div class="list" style="margin: 0;">
+      <div class="item row" style="padding:5px;" ng-repeat="item in vipWines track by $index">
+        <div style="flex: 1;padding-left: 12px;">
+          <input type="text" class="input-style" style="width: 100%;" ng-model="item.name" placeholder="请输入酒品名称" ng-class="{'disable-pointer-events':item.id}" />
+        </div>
+        <div class="col-20">
+          <span class="minus minusRight" ng-click="cjjian($index)" ng-if="edit"></span>
+          <span class="num">{{item.num}}{{edit?'':'件'}}</span>
+          <span class="plus" ng-click="cjjia($index)" ng-if="edit"></span>
+        </div>
+      </div>
+      <div class="item row" ng-if="edit" style="justify-content: flex-end;">
+          <span ng-click="addWine()" style="text-align: right;color: #ff2741;border: 1px solid #ff2741;padding: 3px 5px;border-radius: 5px;">新增酒品</span>
+      </div>
+      <div class="item row" style="padding: 12px;position:relative" ng-show="data.remark && vipWines.length>0 && !edit">
+        <label>备注</label>
+        <div style="flex: 1;padding-left: 12px;">{{data.remark}}</div>
+      </div>
+      <div class="item row" style="padding: 12px;position:relative" ng-show="edit">
+        <textarea ng-show="edit" rows="5" style="width: 100%;padding: 10px 7px;border-radius: 4px;background-color: rgb(241, 242, 245);font-size: 12px;line-height: 20px;height: 120px;z-index:1" class="input-style" ng-model="data.remark" placeholder="{{'请输入备注'|T}}"></textarea>
+      </div>
+      <div class="item row" ng-if="edit">
+        <span class="icon icon-check" ng-class="{'icon-check-r': isSend}" ng-click="changeSend()">取酒提醒短信（客户接收）</span>
+        <span style="margin-left: 20px;text-decoration: underline;" ng-click="showTips()">查看提示</span>
+      </div>
+      <div class="item row" ng-if="isSend">
+        <label ng-show="!edit">客户接收取酒短信</label>
+        <div style="flex: 1;padding-left: 12px;">
+          <div ng-show="!edit" style="text-align: right;">{{sendDate}}</div>
+          <span class="icon icon-cal" style="display: inline-block;vertical-align: -2px;" ng-show="edit" ></span>
+          <div ng-click="openDatePicker($event)" ng-show="edit" style="width: 90%;display: inline-block;">
+          <input type="text" class="input-style" style="width: 90%;display: inline-block;color: #333;" ng-model="sendDate" placeholder="请选择发送日期" readonly />
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+  <div class="row bar bar-footer" style="background-color: #f1f2f5;border: 0;padding: 0;" ng-show="!edit&&!type3">
+    <div ng-click="showEdit()" class="col text-center" style="background-color: #ff2741;color:#fff;width:100%;height: 100%;line-height: 44px;    font-size: 17px;">{{'编辑'|T}}</div>
+  </div>
+  <div class="row bar bar-footer" style="background-color: #f1f2f5;border:0;padding:0; " ng-show="edit">
+    <div class="col-50 text-center" style="background-color: #ccc;width:100%;height: 100%;">
+      <a href="javascript:0" class="button button-clear" style="color:#fff;line-height: 44px;display: block;" ng-click="cancel()">{{'取消'|T}}</a>
+    </div>
+    <div class="col-50 text-center" style="background-color: #ff2741;color:#fff;width:100%;height: 100%;">
+      <a href="javascript:0" class="button button-clear" style="color:#fff;line-height: 44px;display: block;" ng-click="submit()">{{'保存'|T}}</a>
+    </div>
+  </div>
+</ion-view>

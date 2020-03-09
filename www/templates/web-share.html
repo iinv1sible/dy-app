@@ -1,0 +1,20 @@
+<ion-view hide-tabs="true"  cache-view="false">
+  <div style="display: flex;align-items: center;height: 100%;"><div>
+    <div style="background: url(images/bg-share.png) no-repeat center center/100% 100%;">
+      <div style="padding: 10px 10px 10px 42%;">
+        <p>尊敬的贵宾：</p>
+        <p style="text-indent: 2em;">您好, <span style="font-weight: bold;font-size: 15px;">{{data.year}}年{{data.month}}月{{data.date}}日（星期{{data.day}}）{{data.mealTypeName}}</span>为您安排在{{data.tableName}}；<span ng-show="data.destTime">就餐时间：{{data.destTime}}{{data.isAM}}；</span>就餐人数：{{data.resvNum}}人；详细地址请点击下方的酒店定位。</p>
+        <br>
+        <p style="text-indent: 2em;">届时</p>
+        <p>敬请光临</p>
+        <br>
+        <p style="text-align: right;">{{data.businessName}}全体员工</p>
+      </div>
+    </div>
+    <div style="line-height: 40px;padding: 0 20px;display:flex;align-items: center;" ng-click="openMap()">
+      <i style="background: url(images/address.png) no-repeat center center/100% 100%;width:20px;height: 20px;"></i>
+      <span style="flex:1">{{data.address}}</span>
+      <i style="background: url(images/btn_view@3x.png) no-repeat center center/100% 100%;width:8px;height: 16px;"></i>
+    </div>
+  </div></div>
+</ion-view>

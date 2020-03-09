@@ -1,0 +1,90 @@
+<ion-view hide-tabs="true">
+  <ion-nav-title>{{'宴会锁台'|T}}</ion-nav-title>
+  <ion-nav-buttons side="right">
+    <button class="button button-icon" ng-click="lockAll()">
+      <i style="font-size: 15px;">{{'关联散台'|T}}</i>
+    </button>
+  </ion-nav-buttons>
+  <div style="position: fixed;top: 43px;left: 0;right: 0;line-height: 40px;padding: 0 20px;border-bottom: 1px solid #d0d0d0;z-index: 10;border-top: 1px solid #d0d0d0;" ng-show="!isSearch">
+    <span class="icon icon-select" ng-click="showCalender()">{{data.resvDate}}</span>
+    <span class="icon icon-select" style="margin-left: 20px;" ng-click="openPopover($event)">{{mealTypeName}}</span>
+    <i class="icon icon-search" style="position: absolute;top: 3px;right: 20px;" ng-click="isSearch=true;isShowDetail=false"></i>
+  </div>
+  <div style="position: fixed;top: 43px;left: 0;right: 0;height: 41px;padding: 0 20px;border-bottom: 1px solid #d0d0d0;z-index: 10;border-top: 1px solid #d0d0d0;display: flex;align-items: center;" ng-show="isSearch">
+    <label style="flex:1">
+      <i class="icon icon-search placeholder-icon" style="display: inline-block;vertical-align: middle;"></i>
+      <input type="text" placeholder="{{'查找'|T}}" ng-change="search()" ng-model="searchInput" style="display: inline-block;vertical-align: 0px;">
+    </label>
+    <span ng-click="cancelSearch()">{{'取消'|T}}</span>
+  </div>
+  <ion-content style="top: 84px;bottom: 54px;" delegate-handle="tableScroll" id="table-scroll">
+    <div ng-repeat="item in tableList" ng-show="item.tables.length>0">
+      <div style="display: flex;padding: 10px;background: #d0d0d0;" ng-click="exchangeShow(item)"><span style="flex: 1;">{{item.tableAreaName}}</span><span class="icon" ng-class="isShow(item)?'icon-top-arrow':'icon-bottom-arrow'"></span></div>
+      <div style="background: #fff;" ng-show="isShow(item)">
+        <div style="padding: 10px;border-bottom: 1px solid #f0f0f0;" ng-repeat="table in item.tables" ng-show="table.isOper>0" ng-click="choose(table)">
+          <label class="radio-label" ng-class="isCheck(table)?'check':''">
+            <input type="radio">
+          </label>
+          <span style="line-height: 30px;margin: 0 20px;color:{{table.status>0?'#999':''}}">{{table.tableName}}</span>
+          <span class="button button-small" ng-show="table.status>0">{{table.status==5?'已锁台':'已预订' |T}}</span>
+        </div>
+      </div>
+    </div>
+    <ion-infinite-scroll
+      ng-if="canLoad"
+      immediate-check="false"
+      distance="2%"
+      on-infinite="doInfinite()">
+    </ion-infinite-scroll>
+  </ion-content>
+  <div style="position: fixed;bottom: 50px;background: #fff;left: 0;right: 0;" ng-show="isShowDetail">
+    <div style="padding: 10px;background: #d0d0d0;display: flex;"><span style="flex: 1">{{'已选'|T}}</span><span ng-click="checkedTables=[];isShowDetail=false">全部清空</span></div>
+    <div style="max-height: 300px;overflow: auto;">
+      <div style="display: flex;padding: 10px;" ng-repeat="item in checkedTables">
+        <span style="flex: 1;line-height: 30px;">{{item.tableName}}</span>
+        <span style="flex: 2;line-height: 30px;color: #999;">{{item.resvDate}} {{item.mealTypeName}}</span>
+        <span ng-click="choose(item)">{{'删除'|T}}</span>
+      </div>
+      <div style="padding: 10px;text-align: center;" ng-show="checkedTables.length==0">{{'暂无选择桌位'|T}}</div>
+    </div>
+  </div>
+  <div class="row" style="position: fixed;bottom: 0;left: 0;right: 0;z-index: 10;padding: 0;border-top: 1px solid #d0d0d0;">
+    <div class="col-80" style="padding: 0 20px;" ng-click="isShowDetail=!isShowDetail">
+      {{'已选'|T}} {{checkedTables.length}} {{'桌'|T}}
+    </div>
+    <div class="col-20 order-dishes-button" style="background:{{checkedTables.length==0?'#999':''}}" ng-click="lock()">
+      {{'确定'|T}}
+    </div>
+  </div>
+
+  <div class="c-modalB" ng-show="calender"></div>
+  <div class="c-modal hideC" ng-class="{'hideC':!calender}" on-swipe-left="addMonth()" on-swipe-right="minusMonth()">
+    <div class="row">
+      <div class="col-offset-10 col-40 text-center">
+        <span class="right icon icon-arrow-right" ng-click="addYear()" style="width: 20%;"></span>
+        <span class="left icon icon-arrow-left" ng-click="minusYear()" style="width: 20%;"></span>
+        <span style="font-size: 15px;margin:5px 0;">{{dateYear}}</span>
+      </div>
+      <div class="col-offset-10 col-40 text-center">
+        <span class="right icon icon-arrow-right" ng-click="addMonth()" style="width: 20%;"></span>
+        <span class="left icon icon-arrow-left" ng-click="minusMonth()" style="width: 20%;"></span>
+        <span style="font-size: 15px;margin:5px 0;">{{dateMonth+1+"月"|T}}</span>
+      </div>
+    </div>
+    <div class="row" style="padding: 0 0 5px;border-top: 0;">
+      <div ng-repeat="weekDay in weekList" class="weekList">
+        <span style="color: #999;">{{weekDay}}</span>
+      </div>
+    </div>
+    <div class="row row-wrap">
+      <div ng-repeat="date in dateList" class="dateList" ng-click="hideCalender($event)" data-id="{{date.id}}" data-date="{{date.ylr}}" ng-class="{'disable-pointer-events':(date.color=='#ccc')}">
+        <p class="disable-pointer-events" style="margin-bottom: 3px;color:{{date.color}};">{{date.ylr}}</p>
+        <p class="disable-pointer-events" style="color:{{date.color}}">{{date.nlr}}</p>
+      </div>
+    </div>
+    <div class="row" style="border-top: 0;padding: 10px 20px;text-align: center;">
+      <span class="dateButton" ng-click="dateCancel()" style="background-color: #ccc">{{'取 消'|T}}</span>
+      <span class="dateButton" ng-click="dateToday()" style="background-color: #ff2741;margin-left: 30px;">{{'今 日'|T}}</span>
+    </div>
+  </div>
+</ion-view>

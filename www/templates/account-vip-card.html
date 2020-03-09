@@ -1,0 +1,65 @@
+<ion-view hide-back-button="true" hide-tabs="true">
+  <ion-nav-bar class="bar-stable bar" style="display:block;z-index:10">
+    <div class="title title-center header-item" style="background-color:#fff;transition:none" ng-show="page=='list'">{{'未使用优惠劵列表'|T}}</div>
+    <div class="title title-center header-item" style="background-color:#fff;transition:none" ng-show="page=='preview'">{{'短信预览'|T}}</div>
+    <div class="title title-center header-item" style="background-color:#fff;transition:none" ng-show="page=='edit'">{{'短信编辑'|T}}</div>
+  </ion-nav-bar>
+  <button style="z-index:100" class="button back-button buttons button-clear header-item" ng-show="page=='list'" ng-click="$ionicGoBack()">
+    <i class="icon icon-back" style="vertical-align: middle;"></i>
+  </button>
+  <button style="z-index:100" class="button back-button buttons button-clear header-item" ng-show="page=='preview'" ng-click="goList()">
+    <i class="icon icon-back" style="vertical-align: middle;"></i>
+  </button>
+  <button style="z-index:100" class="button back-button buttons button-clear header-item" ng-show="page=='edit'" ng-click="goPreview()">
+    <i class="icon icon-back" style="vertical-align: middle;"></i>
+  </button>
+  <ion-content style="background: #fff;height: calc(100% - 88px);">
+    <div class="list item row" id="cardContent">
+      <div style="width: 100%;" ng-repeat="item in listData track by $index" ng-if="item.cardNum > 0">
+        <div style="display:flex;border-bottom:1px solid #d0d0d0;padding: 10px 0;" ng-click="showDetail($index)">
+          <span style="flex: 1;">{{item.title}}</span>
+          <span style="margin-right: 10px;">{{item.cardNum}}{{'张'|T}}</span>
+          <i class="right drop-down" ng-show="item.vipCardList.length > 0" ng-class="{'drop-up':item.show}"></i>
+        </div>
+        <div ng-show="item.cardNum >0 && item.show" style="background-color: #f3f3f3;text-align: center;line-height: 30px;">
+          <div style="display:flex;">
+            <label style="width:20px;line-height: 30px;" ng-click="selectAll($event)"><input type="checkbox"></label>
+            <span style="margin-left:5px;width:40px">{{'姓名'|T}}</span>
+            <span style="margin-left:5px;flex: 1;">{{'电话'|T}}</span>
+            <span style="margin:auto 5px;flex: 1;">{{'卡劵号码'|T}}</span>
+            <span style="margin:auto 5px;flex: 1;">{{'到期时间'|T}}</span>
+          </div>
+          <div style="display:flex;text-align: center;" ng-repeat="item1 in item.vipCardList">
+            <label style="width:20px;line-height: 30px;" ng-click="select(item1.wxCardCode,$event)"><input class="checkItem" data-cardTitle="{{item.title}}" data-phone="{{item1.phone}}" data-date="{{item1.cardEndTime.substr(0,10)}}" id="{{item1.wxCardCode}}" type="checkbox"></label>
+            <span style="margin-left:5px;width:40px">{{item1.customerName|T}}</span>
+            <span style="margin-left:5px;flex: 1;">{{item1.phone|T}}</span>
+            <span style="margin:auto 5px;flex: 1;">{{item1.wxCardCode|T}}</span>
+            <span style="margin:auto 5px;flex: 1;">{{item1.cardEndTime.substr(0,10)|T}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+  <div class="row bar bar-footer" style="background-color: #f1f2f5;border:0;padding:0;">
+    <div class="col-50 text-center" style="background-color: #ccc;color:#fff;line-height: 44px;font-size: 16px;" ng-click="preview()">{{'短信预览'|T}}</div>
+    <div class="col-50 text-center" style="background-color: #ff2741;color:#fff;line-height: 44px;font-size: 16px;" ng-click="send()">{{'发送'|T}}<span ng-show="peopleNum>0">({{peopleNum}})</span></div>
+  </div>
+  <div class="d-modal isCenter" style="top:44px;overflow-x: hidden;background: #fff;transition:none" ng-show="page=='preview'">
+    <div style="padding: 10px 10px 10px 20px;">
+      <div class="talk-item">{{data.smscontent}}</div>
+    </div>
+    <div class="row bar bar-footer" style="background-color: #f1f2f5;border:0;padding:0; ">
+      <div class="col-50 text-center" style="background-color: #ccc;color:#fff;line-height: 44px;font-size: 16px;" ng-click="edit()">{{'编辑'|T}}</div>
+      <div class="col-50 text-center" style="background-color: #ff2741;color:#fff;line-height: 44px;font-size: 16px;" ng-click="send()">{{'发送'|T}}({{peopleNum}})</div>
+    </div>
+  </div>
+  <div class="d-modal isCenter" style="top:44px;overflow-x: hidden;background: #fff;transition:none" ng-show="page=='edit'">
+    <div style="padding: 10px">
+      <div style="margin: 10px 0;">编辑短信：</div style="margin: 10px 0;">
+      <textarea ng-model="data.smscontent" style="height: 300px;border: 1px solid #d0d0d0;padding: 10px;width: 100%;line-height: 1.8;"></textarea>
+    </div>
+    <div class="row bar bar-footer" style="background-color: #f1f2f5;border:0;padding:0; ">
+      <div class="col text-center" style="background-color: #ff2741;color:#fff;line-height: 44px;font-size: 16px;" ng-click="save()">{{'完成'|T}}</div>
+    </div>
+  </div>
+</ion-view>

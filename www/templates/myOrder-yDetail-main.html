@@ -1,0 +1,122 @@
+<ion-view hide-tabs="true">
+  <ion-nav-title>{{title}}</ion-nav-title>
+  <ion-nav-buttons side="right">
+    <a ng-if="!(showSeat || showLog || showVis)" ng-click="openPopoverState($event)" class="button button-small button-clear" style="border: none;color:#999;font-size: 15px;">
+      {{state|T}}
+    </a>
+    <button class="button button-icon" ng-click="goRemind()" ng-if="showRemind">
+      <i style="font-size: 15px;color:#ff2741;" ng-if="showRemind">{{'新增提醒'|T}}</i>
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-buttons  side="left">
+    <button class="button back-button buttons button-clear header-item" ng-if="!(showSeat || showLog || showVis)" ng-click="goBook($event)">
+        <i class="icon icon-back" style="vertical-align: middle;"></i>
+    </button>
+    <button class="button back-button buttons button-clear header-item" ng-if="(showSeat || showLog || showVis)" ng-click="hideModal()">
+        <i class="icon icon-back" style="vertical-align: middle;"></i>
+    </button>
+  </ion-nav-buttons>
+  <div class="d-modal isRight" style="overflow-y: auto;overflow-x:hidden;background-color: #efefef;" ng-class="{'isRight':!showLog,'isCenter':showLog}">
+    <div class="list">
+      <a ui-sref="#" class="item item-divider state-change-title disable-pointer-events">
+        {{'状态记录'|T}}
+      </a>
+      <div class="item clear state-change-div">
+        <div class="clear state-change-main" ng-repeat="log in logList">
+          <i class="state-change-main-circle"></i>
+          <div class="clear state-change-item">
+            <p style="white-space: pre-wrap;">{{log.logs}}</p>
+            <p>{{log.createdAt}} {{log.deviceUserName}}{{log.appUserName}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="d-modal isRight" style="overflow-y: auto;overflow-x:hidden;background-color: #efefef;" ng-class="{'isRight':!showVis,'isCenter':showVis}">
+    <div class="list">
+      <div class="item row">
+        <span class="input-label">{{'选择跟进时间'|T}}</span>
+        <input type="datetime-local" placeholder="请输入咨询时间" class="text-right input-style" style="border:1px solid #DDDDDD;" ng-model="tracker.date">
+      </div>
+      <div class="item row">
+        <span class="input-label">{{'跟进方式'|T}}</span>
+        <i class="text-right col" ng-class={'disable-pointer-events':showState}>
+          <span class="icon icon-check" ng-class="{'icon-check-r':tracker.way=='电话'}" ng-click="changeMessage($event)" data-id="电话">{{'电话'|T}}</span>
+          <span class="icon icon-check" ng-class="{'icon-check-r':tracker.way=='微信'}" ng-click="changeMessage($event)" data-id="微信">{{'微信'|T}}</span>
+          <span class="icon icon-check" ng-class="{'icon-check-r':tracker.way=='面谈'}" ng-click="changeMessage($event)" data-id="面谈">{{'面谈'|T}}</span>
+        </i>
+      </div>
+      <div class="item row">
+        <textarea name="" id="" rows="5" class="input-style textarea-style" style="height: 100px;" ng-model="tracker.content" placeholder="{{'请输入跟进内容'|T}}"></textarea>
+      </div>
+      <div ng-click="addVis()" class="list button button-block button-assertive">{{'添加跟进记录'|T}}</div>
+      <div class="item item-divider state-change-title">
+        {{'历史跟进记录'|T}}
+      </div>
+      <div class="item clear state-change-div">
+        <div class="clear state-change-main" ng-repeat="log in trackerList">
+          <i class="state-change-main-circle"></i>
+          <div class="clear state-change-item">
+            <p>{{'时间'|T}}:{{log.trackerTime|limitTo:16}}  {{'跟进员'|T}}:{{log.trackerEmp}}</p>
+            <p style="white-space: pre-wrap;">{{'方式'|T}}:{{log.trackerWay}}</p>
+            <p style="white-space: pre-wrap;">{{'跟进内容'|T}}:{{log.trackerContent}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="d-modal isRight" style="overflow-y: auto;overflow-x:hidden;background-color: #efefef;" ng-class="{'isRight':!showSeat,'isCenter':showSeat}">
+    <a href="javascript:0" class="item item-icon-right tab-myOrder-detail-item1" style="border: 0;background-color: #efefef;">
+    </a>
+    <div class="row row-wrap">
+      <div class="col-25 text-center table-div" ng-repeat="item in seatList">
+        <img ng-src="img/tab-seat{{item.maxStatus}}1.png"  ng-click="changeSeat($event)" data-isOper={{item.isOper}} data-confirm={{item.confirm}} data-tableAreaName={{item.tableAreaName}} data-tableAreaId={{item.tableAreaId}} data-picUrl={{item.tableUrl}} data-picId={{item.picId}} data-tableNum={{item.maxPeopleNum-item.zuowei}} data-tableName={{item.tableName}} data-seat={{item.tableId}} data-state={{item.maxStatus}} data-picUrl={{item.tableUrl}} data-remark={{item.remark}} data-id={{item.id}} data-appUserId={{item.appUserId}} data-select="0" width="90%" alt="" data-lockCou="{{item.lockCou}}">
+        <span class="disable-pointer-events table-span-second">
+            <i style="line-height: 24px;">{{item.tableName}}</i><br>
+            <i style="white-space:nowrap;color:#666;">{{item.tableAreaName}}</i><br>
+            <i style="color:#666;">{{'总'|T}}{{item.maxPeopleNum}}{{'桌'|T}}</i>
+      </span>
+        <span class="disable-pointer-events table-span-third">
+          <span>{{'剩余'|T}}<span style="color:#DA4C39;">{{item.maxPeopleNum-item.zuowei}}</span>{{'桌'|T}}</span>
+      </span>
+      </div>
+    </div>
+  </div>
+  <ion-content style="padding-top: 10px;">
+    <div ng-if="orderList.length == 0" style="color: #aaa;font-size: 20px;text-align: center;line-height: 300px;">{{'该厅暂无订单'|T}}</div>
+    <div class="list" ng-repeat="order in orderList" ng-if="orderList.length > 0" style="padding: 0 12px;" ng-show="order.status!=5">
+      <div style="text-align: center;margin-bottom: 10px;">{{order.resvDate}}&nbsp;&nbsp;{{order.mealTypeName}}</div>
+      <div class="item row" style="border-radius: 4px;">
+        <div class="row" style="width: 100%;border-bottom: 1px solid #ddd;padding: 0 0 10px;">
+          <i class="icon icon-clue2" ng-class="{'icon-clue2': order.status==1, 'icon-clue3': order.status==2, 'icon-clue4': order.status==3}" style="margin-right: 10px;"></i>
+          <span class="col">{{order.vipName}}<span class="myOrder-gray-font" style="margin-left: 5px;">{{order.vipPhone}}</span><span ng-hide="order.resvMeetingOrderTypeName!='会议预订'" style="color:#ff2741;font-size: 14px;">({{'会议预订'|T}})</span>
+            <span ng-show="order.cbf==1" class="icon icon-zy"></span>
+          </span>
+          <i class="icon" style="font-size:14px;color:#999;" ng-show="order.resvMeetingOrderTypeName!='会议预订'">{{'总预算'|T}}：{{order.amount}}</i>
+        </div>
+        <div class="row" style="width: 100%;border-top: 0;padding: 12px 0;font-size: 14px;" data-appUserId={{order.appUserId}} data-tableAreaName={{order.tableAreaName}} data-tableName={{order.tableName}} data-batchNo={{order.batchNo}} data-resvOrder={{order.resvOrder}} data-status={{order.status}} ng-click="goOrderDetail($event)">
+          <div class="col disable-pointer-events">
+            <div class="row" style="border-top: 0;padding: 0;">{{order.tableAreaName}} {{order.tableNo}}</div>
+            <div class="row" style="border-top: 0;padding: 0;" ng-show="order.status == 5">{{'锁台'|T}}:{{order.remark}}</div>
+            <div class="row" style="border-top: 0;padding: 0;"><span class="col">{{order.appUserName}}</span>{{order.createTime}}</div>
+            <div class="row" style="border-top: 0;padding: 0;"><span class="col">{{order.resvTableNum}}{{(order.resvMeetingOrderTypeName!='会议预订'?'桌':'人')|T}}</span>{{'菜肴标准'|T}}:{{order.dishStandard}}<span ng-show="order.isCook == 1" ng-class={'red':true}>{{'菜'|T}}</span></div>
+            <div class="row" style="border-top: 0;padding: 0;" ng-show="order.resvMeetingOrderTypeName=='会议预订'">{{'时间'|T}}：{{order.meetingStart}} {{'至'|T}} {{order.meetingEnd}}</div>
+          </div>
+          <i class="icon icon-arrow-right disable-pointer-events" style="margin-left: 10px;"></i>
+        </div>
+        <div class="row" style="width: 100%;padding: 10px 0 0;">
+          <div ng-click="seeVis($event)" data-tracker="{{order.trackers}}" data-appUserName="{{order.appUserName}}" data-resvOrder="{{order.resvOrder}}" data-batchNo="{{order.batchNo}}" class="col">
+            <span class="disable-pointer-events" style="font-size: 14px;color:#7daef5;text-decoration: underline">{{'查看跟进记录'|T}}</span>
+          </div>
+          <div>
+            <button ng-if="order.status==2&&((order.appUserId==info.id)||(info.operationType==1))" ng-click="lock($event)" data-resvOrder={{order.resvOrder}} data-resvDate="{{order.resvDate}}" data-mealTypeId={{order.mealTypeId}} data-mealTypeName={{order.mealTypeName}} data-tableName={{order.tableName}} data-resvMeetingOrderTypeName={{order.resvMeetingOrderTypeName}} style="padding: 0 10px;border: 1px solid #ccc;background: #fff;border-radius: 8px;" class="button button-small">{{'关联锁台'|T}}</button>
+            <button ng-if="(tuitai)&&((order.appUserId==info.id)||(info.operationType==1))" data-resvDate="{{order.resvDate}}" data-mealTypeId={{order.mealTypeId}} data-mealTypeName={{order.mealTypeName}} data-resvOrder={{order.resvOrder}} data-tableName={{order.tableName}} ng-click="tuiding($event)" style="padding: 0 10px;border: 1px solid #ccc;background: #fff;border-radius: 8px;" class="button button-small">{{'退订'|T}}</button>
+            <button ng-if="(huantai)&&((order.appUserId==info.id)||(info.operationType==1))" data-status="{{order.status}}" data-resvDate="{{order.resvDate}}" data-resvTableNum="{{order.resvTableNum}}" data-mealTypeId={{order.mealTypeId}}  data-mealTypeName={{order.mealTypeName}} data-resvOrder={{order.resvOrder}} data-tableName={{order.tableName}} ng-click="huanzhuo($event)" style="padding: 0 10px;border: 1px solid #ccc;background: #fff;border-radius: 8px;" class="button button-small">{{'换台'|T}}</button>
+            <button data-resvDate="{{order.resvDate}}" data-mealTypeId={{order.mealTypeId}} data-resvOrder={{order.resvOrder}} data-tableName={{order.tableName}} ng-click="seeLog($event)" style="padding: 0 10px;border: 1px solid #ccc;background: #fff;border-radius: 8px;" class="button button-small">{{'日志'|T}}</button>
+            <button data-resvDate="{{order.resvDate}}" data-batchNo="{{order.batchNo}}" data-mealTypeName={{order.mealTypeName}} data-mealTypeId={{order.mealTypeId}} data-resvOrder={{order.resvOrder}} data-vipName={{order.vipName}} data-vipSex={{order.vipSex}} data-vipPhone={{order.vipPhone}} data-tableName={{order.tableName}} data-resvDate={{order.resvDate}} ng-click="goSettle($event)" ng-if="order.status==2" style="padding: 0 10px;border: 1px solid #ccc;background: #fff;border-radius: 8px;" class="button button-small">{{'结账'|T}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,28 @@
+<ion-view hide-tabs="true">
+  <ion-nav-title>{{'关联锁台台位'|T}}</ion-nav-title>
+  <ion-nav-buttons side="right">
+    <button class="button button-icon" ng-click="goLock()">
+      <i style="font-size: 15px;">{{'锁台'|T}}</i>
+    </button>
+  </ion-nav-buttons>
+  <ion-content>
+    <div style="display: flex;padding: 10px;background: #d0d0d0;"><span style="flex: 1;">{{'非关联台位'|T}}</span><span ng-click="unlockAll(0)" ng-show="table.length>0">{{'全部解锁'|T}}</span ng-click="unlock(item)"></div>
+    <div style="background: #fff;">
+      <div style="display: flex;padding: 10px;" ng-repeat="item in table">
+        <span style="flex: 1;line-height: 30px;">{{item.tableName}}</span>
+        <span style="flex: 2;line-height: 30px;color: #999;">{{item.resvDate}} {{item.mealTypeName}}</span>
+        <button class="button button-small button-assertive" ng-click="unlock(item)" style="padding: 0 10px;border-radius: 8px;">{{'解锁'|T}}</button>
+      </div>
+      <div style="padding: 10px;background: #fff;text-align: center;" ng-show="table.length==0">{{'暂无锁台'|T}}</div>
+    </div>
+    <div style="display: flex;padding: 10px;background: #d0d0d0;"><span style="flex: 1;">{{'关联台位'|T}}</span><span ng-click="unlockAll(1)" ng-show="relatedTable.length>0">{{'全部解锁'|T}}</span ng-click="unlock(item)"></div>
+    <div style="background: #fff;" ng-repeat="item in relatedTable">
+      <div style="display: flex;padding: 10px;">
+        <span style="flex: 1;line-height: 30px;">{{item.tableName}}</span>
+        <span style="flex: 2;line-height: 30px;color: #999;">{{item.resvDate}} {{item.mealTypeName}}</span>
+        <button class="button button-small button-assertive" ng-click="unlock(item)" style="padding: 0 10px;border-radius: 8px;">{{'解锁'|T}}</button>
+      </div>
+    </div>
+    <div style="padding: 10px;background: #fff;text-align: center;" ng-show="relatedTable.length==0">{{'暂无锁台'|T}}</div>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,20 @@
+<ion-view hide-tabs="true">
+  <ion-nav-title>{{'配菜图片'|T}}</ion-nav-title>
+  <ion-nav-buttons  side="right">
+    <a ng-show="imgSrc" href="{{imgSrc}}" download="img" class="button button-icon" >
+      <i style="color:#ff2741;font-size: 15px;">{{'下载'|T}}</i>
+    </a>
+  </ion-nav-buttons>
+  <ion-content style="background: #fff">
+    <div class="list" style="padding: 0 10px;">
+      <img ng-src={{imgSrc}} on-hold="weixin()" width=100% alt="">
+      <a href="javascript:0"  class="item item-icon-right tab-myOrder-detail-item1" style="border: 0;background: transparent">
+      </a>
+      <a href="javascript:0"  class="item item-icon-right tab-myOrder-detail-item1" style="border: 0;background: transparent">
+      </a>
+    </div>
+  </ion-content>
+  <div ng-hide="type3" ng-if="peicai" class="bar bar-footer text-center" id="peiPic" style="padding: 10px 0;height: 60px;background: transparent">
+    <button onclick="this.value = null" class="button button-block button-assertive" ng-file-select="onFileSelect($files)" data-multiple="true" title="select file" style="font-size:16px;width: 90%;margin: 0 auto;">{{'上传菜单'|T}}</button>
+  </div>
+</ion-view>

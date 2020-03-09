@@ -1,0 +1,12 @@
+.c-modalB{z-index: 9999;position: absolute;left:0;right:0;bottom:0;top:0;background: rgba(0,0,0,0.5);}
+.c-modal{z-index: 10000;position: absolute;width:100%;left:0;bottom:0;right:0;height:auto;background:#fff;transition: bottom 0.3s ease;}
+.dateList{text-align: center;display: inline-block;width:14%;border:1px solid transparent;}
+.weekList{text-align: center;display: inline-block;width:14%;}
+.dateButton{border-radius: 4px;color:#fff;display: block;line-height: 28px;text-align: center;margin: auto;width: 40%;}
+.hideC{bottom:-800px;}
+.showC{left:0;}
+
+/****ionic calender****/
+.date_selection .row{min-height: 0;}
+.date_selection .row + .row{border: 0;}
+.date_selection .col{padding: 5px;}

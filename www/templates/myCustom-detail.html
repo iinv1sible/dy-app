@@ -1,0 +1,116 @@
+<ion-view hide-tabs="true">
+  <ion-nav-bar class="bar-stable bar" style="display:block;z-index:10">
+    <div class="title title-center header-item" style="background-color:#fff">{{'客户列表'|T}}</div>
+  </ion-nav-bar>
+  <button style="z-index:100" class="button back-button buttons button-clear header-item" ng-click="$ionicGoBack()">
+    <i class="icon icon-back" style="vertical-align: middle;"></i>
+  </button>
+  <button style="z-index:100;float:right" class="button button-icon button-clear button-positive" ng-click="newVip()">
+    <i style="font-size: 15px;color:#ff2741;">{{'新增客户'|T}}</i>
+  </button>
+  <ion-content ion-sticky>
+    <div class="list" style="margin-bottom: 0;padding: 0;border: 0;">
+      <div class="list list-inset" style="margin:0;">
+        <label class="item item-input">
+          <i class="icon icon-search placeholder-icon" style="margin-top: 5px;"></i>
+          <input type="text" placeholder="{{'查找'|T}}" ng-change="selectCustom()" ng-model="data.search" autocomplete="off" style="padding: 0 12px 0 0">
+        </label>
+      </div>
+    </div>
+    <div class="list" ng-if="!isSelect" style="margin-bottom: 0px;padding-top: 5px;" ng-repeat="class in customList">
+      <div class="item row" ng-click="selectClass($event)"  data-vipClassId={{class.vipClassId}} style="padding-top:10px;padding-bottom:10px;background-color: #fff;color: #999;border: 0">
+        <div class="col disable-pointer-events">
+          <div class="font-black">{{class.vipClassName}}</div>
+          <!-- <div>{{'总计'|T}}{{class.list.length}}{{'人'|T}}</div> -->
+        </div>
+        <i class="disable-pointer-events icon" ng-class="{'icon-minus-g':!class.isNowSelect,'icon-plus-r':class.isNowSelect}"></i>
+      </div>
+      <div ng-click="goInfo($event)" ng-repeat="custom in class.list" data-vipId={{custom.id}} class="item row" style="padding: 10px 25px;margin-bottom: 5px;">
+        <div class="row disable-pointer-events" style="padding: 0 0 10px 0;">
+          <i class="tab-custom-icon text-center" ng-style="bgColor[custom.colorId]">
+            <img ng-src={{custom.imageUrl}} ng-show=custom.imageUrl style="border-radius: 50%;display: block;height: 100%;width: 100%;" alt="">
+            <span ng-hide=custom.imageUrl>{{custom.vipName[0]}}</span>
+          </i>
+          <div class="col" style="padding-left: 12px;">
+            <div class="myOrder-black-font">{{custom.vipName}}</div>
+            <div class="myOrder-gray-font">{{custom.vipPhone}}</div>
+          </div>
+          <div class="myOrder-gray-font" style="text-align: right;">
+            <div class="myOrder-gray-font" style="margin-bottom: 5px;">{{'资料完整度'|T}} {{custom.percentRank}}%</div>
+            <div class="chat-div-gray" style="display: inline-block;background: #ccc;">
+              <div style="width:12px;background: #ccc;float:left;height: 6px;position: relative;"><span style="position: absolute;left: 0;top: 0;bottom: 0;width:{{custom.percentRank<20&&custom.percentRank>0?custom.percentRank/20*12:12}}px" ng-class="{'bgRed':custom.percentRank>0}"></span></div>
+              <span style="float: left;width: 5px;height: 6px;background: #fff"></span>
+              <div style="width:12px;background: #ccc;float:left;height: 6px;position: relative;"><span style="position: absolute;left: 0;top: 0;bottom: 0;width:{{custom.percentRank<40&&custom.percentRank>20?(custom.percentRank-20)/20*12:12}}px" ng-class="{'bgRed':custom.percentRank>20}"></span></div>
+              <span style="float: left;width: 5px;height: 6px;background: #fff"></span>
+              <div style="width:12px;background: #ccc;float:left;height: 6px;position: relative;"><span style="position: absolute;left: 0;top: 0;bottom: 0;width:{{custom.percentRank<60&&custom.percentRank>40?(custom.percentRank-40)/20*12:12}}px" ng-class="{'bgRed':custom.percentRank>40}"></span></div>
+              <span style="float: left;width: 5px;height: 6px;background: #fff"></span>
+              <div style="width:12px;background: #ccc;float:left;height: 6px;position: relative;"><span style="position: absolute;left: 0;top: 0;bottom: 0;width:{{custom.percentRank<80&&custom.percentRank>60?(custom.percentRank-60)/20*12:12}}px" ng-class="{'bgRed':custom.percentRank>60}"></span></div>
+              <span style="float: left;width: 5px;height: 6px;background: #fff"></span>
+              <div style="width:12px;background: #ccc;float:left;height: 6px;position: relative;"><span style="position: absolute;left: 0;top: 0;bottom: 0;width:{{custom.percentRank<100&&custom.percentRank>80?(custom.percentRank-80)/20*12:12}}px" ng-class="{'bgRed':custom.percentRank>80}"></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="row disable-pointer-events" style="padding: 10px 0 0 0;">
+          <div style="width: 100%;margin-bottom: 3px;">{{'消费频次'|T}}<span class="right">{{custom.payfrequency||0}}{{'次/月'|T}}</span></div>
+          <div style="width: 100%;margin-bottom: 3px;">{{'客户总消费金额'|T}}<span class="right">{{custom.payamount||0}}{{'元'|T}}</span></div>
+          <div style="width: 100%">{{'最近消费时间'|T}}<span class="right">{{(custom.lastResvDate||'无')|T}}</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="list" ng-show="isSelect" style="margin-bottom: 0px;padding-top: 5px;">
+      <div ng-click="goInfo($event)" ng-repeat="custom in select" data-vipId={{custom.id}} class="item row" style="padding: 10px 25px;margin-bottom: 5px;">
+        <div class="row disable-pointer-events" style="padding: 0 0 10px 0;">
+          <i class="tab-custom-icon text-center" ng-style="bgColor[2]">
+            <img ng-src={{custom.imageUrl}} ng-show=custom.imageUrl style="border-radius: 50%;display: block;height: 100%;width: 100%;" alt="">
+            <span ng-hide=custom.imageUrl>{{custom.vipName[0]}}</span>
+          </i>
+          <div class="col" style="padding-left: 12px;">
+            <div class="myOrder-black-font">{{custom.vipName}}</div>
+            <div class="myOrder-gray-font">{{custom.vipPhone}}</div>
+          </div>
+          <div class="myOrder-gray-font" style="text-align: right;">
+            <div class="myOrder-gray-font" style="margin-bottom: 5px;">{{'资料完整度'|T}} {{custom.percentRank}}%</div>
+            <div class="chat-div-gray" style="display: inline-block;background: #ccc;">
+              <div style="width:12px;background: #ccc;float:left;height: 6px;position: relative;"><span style="position: absolute;left: 0;top: 0;bottom: 0;width:{{custom.percentRank<20&&custom.percentRank>0?custom.percentRank/20*12:12}}px" ng-class="{'bgRed':custom.percentRank>0}"></span></div>
+              <span style="float: left;width: 5px;height: 6px;background: #fff"></span>
+              <div style="width:12px;background: #ccc;float:left;height: 6px;position: relative;"><span style="position: absolute;left: 0;top: 0;bottom: 0;width:{{custom.percentRank<40&&custom.percentRank>20?(custom.percentRank-20)/20*12:12}}px" ng-class="{'bgRed':custom.percentRank>20}"></span></div>
+              <span style="float: left;width: 5px;height: 6px;background: #fff"></span>
+              <div style="width:12px;background: #ccc;float:left;height: 6px;position: relative;"><span style="position: absolute;left: 0;top: 0;bottom: 0;width:{{custom.percentRank<60&&custom.percentRank>40?(custom.percentRank-40)/20*12:12}}px" ng-class="{'bgRed':custom.percentRank>40}"></span></div>
+              <span style="float: left;width: 5px;height: 6px;background: #fff"></span>
+              <div style="width:12px;background: #ccc;float:left;height: 6px;position: relative;"><span style="position: absolute;left: 0;top: 0;bottom: 0;width:{{custom.percentRank<80&&custom.percentRank>60?(custom.percentRank-60)/20*12:12}}px" ng-class="{'bgRed':custom.percentRank>60}"></span></div>
+              <span style="float: left;width: 5px;height: 6px;background: #fff"></span>
+              <div style="width:12px;background: #ccc;float:left;height: 6px;position: relative;"><span style="position: absolute;left: 0;top: 0;bottom: 0;width:{{custom.percentRank<100&&custom.percentRank>80?(custom.percentRank-80)/20*12:12}}px" ng-class="{'bgRed':custom.percentRank>80}"></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="row disable-pointer-events" style="padding: 10px 0 0 0;">
+          <div style="width: 100%;margin-bottom: 3px;">{{'消费频次'|T}}<span class="right">{{custom.payfrequency||0}}{{'次/月'|T}}</span></div>
+          <div style="width: 100%;margin-bottom: 3px;">{{'客户总消费金额'|T}}<span class="right">{{custom.payamount||0}}{{'元'|T}}</span></div>
+          <div style="width: 100%">{{'最近消费时间'|T}}<span class="right">{{(custom.lastResvDate||'无')|T}}</span></div>
+        </div>
+      </div>
+      <!-- <div ng-click="goInfo($event)" class="item item-icon-left" data-vipId={{custom.id}} style="padding-top:5px;padding-bottom: 5px;">
+        <i class="disable-pointer-events  tab-custom-icon left-center text-center" ng-style="bgColor[2]">
+          <img ng-src={{custom.imageUrl}} ng-show=custom.imageUrl style="border-radius: 50%;" width="100%" height="100%" alt="">
+          <span ng-hide=custom.imageUrl>{{custom.vipName[0]}}</span>
+        </i>
+        <div class="disable-pointer-events">
+          <span class="myOrder-black-font">{{custom.vipName}}</span>
+          <span class="myOrder-gray-font">{{custom.vipPhone}}</span>
+          <span class="myOrder-gray-font" style="float: right;font-size: 12px;">{{'资料完整度'|T}} <span style="color:#8ECE88;">{{custom.percentRank}}%</span></span>
+        </div>
+        <div class="disable-pointer-events myOrder-gray-font chat-div-contain">
+          <div class="chat-div-gray">
+            <div class="chat-div-gray" style="background-color:#8ECE88;opacity: 0.8;width:{{custom.percentRank}}%;"></div>
+          </div>
+        </div>
+      </div> -->
+    </div>
+    <ion-infinite-scroll
+      ng-if="canLoad"
+      immediate-check="false"
+      distance="5%"
+      on-infinite="doInfinite()">
+    </ion-infinite-scroll>
+  </ion-content>
+</ion-view>

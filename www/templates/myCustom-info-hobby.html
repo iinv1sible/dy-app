@@ -1,0 +1,21 @@
+<ion-view hide-tabs="true">
+  <ion-nav-title>{{'客户喜好'|T}}</ion-nav-title>
+  <ion-content>
+    <div class="list" style="margin-bottom:0;">
+      <div class="item custom-info-tag-item" id="customHobby">
+        <a class="button button-balanced button-small custom-info-tag-a" style="background: #95809e !important;color: #fff !important;border: 0 !important;"  on-hold="remove($event)" ng-repeat="tag in hobbyList" data-id={{tag.id}} >{{tag.hobbyName}}</a>
+        <a class="button button-stable button-outline button-small custom-info-tag-a" ng-click="addHobbyShow()">{{'添加喜好'|T}}</a>
+      </div>
+      <div class="item item-input-inset" ng-show="addShowHobby" style="border-color: transparent;background: transparent;">
+        <div style="background: #fff;border-radius: 4px;display: flex;width: 100%;">
+        <label class="item-input-wrapper" style="border-radius: 0;background: #fff;">
+          <input type="text" placeholder="{{'请输入喜好内容'|T}}" autofocus ng-model="data.hobbyName">
+        </label>
+        <a class="button button-small button-stable" style="margin: 0;background: #fff;color: #ff2741;" ng-click="addHobbyName()">
+          {{'确认添加'|T}}
+        </a>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

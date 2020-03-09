@@ -1,0 +1,84 @@
+<ion-view hide-tabs="true">
+  <ion-nav-title>{{'纪念日'|T}}</ion-nav-title>
+  <ion-content scroll="false" style="border-top: 1px solid #ddd;">
+    <ion-scroll style="height: 100%;">
+    <div class="list" style="margin-bottom:0;">
+      <div class="item row" ng-repeat="day in dayList">
+        <i class="icon icon-anniversary"></i>
+        <div class="col" style="margin-left: 12px;">
+          <div style="color: #333;">{{day.anniversaryObj|T}}<span style="margin-left: 14px;">{{day.anniversaryName|T}}</span></div>
+          <div style="font-size: 14px;color: #666;">{{(day.calendarType?'农历':'公历')|T}}<span style="margin-left: 10px;">{{day.anniversaryTime|T}}</span></div>
+        </div>
+        <span class="icon icon-trash-g" ng-click="deleteDay(day.id)" ng-if="showEdit"></span>
+      </div>
+    </div>
+    </ion-scroll>
+    <button class="bar bar-footer text-center" ng-click="addNew()" ng-if="showEdit"><i class="icon icon-add-r" style="margin: 0 auto">{{'添加纪念日'|T}}</i></button>
+  </ion-content>
+  <div class="modal-mask" ng-show="isAdd">
+    <div class="modal-content">
+      <div class="icon icon-close" style="position: absolute;right: 10px;top: 10px;" ng-click="closeAdd()"></div>
+      <div class="modal-padding">
+        <div class="modal-title">{{'添加纪念日'|T}}</div>
+        <div style="border-bottom: 1px solid #999;margin-bottom: 10px;margin-top: 16px;">
+          <label ng-click="openPopover($event,1)" style="line-height: 33px;height: 33px;display: flex;">{{'身份关系'|T}}<span class="icon icon-select" style="flex: 1;text-align: right;{{name=='请选择'?'color: #ccc':''}}">{{name|T}}</span></label>
+        </div>
+        <div style="border-bottom: 1px solid #999;margin-bottom: 10px;">
+          <label ng-click="openPopover($event,2)" style="line-height: 33px;height: 33px;display: flex;">{{'纪念类型'|T}}<span class="icon icon-select" style="flex: 1;text-align: right;{{type=='请选择'?'color: #ccc':''}}">{{type|T}}</span></label>
+        </div>
+        <div style="margin-bottom: 10px;">
+          <div style="line-height: 33px;height: 33px;display: flex;">{{'纪念日期'|T}}
+            <span style="flex: 1;text-align: right;">
+              <a class="icon icon-check" ng-class="{'icon-check-r':!nong}" ng-click="changeNong(1)"><span class="span-black">{{'公历'|T}}</span></a>
+              <a class="icon icon-check" ng-class="{'icon-check-r':nong}" ng-click="changeNong(2)"><span class="span-black">{{'农历'|T}}</span></a>
+            </span>
+          </div>
+        </div>
+        <div style="display: flex;">
+          <a class="icon icon-check" ng-class="{'icon-check-r':igYear}" ng-click="changeYear()"><span class="span-black">{{'忽略年份'|T}}</span></a>
+          <span style="flex: 1;text-align: right;{{date1=='选择日期'?'color: #ccc':''}}" class="icon icon-cal" ng-click="showCalender()">{{date1|T}}</span>
+        </div>
+      </div>
+      <div class="row modal-bottom">
+        <button class="col modal-btn modal-btn-r" ng-click="addNewDay()">{{'确认添加'|T}}</button>
+      </div>
+    </div>
+  </div>
+  <div class="c-modalB" ng-show="calender"></div>
+  <div class="c-modal hideC" ng-class="{'hideC':!calender}" on-swipe-left="addMonth()" on-swipe-right="minusMonth()">
+    <div class="row">
+      <div class="col-offset-10 col-40 text-center">
+        <span class="right icon icon-arrow-right" ng-click="addYear()" style="width: 20%;"></span>
+        <span class="left icon icon-arrow-left" ng-click="minusYear()" style="width: 20%;"></span>
+        <select ng-model="dateYear" ng-change="yearChanged(dateYear)" ng-options="year for year in yearsList" class="ng-valid ng-not-empty ng-dirty ng-valid-parse ng-touched" style="font-size: 15px;border:none;background: #fff">
+          <option label="year" value="number:year">year</option>
+        </select>
+        <i class="icon icon-select"></i>
+      </div>
+      <div class="col-offset-10 col-40 text-center">
+        <span class="right icon icon-arrow-right" ng-click="addMonth()" style="width: 20%;"></span>
+        <span class="left icon icon-arrow-left" ng-click="minusMonth()" style="width: 20%;"></span>
+        <!-- <span style="font-size: 15px;margin:5px 0;">{{dateMonth+1+'月'|T}}</span> -->
+        <select ng-model="dateMonth" ng-change="monthChanged(dateMonth)" ng-options="month for month in monthsList" class="ng-valid ng-not-empty ng-dirty ng-valid-parse ng-touched" style="font-size: 15px;border:none;background: #fff">
+          <option label="month" value="number:month">month</option>
+        </select>
+        <i class="icon icon-select"></i>
+      </div>
+    </div>
+    <div class="row" style="padding: 0 0 5px;border-top: 0;">
+      <div ng-repeat="weekDay in weekList" class="weekList">
+        <span style="color: #999;">{{weekDay|T}}</span>
+      </div>
+    </div>
+    <div class="row row-wrap">
+      <div ng-repeat="date in dateList" class="dateList" ng-click="hideCalender($event)" data-id="{{date.id}}" data-date="{{date.ylr}}" ng-class="{'disable-pointer-events':(date.color=='#ccc')}">
+        <p class="disable-pointer-events" style="margin-bottom: 3px;color:{{date.color}};">{{date.ylr}}</p>
+        <p class="disable-pointer-events" style="color:{{date.color}}">{{date.nlr}}</p>
+      </div>
+    </div>
+    <div class="row" style="border-top: 0;padding: 10px 20px;text-align: center;">
+      <span class="dateButton" ng-click="dateCancel()" style="background-color: #ccc">{{'取 消'|T}}</span>
+      <span class="dateButton" ng-click="dateToday()" style="background-color: #ff2741;margin-left: 30px;">{{'今 日'|T}}</span>
+    </div>
+  </div>
+</ion-view>

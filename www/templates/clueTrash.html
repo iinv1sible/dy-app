@@ -1,0 +1,47 @@
+<ion-view hide-tabs="true">
+  <ion-nav-title>{{'线索回收箱'|T}}</ion-nav-title>
+  <ion-nav-buttons side="right">
+      <button class="button button-icon" ng-click="goSearch()">
+        <span class="icon icon-search" style="padding-top: 4px;"></span>
+      </button>
+    </ion-nav-buttons>
+  <ion-content>
+    <div class="list" style="margin-bottom:0;">
+      <div class="item row" id="top" style="padding: 10px 5px">
+          <span class="col col-10">
+            <!--<label class="check-label">-->
+              <!--<input type="checkbox">-->
+            <!--</label>-->
+          </span>
+          <span class="col col-10">{{'编号'|T}}</span>
+          <span class="col col-20">{{'客户姓名'|T}}</span>
+          <span class="col col-25">{{'手机号'|T}}</span>
+          <span class="col col-10">{{'宴会类型'|T}}</span>
+          <span class="col col-25" style="text-align: right">{{'宴会时间'|T}}</span>
+      </div>
+
+      <div class="item row" style="padding: 10px 5px" ng-repeat="item in myTrashClueList" ng-click="goDetail($event)" data-keyNo={{item.keyNo}}>
+          <span class="col col-10" ng-click="check($index,$event);$event.stopPropagation();">
+            <label class="check-label" ng-class="item.isCheck==1?'check':''">
+              <input type="checkbox">
+            </label>
+          </span>
+          <span class="col col-10">{{item.keyNoBusiness}}</span>
+          <span class="col col-20">{{item.vipName}}</span>
+          <span class="col col-25">{{item.vipPhone}}</span>
+          <span class="col col-10">{{item.resvMeetingOrderTypeName}}</span>
+          <span class="col col-25" style="text-align: right">{{item.resvDate}}<i class="disable-pointer-events icon icon-right-arrow"></i></span>
+      </div>
+      <div class="clue-more" ng-if="myTrashClueList.length>0&&canLoad" ng-click="doInfinite()">{{'查看更多'|T}}</div>
+      <div class="clue-more" ng-if="!canLoad&&isShow">{{'已经到底了'|T}}</div>
+      <div class="clue-more" ng-if="!myTrashClueList.length>0">{{'暂无线索'|T}}</div>
+      <ion-infinite-scroll
+        ng-if="canLoad"
+        immediate-check="false"
+        distance="2%"
+        on-infinite="doInfinite()">
+      </ion-infinite-scroll>
+    </div>
+  </ion-content>
+  <div class="bottom-btn" ng-click="recover()" style="background-color: #ff2741;color:#fff;">{{'恢复'|T}}</div>
+</ion-view>

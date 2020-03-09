@@ -1,0 +1,18 @@
+<ion-view hide-tabs="true">
+  <ion-nav-title></ion-nav-title>
+  <ion-content style="background: #fff">
+    <h2 class="login-title">{{'请设置新的密码'|T}}</h2>
+    <div class="span-gray" style="font-size: 15px;padding: 0 25px;">
+      <div class="list">
+        <label class="item-input login-input">
+          <input type="password" ng-model="password.psd1" placeholder="{{'请输入新密码'|T}}" autocomplete='new-password'>
+        </label>
+        <label class="item-input login-input">
+          <input type="password" ng-model="password.psd2" placeholder="{{'请确认新密码'|T}}" autocomplete='new-password'>
+        </label>
+      </div>
+      <div ng-click="check()" class="list button button-block button-assertive" style="line-height: 38px;min-height: 38px;">{{'确认'|T}}</div>
+      <div ng-click="cancel()" class="list button button-block button-positive" style="line-height: 38px;min-height: 38px;">{{'取消'|T}}</div>
+    </div>
+  </ion-content>
+</ion-view>

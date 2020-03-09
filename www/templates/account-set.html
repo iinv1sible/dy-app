@@ -1,0 +1,41 @@
+<ion-view  hide-tabs="true">
+  <ion-nav-title>{{'设置'|T}}</ion-nav-title>
+  <ion-content>
+    <div class="list">
+      <!--<a href="#" class="item item-icon-right">-->
+        <!--去App Store评价我们-->
+      <!--<i class="icon icon-right-arrow"></i>-->
+      <!--</a>-->
+      <a ui-sref="tab.account-set-aboutUs" class="item row item-icon-right">
+        <span class="input-label">{{isYp?'关于荆点':'关于易订'|T}}</span>
+        <i class="icon icon-right-arrow"></i>
+      </a>
+      <a ui-sref="tab.account-set-sidedish" class="item row item-icon-right" ng-if="showSetDish">
+          <span class="input-label">{{'配菜套餐设置'|T}}</span>
+        <i class="icon icon-right-arrow"></i>
+      </a>
+      <!--<a href="#" class="item item-icon-right">-->
+        <!--清除缓存-->
+        <!--<i class="icon span-gray" style="font-size: 1em;">2.5M</i>-->
+      <!--</a>-->
+      <a ui-sref="psd3" class="item row item-icon-right">
+        <span class="input-label">{{'修改密码'|T}}</span>
+        <i class="icon icon-right-arrow"></i>
+      </a>
+      <a ui-sref="tab.account-set-psd4" class="item row item-icon-right">
+        <span class="input-label">{{'切换语言'|T}}</span>
+        <i class="icon icon-right-arrow"></i>
+      </a>
+      <a ng-click="update()" class="item row">
+        <span class="col">{{'检查更新'|T}}</span>
+      </a>
+    </div>
+    <div class="list">
+      <a href="javascript:0;" ng-click="quit()" class="item row" style="color:#ff2741;">
+        {{'退出账户'|T}}
+      </a>
+    </div>
+  </ion-content>
+
+  <div style="position: fixed;bottom: 20px;left: 0;right: 0;text-align: center;"><span style="text-decoration: underline;" ng-click="goPage('userAgreements')">用户协议</span><span style="text-decoration: underline;margin-left: 20px;" ng-click="goPage('privacyStatement')">隐私声明</span></div>
+</ion-view>

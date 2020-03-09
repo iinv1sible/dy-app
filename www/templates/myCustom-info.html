@@ -1,0 +1,82 @@
+<ion-view hide-back-button="true" hide-tabs="true" style="background: #e8e8e8;">
+  <ion-nav-title style="color: #fff;">{{'客户详情'|T}}</ion-nav-title>
+  <ion-nav-buttons  side="left" style="padding-left: 12px;">
+    <button class="button back-button buttons button-clear header-item" ng-click="$ionicGoBack()">
+      <i class="icon icon-back-w" style="vertical-align: middle;"></i>
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <a href="tel:{{'+'+(customInfo.countryCode || '86') + customInfo.vipPhone}}" style="padding-right: 10px;" ng-show="info.operationType==1||customInfo.appUserId==info.id">
+      <i class="icon icon-call"></i>
+    </a>
+  </ion-nav-buttons>
+  <div class="bg-customer"></div>
+  <ion-content style="background: transparent">
+    <div class="cust-card">
+      <div ng-click="goInfoDetail()" class="row" style="align-items:center;padding: 0 0 20px 0;">
+        <i class="tab-custom-icon text-center" style="background-color: #E7B45F">
+          <img ng-src={{customInfo.imageUrl}} ng-show=customInfo.imageUrl style="border-radius: 50%;" width="100%" height="100%" alt="">
+          <span ng-hide=customInfo.imageUrl>{{customInfo.vipName[0]}}</span>
+        </i>
+        <div style="flex: 1;padding-left: 10px;">
+          <p style="margin: 0">{{customInfo.vipName}}</p>
+          <p style="margin: 0">{{!info.hiddenPhoneNum||customInfo.appUserId==info.id?customInfo.vipPhone:customInfo.vipPhone.slice(0, 3) + '****' + customInfo.vipPhone.slice(7)}}</p>
+        </div>
+         <i class="icon icon-right-arrow" ng-show="info.operationType==1||customInfo.appUserId==info.id"></i>
+      </div>
+      <div class="cust-card-line"><span class="icon icon-select" ng-click="changeQryType()">{{qryTypeText|T}}</span></div>
+      <div class="cust-card-grid">
+        <div class="row">
+          <div><p class="cust-num">{{count1}}</p><p class="cust-txt">{{'预订次数'|T}}</p></div>
+          <div><p class="cust-num">{{count7}}</p><p class="cust-txt">{{type==0?'消费人数':'消费桌数'|T}}</p></div>
+          <div><p class="cust-num">{{count6}}单/月</p><p class="cust-txt">{{'消费频度'|T}}</p></div>
+        </div>
+        <div class="row">
+          <div><p class="cust-num">{{count2}}</p><p class="cust-txt">{{'平均消费'|T}}</p></div>
+          <div><p class="cust-num">{{count3}}</p><p class="cust-txt">{{type==0?'人均消费':'桌均消费'|T}}</p></div>
+          <div><p class="cust-num">{{count4}}万</p><p class="cust-txt">{{'总交易额度'|T}}</p></div>
+        </div>
+      </div>
+    </div>
+     <div class="list cust-list">
+       <div class="row item row-center" ng-click="goAppUser()">
+         <span class="col">{{'所属营销'|T}}</span>
+         <i class="icon icon-right-arrow" ng-show="info.operationType==1||customInfo.appUserId==info.id">{{customInfo.appUserName}}</i>
+       </div>
+       <div class="row item row-center" ng-click="goCunjiu(customInfo.vipPhone)">
+          <span class="col">{{'存酒信息'|T}}</span>
+          <i class="icon icon-right-arrow"><span style="font-size:14px">{{showWine?'有存酒':'无存酒'}}</span></i>
+       </div>
+       <div class="row item row-center" ng-if="(isJk==1)&&isJkVip" ng-click="goCard(customInfo.memberID)">
+         <span class="col">{{'优惠劵'|T}}</span>
+         <i class="icon icon-right-arrow" ng-show="info.operationType==1||customInfo.appUserId==info.id"></i>
+       </div>
+       <!-- <div ng-show="showWine" class="row item row-center">
+         <div>
+            <span class="col">{{'存酒信息'|T}}</span>
+           <span style="background-color:#387ef5;border: 1px solid #387ef5;float:left;color: #fff;" class="custom-info-tag-span margin-top-3" ng-repeat="value in wineList track by $index">{{value.wineName}}*{{value.wineNum}}</span>
+         </div>
+       </div> -->
+       <div ng-click="show()" class="row item row-center">
+         <span class="col">{{'客户分组'|T}}</span>
+         <i class="icon icon-right-arrow" style="font-size: 1em;" ng-show="info.operationType==1||customInfo.appUserId==info.id">{{customInfo.vipClassName}}</i>
+       </div>
+       <div  class="row item row-center" ng-click="goRecord()">
+        <span class="col">{{'预订记录'|T}}
+         <span class="icon icon-select" style="margin-left: 10px;font-size: 14px;" ng-click="openPopover($event)">{{typeText|T}}</span>
+        </span>
+        <i class="icon icon-right-arrow" ng-show="info.operationType==1||customInfo.appUserId==info.id"></i>
+       </div>
+    </div>
+    <div ng-hide="nolast" class="list" data-resvOrder={{lastOrder.resvOrder}} data-type={{lastOrder.oType}} ng-click="goOrderDetail($event)">
+      <div class="item row row-center disable-pointer-events">
+        <i class="d tab-account-message-detail-icon disable-pointer-events" style="background-image: url('images/icon_orderrecord@3x.png');width: 30px;height: 30px;"></i>
+        <span class="col disable-pointer-events">{{lastOrder.vipName}} {{lastOrder.resvNum}}{{'人'|T}}</span>
+        <i class="disable-pointer-events" style="color:#999;">{{'消费金额'|T}}：{{lastOrder.payamount}}</i>
+      </div>
+      <div class="item row row-center disable-pointer-events">
+        <div class="disable-pointer-events myOrder-gray-font col" style="padding-top:3px;">{{lastOrder.tableAreaName}} {{lastOrder.zuohao}}</div>
+        <span class="disable-pointer-events">{{lastOrder.resvDate}} {{lastOrder.mealTypeName}}</span>
+      </div>
+    </div>
+</ion-view>

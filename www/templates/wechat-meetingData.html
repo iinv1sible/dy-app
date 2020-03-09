@@ -1,0 +1,82 @@
+<ion-view hide-tabs="true">
+  <ion-nav-title>
+    <div class="row top-tab">
+      <div class="col text-center top-tab-item">
+        <a href="javascript:0" class="button-stable book-footBar-font-style">
+          {{'宴会数据'|T}}
+        </a>
+      </div>
+    </div>
+  </ion-nav-title>
+  <div ng-style="{'left':isInfoDataShow?'0':'100%','right':isInfoDataShow?'0':'-100%'}" style="position: fixed;background: #fff;z-index: 12;bottom: 0;top: 100px;padding: 20px;transition: all 1s">
+    <div style="margin-bottom: 20px;font-size: 20px;">日期：{{params.startResvdata}} ~ {{params.endResvdata}}</div>
+    <div style="margin-bottom: 20px;font-size: 20px;">已完成宴会场次：{{data.finshOrderNum}}场次</div>
+    <div style="margin-bottom: 20px;font-size: 20px;padding-left: 20px;color: #aaa;">总计：{{data.finishTableNum}}桌</div>
+    <div style="margin-bottom: 20px;font-size: 20px;padding-left: 20px;color: #aaa;">宴会金额：{{data.finishAmount}}元</div>
+    <div style="margin-bottom: 20px;font-size: 20px;">新增订单：{{data.confirmOrderNum}}单</div>
+    <div style="margin-bottom: 20px;font-size: 20px;padding-left: 20px;color: #aaa;">已收定金：{{data.deposit}}元</div>
+    <div style="margin-bottom: 20px;font-size: 20px;">新增意向单：{{data.newOrderNum}}单</div>
+    <div style="margin-bottom: 20px;font-size: 20px;">新增线索：{{data.keyNum}}条</div>
+    <div style="margin-bottom: 20px;font-size: 20px;">跟进记录：{{data.recordNum}}条</div>
+  </div>
+  <ion-content style="border-top: 1px solid #ccc;background: #fff;">
+    <div style="position: absolute;right: 20px;top: 9px;z-index: 10;border: 1px solid #333;padding: 5px 10px;border-radius: 5px;" ng-click="showInfoData()">{{isInfoDataShow?'收起':'展开'}}数据</div>
+    <div>
+      <div class="chart-item" style="width: 100%;border-radius: 0;">
+        <div class="item item-chart-title"> {{type + '数据'|T}}</div>
+        <div class="tab-chats row item" style="padding-bottom: 20px;">
+          <div ng-click="showData(1)" class="tab-chats-item col" ng-style="{'background':showDataType==1?'#eee':'#fff'}">
+            <div class="tab-chats-font">{{'新增线索'|T}}</div>
+            <span class="tab-chats-span">{{data.keyNum}}</span>
+          </div>
+          <div ng-click="showData(2, 1)" class="tab-chats-item col" ng-style="{'background':showDataType==2?'#eee':'#fff'}">
+            <div class="tab-chats-font">{{'意向订单'|T}}</div>
+            <span class="tab-chats-span">{{data.newOrderNum}}</span>
+          </div>
+          <div ng-click="showData(3, 2)" class="tab-chats-item col" ng-style="{'background':showDataType==3?'#eee':'#fff'}">
+            <div class="tab-chats-font">{{'已确认订单'|T}}</div>
+            <span class="tab-chats-span">{{data.confirmOrderNum}}</span>
+          </div>
+          <div ng-click="showData(4, 3)" class="tab-chats-item col" ng-style="{'background':showDataType==4?'#eee':'#fff'}">
+            <div class="tab-chats-font">{{'已完成宴会订单'|T}}</div>
+            <span class="tab-chats-span">{{data.finshOrderNum}}</span>
+          </div>
+          <div ng-click="showData(5)" class="tab-chats-item col" ng-style="{'background':showDataType==5?'#eee':'#fff'}">
+            <div class="tab-chats-font">{{'跟进记录'|T}}</div>
+            <span class="tab-chats-span">{{data.recordNum}}</span>
+          </div>
+        </div>
+      </div>
+      <highchart id="chartLine1" config="chartLineConfig" style="width:100%;height:300px;" ng-show="showDataType==5"></highchart>
+      <div style="padding: 0 0 20px 0;background: #fff;">
+        <table class="dataTable" style="width: 100%;text-align: center;">
+          <tr>
+            <th ng-repeat="item in tableThData track by $index">{{item}}</th>
+          </tr>
+          <tr ng-repeat="item in tableData">
+            <td>{{$index+1}}</td>
+            <td ng-show="showDataType==2">{{item.createdAt}}</td>
+            <td ng-show="showDataType==3">{{item.confirmTime}}</td>
+            <td ng-show="showDataType==1">{{item.resvSourceName}}</td>
+            <td ng-show="showDataType==4">{{item.resvDate}}</td>
+            <td>{{item.vipName}}</td>
+            <td ng-show="showDataType==5">{{item.resvMeetingOrderTypeName}}</td>
+            <td ng-hide="showDataType==1">{{item.appUserName}}</td>
+            <td ng-show="showDataType==1">{{item.resvDate}}</td>
+            <td ng-hide="showDataType==5">{{item.resvMeetingOrderTypeName}}</td>
+            <td ng-show="showDataType==2 || showDataType==1">{{item.statusName}}</td>
+            <td ng-show="showDataType==4">{{item.deposit}}</td>
+            <td ng-show="showDataType==3">
+              {{item.deposit?'定金'+item.deposit:''}}
+              {{item.contractNo?'合同'+item.contractNo:''}}
+              {{item.dbrName?'担保人：'+item.dbrName:''}}
+            </td>
+            <td ng-show="showDataType==5">{{item.recordTime}}</td>
+            <td ng-show="showDataType==5">{{item.statusName}}</td>
+            <td ng-show="showDataType==5">{{item.remindTime}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

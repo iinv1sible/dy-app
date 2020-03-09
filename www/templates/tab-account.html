@@ -1,0 +1,62 @@
+<ion-view cache="false">
+  <ion-nav-title>{{'个人中心'|T}}</ion-nav-title>
+  <ion-content>
+    <div class="list">
+      <a class="item row" ui-sref="tab.account-person">
+        <img ng-src={{imageUrl}} style="border-radius: 50%;width: 65px;height: 65px;" alt="">
+        <div class="col" style="text-align: right;">
+          <button class="button" style="border: 1px solid #ddd;width: 72px;height: 28px;font-size: 12px;min-height: 0;line-height: 28px;border-radius: 28px;background: #fff;">{{'编辑资料'|T}}</button>
+        </div>
+      </a>
+      <div class="item row">
+        <div style="width: 100%;font-size: 18px;margin-bottom: 5px;">{{info.businessName}}</div>
+        <div style="font-size: 12px;color: #999;">{{info.appTypeName}} {{info.surname}}</div>
+      </div>
+    </div>
+    <div class="list">
+      <!-- <div class="item row" ng-click="goTong()">
+        <i class="tab-account-icon" style="background-image: url('img/ico_ring@3x.png');background-color: #DB4F3B"></i>
+        <span class="col">{{'消息中心'|T}}</span>
+        <span class="badge badge-assertive">{{messageNum}}</span>
+      </div>
+      <a ui-sref="tab.account-person" class="item row">
+        <i class="tab-account-icon" style="background-image: url('img/ico_user@3x.png');background-color: #68bfad;"></i>
+        <span class="col">{{'个人信息'|T}}</span>
+        <i class="icon icon-right-arrow"></i>
+      </a> -->
+
+      <a ng-click="goPage('tab.account-contact-he')" class="item row">
+        <i class="tab-account-icon icon1"></i>
+        <span class="col">{{'商务合作'|T}}</span>
+        <i class="icon icon-right-arrow"></i>
+      </a>
+      <a ng-click="goPage('tab.account-youjiang')" class="item row">
+        <i class="tab-account-icon icon2"></i>
+        <span class="col">{{'有奖推荐'|T}}</span>
+        <i class="icon icon-right-arrow"></i>
+      </a>
+      <a ng-click="goPage('tab.account-contact-yi')" class="item row">
+        <i class="tab-account-icon icon3"></i>
+        <span class="col">{{'意见反馈'|T}}</span>
+        <i class="icon icon-right-arrow"></i>
+      </a>
+      <a ng-click="goPage('tab.account-list')" class="item row">
+        <i class="tab-account-icon icon5"></i>
+        <span class="col">{{'绑定账号'|T}}</span>
+        <i class="icon icon-right-arrow"></i>
+      </a>
+      <a ng-click="goPage('tab.account-vip')" ng-if="isJk == 1" class="item row">
+        <i class="tab-account-icon icon6"></i>
+        <span class="col">{{'会员管理'|T}}</span>
+        <i class="icon icon-right-arrow"></i>
+      </a>
+    </div>
+    <div class="list">
+      <a ng-click="goPage('tab.account-set')" class="item row">
+        <i class="tab-account-icon icon4"></i>
+        <span class="col">{{'设置'|T}}</span>
+        <i class="icon icon-right-arrow"></i>
+      </a>
+    </div>
+  </ion-content>
+</ion-view>

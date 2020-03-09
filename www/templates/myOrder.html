@@ -1,0 +1,286 @@
+<ion-view hide-tabs="true" cache-view="false">
+  <ion-nav-title>
+    <a ng-show="!showShu && !showDish" class="item row" ng-show="meetingShow" style="background-color: #fff;padding: 3px 0 0;border: 0;margin: 0 auto;width: 200px;min-height: 0;">
+      <i class="text-center" ng-class="{'myOrder-title-active':isCanyin,'col-50':isJk==0,'col-33':isJk==1,'myOrder-title1':isJk==1,'myOrder-title':isJk==0}" ng-click="changeC()">{{'餐饮订单'|T}}</i>
+      <i class="text-center myOrder-title1" ng-class="{'myOrder-title-active':isYanhui,'col-50':isJk==0,'col-33':isJk==1,'myOrder-title1':isJk==1,'myOrder-title':isJk==0}" ng-click="changeY()">{{'宴会订单'|T}}</i>
+      <i class="col-33 text-center myOrder-title1" ng-if="isJk==1" ng-class="{'myOrder-title-active':isStore}" ng-click="changeS()">{{'充值记录'|T}}</i>
+    </a>
+    <span ng-show="showShu">{{'主客与宾客'|T}}</span>
+    <span ng-show="showDish">{{'账单明细'|T}}</span>
+  </ion-nav-title>
+  <ion-nav-buttons side="right">
+    <a ng-if="(!showShu)&&(!showKe)&&(!showDish)"  ng-click="openArea($event)" class="button button-small button-clear" style="border: none;color:#666;font-size: 14px;">
+      {{area|T}}
+    </a>
+    <!-- <button ng-if="showKe" class="button button-icon button-clear button-positive" ng-click="newKe()">
+      <span style="font-size: 14px;color: #ff2741">{{'提交'|T}}</span>
+    </button> -->
+    <!-- <button  ng-if="(showShu)&&(!showKe)" class="button button-icon button-clear button-positive" ng-click="newShu()">
+      <span style="font-size: 14px;color: #ff2741">{{'提交'|T}}</span>
+    </button> -->
+    <button ng-if="(showShu)&&(!showKe)" class="button button-icon button-clear button-positive" ng-click="showTips()">
+      <span style="font-size: 14px;color: #ff2741">{{'相关介绍'|T}}</span>
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-buttons  side="left">
+    <button  ng-if="(!showShu)&&(!showKe)&&(!showDish)" class="button back-button buttons button-clear header-item" ng-click="goIndex()">
+      <i class="icon icon-back" style="vertical-align: middle;"></i>
+    </button>
+    <button  ng-if="(showShu)&&(!showKe)" class="button back-button buttons button-clear header-item" ng-click="hideShu()">
+      <i class="icon icon-back" style="vertical-align: middle;"></i>
+    </button>
+    <!-- <button  ng-if="showKe" class="button back-button buttons button-clear header-item" ng-click="hideKe()">
+      <i class="icon icon-back" style="vertical-align: middle;"></i>
+    </button> -->
+    <button  ng-if="showDish" class="button back-button buttons button-clear header-item" ng-click="hideDish()">
+      <i class="icon icon-back" style="vertical-align: middle;"></i>
+    </button>
+  </ion-nav-buttons>
+  <div class="d-modal isRight" style="overflow-y: auto;overflow-x:hidden;background-color: #efefef;" ng-class="{'isRight':!showShu,'isCenter':showShu}">
+    <div class="list">
+      <!-- <a href="javascript:0" class="item item-icon-right tab-myOrder-detail-item1" style="border: 0;background-color: #efefef;">
+      </a>
+      <div ng-class="{'disable-pointer-events':cantChooseProperty}" ng-click="openProperty($event)" class="item item-input tab-myOrder-detail-item" style="flex-wrap: wrap;">
+        <span class="input-label" style="overflow: hidden;">{{'选择订单属性'|T}}</span>
+        <input type="text" ng-model="propertyName" placeholder="{{'请选择订单属性'|T}}" readonly class="text-right input-style" style="border:1px solid #DDDDDD;background-color: #fff;">
+      </div> -->
+      <!-- <ion-item  ng-repeat="item in keList" data-id="{{item.keId}}" ng-click="seeKeDetail($event)" class="contact-name item-icon-left item-icon-right">
+        <i class="tab-custom-icon left-center text-center" style="background-color: #E7B45F">
+          <span>{{item.customerName[0]}}</span>
+        </i>
+        <span class="disable-pointer-events">{{item.customerName}}</span>
+        <span class="disable-pointer-events contact_time padding-right">{{item.customerPhone}}</span>
+        <i class="icon ion-ios-arrow-right"></i>
+      </ion-item> -->
+      <div style="background:#fff;padding: 12px;border-bottom: 1px solid #ddd">
+        <span style="font-size: 14px;">主客</span><span style="margin-left: 6px;font-size: 12px;color: #999">实际买单的客人，而不是预订的客人</span>
+      </div>
+      <div id="hostDiv" style="margin-bottom: 12px;"></div>
+      <div ng-click="addKe($event, 1)" id="hostBtn" style="background: #fff;color: #ff2741;line-height: 40px;width: 90%;margin: 0 auto 40px;text-align: center;border-radius: 4px;">+{{'添加主客'|T}}</div>
+      <div style="background:#fff;padding: 12px;border-bottom: 1px solid #ddd">
+        <span style="font-size: 14px;">宾客</span><span style="margin-left: 6px;font-size: 12px;color: #999">预订人宴请的客人</span>
+      </div>
+      <div id="guestDiv" style="margin-bottom: 12px;"></div>
+      <div ng-click="addKe($event, 2)" style="background: #fff;color: #ff2741;line-height: 40px;width: 90%;margin: 0 auto 40px;text-align: center;border-radius: 4px;">+{{'添加宾客'|T}}</div>
+    </div>
+  </div>
+  <!-- <div class=" d-modal isRight" style="overflow-y: auto;overflow-x:hidden;background-color: #efefef;" ng-class="{'isRight':!showKe,'isCenter':showKe}">
+    <a href="javascript:0" class="item item-icon-right tab-myOrder-detail-item1" style="border: 0;background-color: #efefef;">
+    </a>
+    <div class="list">
+      <label class="item item-input">
+        <span class="input-label">{{'客户电话'|T}}</span>
+        <input class="text-right" style="font-size: 16px;color:#999;padding-right:3%;"
+               type="tel" ng-model=keData.customerPhone id="customerPhone" placeholder="{{'必填'|T}}" ng-change="select()">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">{{'客户姓名'|T}}</span>
+        <input class="text-right" style="font-size: 16px;color:#999;padding-right:3%;"
+                type="text" ng-model=keData.customerName placeholder="{{'必填'|T}}">
+      </label>
+      <div class="item item-input">
+        <span class="input-label">{{'客户性别'|T}}</span>
+        <i class="span-gray" style="font-size: 1em;">
+          <a class="icon icon-check" ng-click="changeGender($event)" ng-class={'icon-check-r':keData.man}></a><span class="span-black"  style="font-size: 14px;" data-id="男士">{{'男士'|T}}</span>
+          <a class="icon icon-check" ng-click="changeGender($event)" ng-class={'icon-check-r':!keData.man}></a><span class="span-black" style="font-size: 14px;" data-id="女士">{{'女士'|T}}</span>
+        </i>
+      </div>
+      <label class="item item-input">
+        <span class="input-label">{{'客户座机'|T}}</span>
+        <input class="text-right" style="font-size: 16px;color:#999;padding-right:3%;"
+                type="text" ng-model=keData.telephone>
+      </label>
+      <label class="item item-input">
+        <span class="input-label">{{'客户短号'|T}}</span>
+        <input class="text-right" style="font-size: 16px;color:#999;padding-right:3%;"
+               type="text" ng-model=keData.shortPhoneNum>
+      </label>
+      <label class="item item-input">
+        <span class="input-label">{{'客户生日'|T}}</span>
+        <input class="text-right" style="font-size: 16px;color:#999;background-color:#fff;padding-right:3%;"
+               type="text" readonly ng-click="openDatePicker5()" ng-model=keData.customerBirthday>
+      </label>
+      <label class="item item-input">
+        <span class="input-label">{{'客户家庭地址'|T}}</span>
+        <input class="text-right" style="font-size: 16px;color:#999;padding-right:3%;"
+               type="text" ng-model=keData.customerAddress>
+      </label>
+      <label class="item item-input">
+        <span class="input-label">{{'客户工作单位'|T}}</span>
+        <input class="text-right" style="font-size: 16px;color:#999;padding-right:3%;"
+                type="text" ng-model=keData.customerCompany>
+      </label>
+      <label class="item item-input">
+        <span class="input-label">{{'客户喜好'|T}}</span>
+        <input class="text-right" style="font-size: 16px;color:#999;padding-right:3%;"
+               type="text" ng-model=keData.hobby>
+      </label>
+      <label class="item item-input">
+        <span class="input-label">{{'客户忌口'|T}}</span>
+        <input class="text-right" style="font-size: 16px;color:#999;padding-right:3%;"
+               type="text" ng-model=keData.detest>
+      </label>
+    </div>
+  </div> -->
+  <div class="d-modal isRight" style="overflow-y: auto;overflow-x:hidden;background-color: #efefef;" ng-class="{'isRight':!showDish,'isCenter':showDish}">
+    <div class="list" style="background-color: #fff;">
+      <div class="row" style="border: 1px solid #ddd">
+        <div class="col-40 text-left" style="padding:5px;">
+          <div>菜品</div><div style="font-size: 10px;color: #aaa">本次消费</div>
+        </div>
+        <div class="text-left" style="padding:5px;flex: 1">
+          <div>数量</div><div style="font-size: 10px;color: #aaa">本次消费</div>
+        </div>
+        <div class="text-left" style="padding:5px;flex: 1">
+          <div>统计</div><div style="font-size: 10px;color: #aaa">总数/消费次数</div>
+        </div>
+      </div>
+        <div class="row" style="padding: 5px;margin: 0;" ng-repeat="dish in dishList">
+          <div class="col-40 text-left" style="padding:5px;">
+            {{dish.cmmc}}
+          </div>
+          <div class="text-left" style="padding:5px;flex: 1">
+            {{dish.cmsl}}{{'份'|T}}
+          </div>
+          <div class="text-left" style="padding:5px;flex: 1">
+            <span style="color:#ff2741;">{{dish.foundNum}}</span><span>/{{dish.allOrder}}</span>
+          </div>
+        </div>
+    </div>
+  </div>
+  <ion-content delegate-handle="orderContent" id="order-scroll" scroll="false">
+    <div class="row item" style="padding: 0 12px;min-height: 44px;margin: 0" ng-if="!isStore">
+      <div class="icon icon-select" ng-click="openPopover($event,1)" style="font-size: 14px;">{{state|T}}</div>
+      <div class="icon icon-select" ng-show="isCanyin" ng-click="openPopover($event,2)" style="font-size: 14px;margin-left: 30px;">{{meal|T}}</div>
+      <div class="icon icon-select" ng-show="!isCanyin" ng-click="openPopover($event,3)" style="font-size: 14px;margin-left: 30px;">{{ymeal|T}}</div>
+    </div>
+    <div class="list">
+      <div class="item text-center row" ng-show="showTime && isCanyin" style="border-right:0;padding:0 8px;min-height: 40px;border-top: 1px solid #ddd;">
+        <div class="col-40">
+          <i class="icon icon-cal-g"></i>
+          <span ng-class="{'disable-pointer-events':disstarttime}" ng-click="openDatePicker()">{{starttime}}</span>
+        </div>
+        <div class="col-10" style="line-height: 48px;">
+          {{'至'|T}}
+        </div>
+        <div class="col-40">
+          <i class="icon icon-cal-g"></i>
+          <span ng-class="{'disable-pointer-events':disendtime}" ng-click="openDatePicker(2)">{{endtime}}</span>
+        </div>
+      </div>
+      <div class="item text-center row" ng-show="isYanhui && (!showYanhui)" style="border-right:0;padding:0 8px;min-height: 40px;border-top: 1px solid #ddd;">
+        <div class="col-40">
+          <i class="icon icon-cal-g"></i>
+          <span style="width: 82px;height: 20px;display: inline-block;" ng-click="openDatePicker1(1)">{{starttime}}</span>
+        </div>
+        <div class="col-10" style="line-height: 48px;">
+          {{'至'|T}}
+        </div>
+        <div class="col-40">
+          <i class="icon icon-cal-g"></i>
+          <span style="width: 82px;height: 20px;display: inline-block;" ng-click="openDatePicker1(2)">{{endtime}}</span>
+        </div>
+      </div>
+      <div class="item text-center row" ng-show="isStore" style="border-right:0;padding:0 8px;min-height: 40px;border-top: 1px solid #ddd;">
+        <div class="col-40">
+          <i class="icon icon-cal-g"></i>
+          <span ng-click="openDatePicker2(1)">{{starttime}}</span>
+        </div>
+        <div class="col-10" style="line-height: 48px;">
+          {{'至'|T}}
+        </div>
+        <div class="col-40">
+          <i class="icon icon-cal-g"></i>
+          <span>{{endtime}}</span>
+        </div>
+      </div>
+    </div>
+    <ion-scroll style="height: calc(100% - {{(showTime && isCanyin)||(isYanhui && (!showYanhui))?'110px':'60px'}})" ng-if="!isStore">
+      <div class="list list-card" ng-repeat="order in orderList">
+        <div class="row list-card-top">
+          <div ng-style="{'background':(order.orderStatus==0?'#DA7769':order.orderStatus==1?'#EEAE44':order.orderStatus==2?'#6992CD':'#fff')}" style="position: absolute;top: 0;left: -16px;right: -16px;bottom: 0;"></div>
+          <div class="row" style="position: relative;z-index: 5;align-items: center;padding: 0;">
+            <span class="tab-account-message-detail-icon" style="margin: 0;width: 28px;height: 28px;margin-right: 8px;"></span>
+            <div class="col">
+              <span>{{order.vipName}}</span>
+              <span class="myOrder-gray-font" style="font-size: 10px;">{{order.vipPhone}}</span>
+              <span ng-show=(order.isMvp==1) class="icon-vip"></span>
+              <span ng-show=(order.isBack==1&&order.complain==1) style="font-size: 10px;" ng-class={'blue':(order.handleSuggestion!=''),'red':(order.handleSuggestion=='')}>{{'诉'|T}}</span>
+              <span ng-show="order.cbf==1" class="icon icon-zy"></span>
+            </div>
+            <i style="font-size:14px;color:#999;" ng-style="{'color':(order.orderStatus==0 || order.orderStatus==1 || order.orderStatus==2)?'#fff':'#999'}">
+              {{'消费金额'|T}}：{{order.payamount}}
+            </i>
+            <span ng-if="order.isDetail*1" ng-click="seesee(order.isDetail,order.vipId)" style="font-size:14px;color:#ff2741;text-decoration: underline">{{'查看明细'|T}}</span>
+
+            <!--<i class="icon ion-heart" ng-show=(order.isMvp==1) ng-class={'red':true}></i>-->
+          </div>
+        </div>
+        <div data-vipName={{order.vipName}} data-vipPhone={{order.vipPhone}} data-payamount={{order.payamount}} data-isBack={{order.isBack}} data-batchNo={{order.batchNo}} data-resvDate={{order.resvDate}} data-perPrice={{order.perPrice}} data-tableAreaName={{order.tableAreaName}} data-tableNo={{order.tableNo}}  data-resvOrder={{order.resvOrder}} data-flag={{order.flag}} data-submitStatus={{order.submitStatus}} data-tableName={{order.tableName}} data-submitId={{order.submitId}} data-mealTypeId={{order.mealTypeId}} data-mealTypeName={{order.mealTypeName}} data-mealTypeIdA={{order.mealTypeIdA}} data-mealTypeIdB={{order.mealTypeIdB}} data-tableAreaId={{order-tableAreaId}} ng-click="goOrderDetail($event)" class="list-card-middle">
+          <div class="disable-pointer-events myOrder-gray-font" style="white-space: pre-wrap;">{{order.tableAreaName}} {{order.tableNo}}</div>
+          <div class="disable-pointer-events">
+            <span class="myOrder-gray-font">{{order.appUserName}}</span>
+            <span ng-if="order.peicai*1" class="red" style="font-size: 14px;">{{'配'|T}}</span>
+            <span class="right" style="color: #999;">{{order.resvDate}} {{order.meal_type_name}}</span>
+          </div>
+          <div class="disable-pointer-events">
+            <span ng-show="isCanyin && (!order.unorderReason)" class="myOrder-gray-font">{{'人均消费'|T}}:</span>
+            <span ng-show="isYanhui && (!order.unorderReason)" class="myOrder-gray-font">{{'桌均消费'|T}}:</span>
+            <span class="right" ng-show="order.perPrice" style="color:#DA4C39;">¥{{order.perPrice}}</span>
+            <span ng-show="order.unorderReason" class="myOrder-gray-font">{{'退订原因'|T}}: {{order.unorderReason}}</span>
+          </div>
+          <p ng-show="order.ERROR" class="myOrder-gray-font disable-pointer-events" style="word-wrap:break-word;white-space: normal;overflow: auto;margin: 0;">{{order.ERROR}}</p>
+        </div>
+        <div ng-show="isCanyin" data-batchNo="{{order.batchNo}}" class="list-card-bottom clearfix">
+          <div class="left" ng-if="order.flag >= 0"><span>{{order.submitStatus==2?'加桌申请':(order.submitStatus==3?'换桌申请':(order.submitStatus==4?'退订申请':'预订申请'))}}</span>：<span ng-style="{'color': order.flag==1?'green':(order.flag==2?'red':'')}">{{order.flagName}}</span></div>
+          <div data-batchNo="{{order.batchNo}}" class="left" ng-hide="order.flag >= 0" ng-click="seeShu($event)">
+            <i class="icon icon-edit disable-pointer-events"></i>
+            <span class="disable-pointer-events" style="font-size: 14px;color:#999;">{{'主客与宾客'|T}}</span>
+          </div>
+          <div class="right card-btn" ng-show="backOrderShow&&backOrderShow1&&(order.status==3||order.status==2)" data-appUserId={{order.appUserId}} data-isBack={{order.isBack}} data-vipName={{order.vipName}} data-batchNo={{order.batchNo}} data-vipPhone={{order.vipPhone}} data-payamount={{order.payamount}} data-actualPayAmount={{order.actualPayAmount}} data-resvDate={{order.resvDate}} data-resvTableNum={{order.resvNum}} data-perPrice={{order.perPrice}} data-tableAreaName={{order.tableAreaName}} data-tableNo={{order.tableNo}}  data-resvOrder={{order.resvOrder}} ng-click="backOrder(false,$event);$event.stopPropagation();">
+            <span class="disable-pointer-events col-50 text-center" style="font-size: 14px;color:#666;">{{order.isBack == 0?'回访':'订单回访记录'|T}}</span>
+          </div>
+          <div class="right card-btn" data-vipName={{order.vipName}} data-vipPhone={{order.vipPhone}} data-payamount={{order.payamount}} data-isBack={{order.isBack}} data-batchNo={{order.batchNo}} data-resvDate={{order.resvDate}} data-perPrice={{order.perPrice}} data-tableAreaName={{order.tableAreaName}} data-tableNo={{order.tableNo}}  data-resvOrder={{order.resvOrder}} data-flag={{order.flag}} data-submitId={{order.submitId}} data-mealTypeId={{order.mealTypeId}} data-mealTypeName={{order.mealTypeName}} data-mealTypeIdA={{order.mealTypeIdA}} data-mealTypeIdB={{order.mealTypeIdB}} data-tableAreaId={{order-tableAreaId}} ng-click="editSubmitOrder($event);$event.stopPropagation();" ng-if="order.flag == 1 && order.submitStatus != 4">修改</div>
+          <div class="right card-btn" data-submitId={{order.submitId}} data-submitStatus={{order.submitStatus}} ng-if="order.flag==2" ng-click="submitDetail(2,$event);$event.stopPropagation();">重新提交</div>
+        </div>
+        <div ng-show="!isCanyin&&backOrderShow&&backOrderShow1" data-appUserId={{order.appUserId}} data-isBack={{order.isBack}} data-vipName={{order.vipName}} data-batchNo={{order.batchNo}} data-vipPhone={{order.vipPhone}} data-payamount={{order.payamount}} data-actualPayAmount={{order.actualPayAmount}} data-actualTableNum={{order.actualTableNum}} data-resvDate={{order.resvDate}} data-resvTableNum={{order.resvNum}} data-perPrice={{order.perPrice}} data-tableAreaName={{order.tableAreaName}} data-tableNo={{order.tableNo}}  data-resvOrder={{order.resvOrder}} data-batchNo="{{order.batchNo}}" class="list-card-bottom clearfix" ng-click="backOrder(true,$event);">
+          <div class="right card-btn disable-pointer-events">
+            <span style="font-size: 14px;color:#666;">{{order.isBack == 0?'回访':'订单回访记录'|T}}</span>
+          </div>
+        </div>
+      </div>
+      <ion-infinite-scroll
+        ng-if="canLoad"
+        immediate-check="false"
+        distance="2%"
+        on-infinite="doInfinite()">
+      </ion-infinite-scroll>
+    </ion-scroll>
+    <ion-scroll ng-if="isStore" style="height: calc(100% - 88px);">
+      <div class="list list-card" ng-repeat="store in storeList">
+        <div class="row list-card-top">
+          <div class="row" style="position: relative;z-index: 5;align-items: center;padding: 0;">
+            <div class="col">
+              <span>{{store.customerName}}</span>
+              <span class="myOrder-gray-font" style="font-size: 10px;">{{store.customerPhone}}</span>
+            </div>
+            <i style="font-size:14px;color:#4b8bf4;">
+              {{'已成功'|T}}
+            </i>
+          </div>
+        </div>
+        <div class="list-card-middle">
+          <div class="disable-pointer-events myOrder-gray-font" style="white-space: pre-wrap;">{{'支付日期'|T}}:  {{store.createTime}}</div>
+          <div class="disable-pointer-events myOrder-gray-font" style="white-space: pre-wrap;">{{'支付金额'|T}}:  {{store.amount}}</div>
+          <div class="disable-pointer-events myOrder-gray-font" style="white-space: pre-wrap;">{{'赠送金额'|T}}:  {{store.giveAmount}}</div>
+        </div>
+      </div>
+    </ion-scroll>
+    <div class="bar bar-footer row book" ng-if="isStore">
+      <div>{{starttime}}~{{endtime}}</div>
+      <div style="margin-left: 30px;">
+        <span style="font-size: 12px;color:#4b8bf4;">已成功金额</span><span style="font-size: 16px;color:#666;margin-left: 5px;">{{'总计'|T}}：¥{{sumPrice}}</span>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,20 @@
+<ion-view hide-tabs="true">
+  <ion-nav-title>
+    {{'二维码'|T}}
+  </ion-nav-title>
+  <ion-nav-buttons side="left">
+    <button class="button back-button buttons button-clear header-item" ng-click="$ionicGoBack()">
+      <i class="icon icon-back" style="vertical-align: middle;"></i>
+    </button>
+  </ion-nav-buttons>
+  <ion-content>
+    <div style="width: 300px; height:300px;display: block;margin: 20px auto;" id="codeurl" >
+      <img src="{{codeImg}}" style="width: 100%;display: block;" />
+    </div>
+    <div ng-if="isMiniProgram" style="text-align: center;">小程序中请长按图片保存</div>
+  </ion-content>
+  <div class="bar bar-footer text-center" style="padding: 10px 0;height: 60px;background: transparent" ng-if="!isMiniProgram">
+    <button ng-if="canDownload" class="button button-block button-assertive" style="font-size:16px;width: 90%;margin: 0 auto;" ng-click="saveImage()">{{'保存二维码'|T}}</button>
+    <a ng-if="!canDownload" class="button button-block button-assertive" style="font-size:16px;width: 90%;margin: 0 auto;" href="{{codeUrl}}" download="img">{{'下载二维码'|T}}</a>
+  </div>
+</ion-view>

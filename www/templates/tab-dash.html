@@ -1,0 +1,317 @@
+<ion-view hide-nav-bar="true" class="home-page">
+  <ion-nav-title>{{'首页'|T}}</ion-nav-title>
+  <div
+    ng-if="showSlider1||showSlider2||showSlider3"
+    style="position: fixed;top: 0;bottom: 0;left: 0;right: 0;z-index: 10;"
+    ng-click="hideSlider()"
+  >
+    <img
+      ng-if="showSlider1"
+      src="images/slider4-b.jpg"
+      style="height: 100%;width: 100%;"
+    />
+    <img
+      ng-if="showSlider2"
+      src="images/slider2-b.jpg"
+      style="height: 100%;width: 100%;"
+    />
+    <img
+      ng-if="showSlider3"
+      src="images/slider3-b.jpg"
+      style="height: 100%;width: 100%;"
+    />
+    <a
+      ng-click="goForm($event)"
+      ng-if="showSlider1 || showSlider2"
+      style="height: 70px;position: fixed;bottom: 20px;left: 100px;right: 100px;"
+    ></a>
+    <a
+      ng-click="goForm($event)"
+      ng-if="showSlider3"
+      style="height: 70px;position: fixed;bottom: 0;left: 100px;right: 100px;"
+    ></a>
+  </div>
+  <ion-content style="background: #e8e8e8;">
+    <div class="dash-top">
+      <span>{{info.businessName}}</span>
+      <span style="font-size: 12px;">{{info.surname}}</span>
+      <span class="icon-message" ng-click="goTong()"
+        ><span class="point" ng-show="messageNum>0">{{messageNum}}</span></span
+      >
+      <!--<span class="icon-star" ng-show="info.businessType == 1"></span>-->
+    </div>
+    <div
+      class="dash-img-box"
+      style="position: relative;height:150px;"
+      ng-click="showSlider($event)"
+    >
+      <ion-slide-box
+        style="height:150px;width:100%;position:relative;"
+        auto-play="true"
+        slide-interval="4000"
+        show-pager="false"
+        does-continue="true"
+        on-slide-changed="slideHasChanged($index)"
+      >
+        <!-- <ion-slide>
+          <div ng-show="info.softTitle" class="s-modalR tab-dash-imgTro text-center" style="white-space: pre-wrap;background: rgba(0,0,0,0.3);right: 0;bottom: 25px;">{{info.softTitle}}</div>
+          <img data-id="1" src="images/slider4.jpg"/>
+        </ion-slide> -->
+        <ion-slide>
+          <div
+            ng-show="info.softTitle"
+            class="s-modalR tab-dash-imgTro text-center"
+            style="white-space: pre-wrap;background: rgba(0,0,0,0.3);right: 0;bottom: 25px;"
+          >
+            {{info.softTitle}}
+          </div>
+          <img
+            ng-show="info.businessType == 0 || info.businessType == 2"
+            data-id="2"
+            src="images/slider2.jpg"
+          />
+          <img
+            ng-show="info.businessType == 1 || info.businessType == 3"
+            src="new-images/Banner-2st.png"
+          />
+        </ion-slide>
+        <ion-slide>
+          <div
+            ng-show="info.softTitle"
+            class="s-modalR tab-dash-imgTro text-center"
+            style="white-space: pre-wrap;background: rgba(0,0,0,0.3);right: 0;bottom: 25px;"
+          >
+            {{info.softTitle}}
+          </div>
+          <img src="images/slider3.jpg" data-id="3" />
+        </ion-slide>
+      </ion-slide-box>
+    </div>
+    <div style="padding: 0 12px 20px;margin-top: -10px;">
+      <section>
+        <div class="row tab-dash">
+          <div class="col tab-dash-nav nav2" ng-click="goYanhui()">
+            <div class="tab-dash-CH-div">
+              <div class="tab-dash-CH">{{'宴会预订'|T}}</div>
+            </div>
+          </div>
+          <div class="col tab-dash-nav nav3" ng-click="goOrder()">
+            <div class="tab-dash-CH-div">
+              <div class="tab-dash-CH">{{'订单查询'|T}}</div>
+            </div>
+          </div>
+          <div class="col tab-dash-nav nav1" ng-click="goCustom()">
+            <div class="tab-dash-CH-div">
+              <div class="tab-dash-CH">{{'客户管理'|T}}</div>
+            </div>
+          </div>
+          <div
+            class="col tab-dash-nav nav4"
+            ng-click="goTuan()"
+            ng-show="info.isGroupMeal==1"
+          >
+            <div class="tab-dash-CH-div">
+              <div class="tab-dash-CH">{{'餐食预订'|T}}</div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section
+        class="row"
+        style="padding:0;background: #fff;margin-top: 7px;border-radius: 4px;position: relative;overflow: hidden"
+      >
+        <div class="col-66">
+          <div
+            class="tab-dash-detail clearfix"
+            on-swipe-right="preDay()"
+            on-swipe-left="nextDay()"
+          >
+            <i class="icon-caldaner" style="left: 15px;"></i>
+            <span
+              class="tab-dash-day"
+              ng-class="{'swipe-left':swipeDayLeft,'swipe-right':swipeDayRight}"
+              style="display: inline-block"
+            >
+              {{date.months|T}}&nbsp;{{date.date}}{{'日.'|T}}&nbsp;{{date.day|T}}
+            </span>
+          </div>
+          <div class="tab-dash-date">
+            <ion-slide-box
+              auto-play="false"
+              does-continue="false"
+              show-pager="false"
+              on-slide-changed="onSlideChanged($index)"
+              active-slide="index"
+              ng-class="{'disable-pointer-events':(info.operationType==0)}"
+            >
+              <ion-slide
+                ng-class="{'disable-pointer-events':(info.operationType==0)}"
+              >
+                <div class="row" style="font-size: 14px;padding:0;">
+                  <div style="width: 100%;display: flex;flex-wrap: wrap;">
+                    <div class="col item1" style="width: 50%;flex: 0 50%;">
+                      <span class="span-gray">{{'空闲'|T}}</span>
+                      <span class="span-black bold">{{kongxian}}</span>
+                    </div>
+                    <div class="col item3" style="width: 50%;flex: 0 50%;">
+                      <span class="span-gray">{{'预订'|T}}</span>
+                      <span class="span-black bold">{{yiding}}</span>
+                    </div>
+                    <div class="col item2" style="width: 50%;flex: 0 50%;">
+                      <span class="span-gray">{{'我订'|T}}</span>
+                      <span class="span-black bold">{{woding}}</span>
+                    </div>
+                    <div class="col item4" style="width: 50%;flex: 0 50%;">
+                      <span class="span-gray">{{'我退'|T}}</span>
+                      <span class="span-black bold">{{wotui}}</span>
+                    </div>
+                  </div>
+                </div>
+              </ion-slide>
+              <ion-slide>
+                <div class="row" style="font-size: 14px;padding:0;">
+                  <div style="width: 100%;display: flex;flex-wrap: wrap;">
+                    <div class="col item1" style="width: 50%;flex: 0 50%;">
+                      <span class="span-gray">{{'开台'|T}}</span>
+                      <span class="span-black bold">{{kaitai}}</span>
+                    </div>
+                    <div class="col item3" style="width: 50%;flex: 0 50%;">
+                      <span class="span-gray">{{'营业'|T}}</span>
+                      <span class="span-black bold">{{yingye}}</span>
+                    </div>
+                    <div class="col item2" style="width: 50%;flex: 0 50%;">
+                      <span class="span-gray">{{'退订'|T}}</span>
+                      <span class="span-black bold">{{tuiding}}</span>
+                    </div>
+                    <div class="col item4" style="width: 50%;flex: 0 50%;">
+                      <span class="span-gray">{{'人均'|T}}</span>
+                      <span class="span-black bold">{{renjun}}</span>
+                    </div>
+                  </div>
+                </div>
+              </ion-slide>
+            </ion-slide-box>
+          </div>
+        </div>
+        <div class="col-33 tab-dash-ding" ng-click="goBook()" ng-if="!isYp">
+          <i class="bottom-left-corner"></i>
+          <div>
+            <img
+              src="images/home_ordinary@3x.png"
+              alt=""
+              style="width: 36px;height: 36px;margin: 0 auto 10px;display: block;"
+            />
+            <span style="color:#fff">{{'普通预订'|T}}</span>
+          </div>
+        </div>
+        <div
+          class="col-33 tab-dash-ding"
+          ng-click="goBook()"
+          style="padding: 0;background: #c30d23;"
+          ng-if="isYp"
+        >
+          <i class="bottom-left-corner" style="background: #c30d23;"></i>
+          <img
+            src="images/logo-jdw.png"
+            alt=""
+            style="width: 68px;height: 45px;display: block;margin: 0 auto;margin-top: 20px;"
+          />
+          <span
+            style="color:#fff;position: absolute;top: 80px;left: 0;right: 0;text-align: center;"
+            >{{'普通预订'|T}}</span
+          >
+        </div>
+      </section>
+      <div class="clue-box">
+        <!--<ion-scroll scrollbar-x="true" scrollbar-y="false" direction="x">-->
+        <div class="clue-inner row">
+          <div class="clue-icon icon1" ng-click="goMyClue()">
+            {{'线索'|T}}({{keyNum}})
+          </div>
+          <div class="clue-icon icon2" ng-click="goMeetingOrder(1)">
+            {{'待确认'|T}}({{dqrNum}})
+          </div>
+          <div class="clue-icon icon3" ng-click="goMeetingOrder(2)">
+            {{'待筹备'|T}}({{dcbNum}})
+          </div>
+          <div class="clue-icon icon4" ng-click="goMeetingOrder(3)">
+            {{'待回访'|T}}({{dhfNum}})
+          </div>
+          <div class="clue-icon icon6" ng-click="goClueNew()">
+            {{'新建线索'|T}}
+          </div>
+        </div>
+        <!--</ion-scroll>-->
+      </div>
+      <div class="clue-box" style="width: 100%; height:102px">
+        <div
+          style="padding-top:7px;font-size:12px;display: flex; align-items: center; justify-content: space-between;"
+        >
+          <div style="margin-left: 11px; color:#333333">午餐安心卡人员</div>
+          <div style="margin-right: 9px;color:#FE273F ">编辑</div>
+        </div>
+        <div>
+          <div>
+            <div></div>
+            <div>
+              <div>菜品责任人</div>
+              <div>张三</div>
+              <div>&lsaquo;37℃</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="follow-outer-box" style="border-radius: 4px;">
+        <div class="tab-dash-detail clearfix">
+          <span class="tab-dash-day" style="display: inline-block">
+            {{'跟进计划'|T}}
+          </span>
+        </div>
+        <div class="follow-box">
+          <div class="row" ng-repeat="item in remind" ng-if="remind.length>0">
+            <span class="col col-10"><i class="clue-point"></i></span>
+            <span class="col col-33">{{item.remindTime|limitTo:16}}</span>
+            <span class="col col-20">{{item.vipName}}</span>
+            <span class="col col-20">{{item.resvMeetingOrderType}}</span>
+            <span class="col col-10"
+              ><a
+                class="dash-btn"
+                ng-click="goClueRemain(item.keyNo,1,item.resvOrder,item.appUserId)"
+                >{{'查看'|T}}</a
+              ></span
+            >
+          </div>
+          <div
+            class="clue-more"
+            ng-if="remind.length>0&&canLoad"
+            ng-click="doInfinite()"
+          >
+            {{'查看更多'|T}}
+          </div>
+          <div class="clue-more" ng-if="!canLoad&&isShow">
+            {{'已经到底了'|T}}
+          </div>
+          <div class="clue-more" ng-if="!remind.length>0">{{'暂无计划'|T}}</div>
+          <ion-infinite-scroll
+            ng-if="canLoad"
+            immediate-check="false"
+            distance="2%"
+            on-infinite="doInfinite()"
+          >
+          </ion-infinite-scroll>
+        </div>
+      </div>
+    </div>
+    <!-- <section>
+        <div style="margin-top:-1%;position: relative" ng-click="goTong()">
+          <img src="img/list_img_2@2x.png" class="responsive-md" alt="">
+          <div class="tab-dash-imgTro text-center" style="bottom: 10%;">消息中心
+            <span class="badge badge-assertive" style="background-color: #DA4C39">{{messageNum}}</span>
+          </div>
+        </div>
+        <div style="margin-top:-3%;position: relative">
+          <img src="img/list_img_1@2x.png" class="responsive-md" alt="">
+        </div>
+      </section> -->
+  </ion-content>
+</ion-view>

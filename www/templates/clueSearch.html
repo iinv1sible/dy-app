@@ -1,0 +1,38 @@
+<ion-view title="" hide-tabs="true">
+  <ion-nav-title>{{'搜索'|T}}</ion-nav-title>
+  <ion-content scroll="false" style="height: 100%">
+  <div class="row item" style="border-bottom: 1px solid #ddd;border-top: 1px solid #ddd">
+    <input type="text" placeholder="{{'客户手机号、姓名'|T}}" class="bar-input col" style="padding-right: 30px !important;margin: 0;" />
+    <span class="icon ion-close-round" style="position: absolute;right: 79px;top: 17px;" ng-click="empty()"></span>
+    <button class="button" ng-click="search()" id="searchButton" style="background: #fff;min-height: 30px;line-height: 30px;">{{'搜索'|T}}</button>
+  </div>
+    <ion-scroll style="height: calc(100% - 55px)">
+    <div class="list" style="margin-bottom:0;">
+      <div class="item row">
+          <span class="col col-10">{{'编号'|T}}</span>
+          <span class="col col-20">{{'客户姓名'|T}}</span>
+          <span class="col col-25">{{'手机号'|T}}</span>
+          <span class="col col-20">{{'宴会类型'|T}}</span>
+          <span class="col col-25" style="text-align: right">{{'宴会时间'|T}}</span>
+      </div>
+
+      <div class="item row" ng-repeat="item in searchClueList"  ng-click="goDetail($event)" data-keyNo={{item.keyNo}}>
+          <span class="col col-10">{{item.keyNoBusiness}}</span>
+          <span class="col col-20">{{item.vipName}}</span>
+          <span class="col col-25">{{item.vipPhone}}</span>
+          <span class="col col-20">{{item.resvMeetingOrderTypeName}}</span>
+          <span class="col col-25" style="text-align: right">{{item.resvDate}}<i class="disable-pointer-events icon icon-right-arrow"></i></span>
+      </div>
+      <div class="clue-more" ng-if="searchClueList.length>0&&canLoad" ng-click="doInfinite()">{{'查看更多'|T}}</div>
+      <div class="clue-more" ng-if="!canLoad&&isShow">{{'已经到底了'|T}}</div>
+      <div class="clue-more" ng-if="!searchClueList.length>0">{{'暂无线索'|T}}</div>
+      <ion-infinite-scroll
+        ng-if="canLoad"
+        immediate-check="false"
+        distance="2%"
+        on-infinite="doInfinite()">
+      </ion-infinite-scroll>
+    </div>
+    </ion-scroll>
+  </ion-content>
+</ion-view>

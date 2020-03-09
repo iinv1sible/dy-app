@@ -1,0 +1,31 @@
+<ion-view hide-tabs="true" overflow-scroll="true">
+  <ion-nav-title>{{'存取记录'|T}}</ion-nav-title>
+  <ion-nav-buttons side="left">
+    <button class="button back-button buttons button-clear header-item" ng-click="goback()">
+      <i class="icon icon-back" style="vertical-align: middle;"></i>
+    </button>
+  </ion-nav-buttons>
+  <ion-content style="border-top: 1px solid #ddd;">
+    <div class="list" style="height: 100%;margin: 10px 10px 0;">
+      <div class="list list-inset" style="margin: 0;padding: 0;border: 0;border-bottom: 1px solid #d0d0d0;margin-bottom: 10px;" ng-show="!isVip">
+        <label class="item item-input" style="border: 0;">
+          <i class="icon icon-search placeholder-icon" style="margin-top: 5px;"></i>
+          <input type="text" placeholder="请输入客户电话" ng-change="selectCustom()" ng-model="data.phone" style="padding: 0px 12px 0px 0px;">
+        </label>
+      </div>
+      <div class="item row" style="padding:5px;margin-bottom: 10px;border-radius: 5px;" ng-repeat="item in wineLog">
+        <div style="flex: 1;padding: 0 12px;">
+          <div style="display: flex;line-height: 34px;"><span style="width: 75px;color: #aaa;">客户信息</span><span style="flex:1">{{item.vipName}} {{item.vipSex}}</span></div>
+          <div style="display: flex;line-height: 34px;"><span style="width: 75px;color: #aaa;">存取记录</span><div style="flex:1"><div ng-repeat="log in item.logs"><span style="border: 1px solid;border-radius: 50%;display: inline-block;height: 24px;width: 24px;line-height: 22px;text-align: center;margin-right: 5px;color:{{log.num>log.targetNum?'#aaa':'#ff2741'}}">{{log.num>log.targetNum?'取':'存'}}</span><span>{{log.name}}</span> <span>{{log.num}} → {{log.targetNum}}</span></div></div></div>
+          <div style="border-top: 1px solid #d0d0d0;display: flex;line-height: 34px;"><span style="width: 75px;color: #aaa;">操作员</span><span style="flex:1;color: #aaa;">{{item.operatorName}} {{item.createTime}}</span></div>
+        </div>
+      </div>
+    </div>
+    <!-- <ion-infinite-scroll
+      ng-if="canLoad"
+      immediate-check="false"
+      distance="2%"
+      on-infinite="doInfinite()">
+    </ion-infinite-scroll> -->
+  </ion-content>
+</ion-view>

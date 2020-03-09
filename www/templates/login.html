@@ -1,0 +1,27 @@
+<ion-view hide-nav-bar="true" hide-tabs="true">
+  <ion-nav-title>{{'登录'|T}}</ion-nav-title>
+  <ion-content scroll="false" style="background: #fff">
+    <h2 class="login-title">{{'易订账号登录'|T}}</h2>
+    <div class="span-gray" style="font-size: 15px;padding: 0 25px;">
+      <div class="list" style="margin-bottom:50px;">
+        <div class="item-input login-input">
+          <input type="text" id="username" placeholder="{{'请输入账号'|T}}" ng-model="data.username" ng-click="clickUserName()">
+        </div>
+        <div class="item-input login-input">
+          <input type="password" id="password" placeholder="{{'请输入密码'|T}}" ng-model="data.password">
+          <a class="icon-closedeyes" ng-show="data.password" ng-click="showPwd($event)"></a>
+        </div>
+        <div class="item-input login-input" style="border: none;" ng-if="hotelList.length>0">
+          <label style="margin-right: 20px;">{{'请选择门店'|T}}</label>
+          <select style="flex: 1;height: 40px;line-height: 40px;padding: 0 15px;-webkit-appearance: menulist;appearance: menulist;" ng-model="selectHotel" ng-options="item.businessName for item in hotelList" ng-change="changeHotel(selectHotel)"></select>
+        </div>
+        <div style="text-align: right;">
+          <a ui-sref="psd1" style="color: #666;font-size: 14px;text-decoration: none;letter-spacing: 0;">{{'忘记密码'|T}}</a>
+        </div>
+      </div>
+      <div ng-click="login()" class="list button button-block button-assertive" ng-class="{'button-assertive':data.username&&data.password}" style="line-height: 38px;min-height: 38px;">{{'登 录'|T}}</div>
+    </div>
+    <div class="bottom-logo text-center"><img src="images/login_logo@3x.png" style="width:100px;" /></div>
+  </ion-content>
+
+</ion-view>

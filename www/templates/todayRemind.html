@@ -1,0 +1,18 @@
+<ion-view hide-tabs="true" cache-view="false" ng-cloak>
+  <ion-nav-title>{{'今日跟进'|T}}</ion-nav-title>
+  <ion-content>
+    <div class="list" style="margin-top: 10px;">
+      <div class="item row" ng-repeat="item in remindList" ng-click="goDetail('{{item.keyNo}}','{{item.resvOrder}}','{{item.orderType}}')" data-keyNo={{item.keyNo}}>
+        <div class="col">
+          <div class="myOrder-gray-font">{{item.vipName}} {{item.vipSix=='男'||item.vipSix=='先生'?'先生':'女士'}} {{item.vipPhone}}
+            <a class="icon icon-phone" style="display: inline-block;vertical-align: -7px;margin-left: 10px;" href="tel:{{'+'+(item.countryCode || '86') + item.vipPhone}}" ng-click="$event.stopPropagation();"></a>
+          </div>
+          <div class="myOrder-gray-font">{{'订单内容'|T}}：{{item.orderDetail}}</div>
+          <div class="myOrder-gray-font">{{'跟进方式'|T}}：{{item.way}}</div>
+          <div class="myOrder-gray-font">{{'跟进内容'|T}}：{{item.remind}};{{item.content}}</div>
+        </div>
+        <div class="icon icon-right-arrow"></div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

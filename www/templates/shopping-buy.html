@@ -1,0 +1,105 @@
+<ion-view view-title="订单支付" hide-nav-bar>
+  <ion-nav-buttons  side="right">
+    <button class="button button-icon button-clear button-positive" ng-click="goBack($event)">
+      <i>取消支付</i>
+    </button>
+  </ion-nav-buttons>
+  <ion-content>
+    <div class="list">
+      <div class="item tab-myOrder-detail-item" style="border-width:0;color:#333;">
+        收货人：{{addressData.destPerson}}
+        <span class="right">{{addressData.destPhone}}</span>
+      </div>
+      <div ui-sref="shoppingAdd" class="item tab-myOrder-detail-item item-icon-left item-icon-right" style="border-width:0;">
+        <i class="icon ion-ios-location" style="font-size: 24px;color:#76A6DF;"></i>
+        <span style="font-size: 12px;color: #999;">{{addressData.area}}</span><br>
+        <span  style="font-size: 12px;color: #999;">{{addressData.address}}</span>
+        <i class="icon icon-right-arrow"></i>
+      </div>
+    </div>
+    <div class="list">
+      <div class="item item-toggle" style="height:46px;padding-top:0;line-height:46px;">
+        <span style="font-size: 14px;">是否需要发票</span>
+        <label class="toggle">
+          <input type="checkbox" ng-model="product.receipt" ng-checked="product.receipt">
+          <div class="track">
+            <div class="handle"></div>
+          </div>
+        </label>
+      </div>
+      <div ui-sref="shoppingAddT" ng-if="product.receipt" class="item item-input tab-myOrder-detail-item item-icon-right">
+        <span class="input-label" style="font-size: 14px;max-width: 80px;">发票抬头</span>
+        <span class="right" style="font-size: 12px;color: #999;">{{addressFData.receiptTitle}}</span>
+        <i class="icon icon-right-arrow"></i>
+      </div>
+      <div ng-if="product.receipt" class="item item-input tab-myOrder-detail-item item-icon-right">
+        <span class="input-label" style="font-size: 14px;max-width: 80px;">发票地址</span>
+        <span class="right" style="font-size: 12px;color: #999;">{{addressFData.receiptAddress}}</span>
+      </div>
+    </div>
+
+    <div class="list">
+      <div class="item-divider" style="padding-left:12px;">商品详情</div>
+      <div class="item row" style="height:auto;background-color: #fff;border-width: 0;margin:0;">
+        <div class="col-33" style="text-align: center;margin: auto;">
+          <img ng-src="{{product.productImages[0]}}" height="73px" alt="">
+        </div>
+        <div class="col-67" style="padding-left: 15px;border-right:0;">
+          <p style="margin:0 0 10px;">{{product.productName}}</p>
+          <p style="margin:0 0 10px;"><span style="color:#D76959;font-weight: 600;">¥ {{product.singlePrice}}</span><span>/500克</span></p>
+          <p style="margin:0 0 10px;padding-right:10px;"><span style="color:#D76959;font-weight: 600;">¥ {{product.price}}</span><span>/箱</span>
+            <span class="right" style="color:#D76959;"> X{{product.count}}</span>
+          </p>
+        </div>
+      </div>
+      <div class="item tab-myOrder-detail-item" style="border-width:0;">
+        <span style="font-size: 14px;">运费金额</span>
+        <span class="right" style="color:#D76959;font-size: 14px;">¥ {{product.expressAmt+(product.overflowExpressAmt*(product.count-product.startNum))}}</span>
+      </div>
+      <div class="item tab-myOrder-detail-item" style="border-width:0;">
+        <span style="font-size: 14px;">订单金额</span>
+        <span class="right" style="color:#D76959;font-size: 14px;">¥ {{product.price*product.count}}</span>
+      </div>
+      <div class="item tab-myOrder-detail-item" style="border-width:0;">
+        <span style="font-size: 14px;">订单总额</span>
+        <span class="right" style="color:#D76959;font-size: 14px;">¥ {{(product.price*product.count+product.expressAmt+(product.overflowExpressAmt*(product.count-product.startNum))).toFixed(2)}}</span>
+      </div>
+    </div>
+    <div class="list" style="padding-bottom: 44px;">
+      <div class="item-divider" style="padding-left:12px;">支付方式</div>
+      <ion-checkbox style="padding-top:10px;padding-bottom: 10px;" ng-model="checkbox.one" ng-checked="checkbox.one" ng-click="pay('one')">
+        <span class="right" style="font-size: 14px;">
+          <i style="display: inline-block;width:32px;height:20px;vertical-align: bottom;background: url('img/zfb.jpg') center center"></i>
+          支付宝
+        </span>
+      </ion-checkbox>
+      <ion-checkbox style="padding-top:10px;padding-bottom: 10px;" ng-model="checkbox.two" ng-checked="checkbox.two" ng-click="pay('two')">
+        <span class="right" style="font-size: 14px;">
+          <i style="display: inline-block;width:26px;height:20px;vertical-align: bottom;background: url('img/yl.jpg') center center"></i>
+          已付定金
+        </span>
+      </ion-checkbox>
+    </div>
+    <!--<div class="list">
+      <div class="item-divider" style="padding-left:12px;">支付方式</div>
+      <div class="item tab-myOrder-detail-item item-icon-right" style="padding-top:8px;padding-bottom:8px;">
+        <span style="font-size: 14px;">支付宝</span>
+        <i class="icon icon-right-arrow" style="font-size: 14px;color: #999;"></i>
+
+      </div>
+      <div class="item tab-myOrder-detail-item item-icon-right" style="padding-top:8px;padding-bottom:8px;">
+        <span style="font-size: 14px;">银行代扣</span>
+        <i class="icon icon-right-arrow" style="font-size: 14px;color: #999;"></i>
+      </div>-->
+    </div>
+  </ion-content>
+  <div class="row bar bar-footer" style="border:0;padding:0;">
+    <div class="col-75 text-left" style="background-color: #fff;width:100%;padding-left: 12px;line-height: 44px;box-shadow: 0 -1px 1px #D76959;">
+      <span>待支付订金：</span>
+      <span style="color:#D76959;font-weight: 600;">¥{{((product.price*product.count+(product.expressAmt+(product.overflowExpressAmt*(product.count-product.startNum))))/10).toFixed(2)}}</span>
+    </div>
+    <div class="col-25 text-center" ng-click="newOrder()" style="background-color: #DB4F3B;color:#fff;width:100%;">
+      <a href="javascript:0" class="button button-clear disable-pointer-events" style="color:#fff;font-size:16px;line-height: 44px;">立即支付</a>
+    </div>
+  </div>
+</ion-view>

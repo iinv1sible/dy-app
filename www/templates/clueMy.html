@@ -1,0 +1,43 @@
+<ion-view hide-tabs="true" cache-view="false" ng-cloak>
+  <ion-nav-title>
+    {{title|T}}
+  </ion-nav-title>
+  <ion-nav-buttons  side="left">
+    <button class="button back-button buttons button-clear header-item" ng-click="goIndex()">
+        <i class="icon icon-back" style="vertical-align: middle;"></i>
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+      <button class="button button-icon" ng-click="goTrash()">
+        <span class="icon icon-trash-g"></span>
+      </button>
+  </ion-nav-buttons>
+  <ion-content>
+    <div class="list" style="margin-top: 10px;">
+      <div class="item row" ng-repeat="item in myClueList"  ng-click="goDetail($event)" data-keyNo={{item.keyNo}}>
+        <i class="disable-pointer-events icon icon-clue" style="margin-right: 16px;"></i>
+        <div class="col disable-pointer-events">
+          <div class="myOrder-gray-font">{{item.vipName}} {{item.vipPhone}}</div>
+          <div class="myOrder-gray-font">{{item.resvMeetingOrderTypeName}}&nbsp</div>
+          <div class="myOrder-gray-font"><span ng-hide="item.resvDate == null">{{'宴会日期'|T}}:</span>{{item.resvDate}}&nbsp</div>
+        </div>
+        <div class="disable-pointer-events icon icon-right-arrow">
+          <div style="display: inline-block;vertical-align: middle;text-align: right;font-size: 12px;">
+            <div>{{'编号'|T}}:{{item.keyNoBusiness}}</div>
+            <div ng-show="order.resvMeetingOrderTypeName!='会议预订'">{{item.createdAt}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <div class="clue-more" ng-if="myClueList.length>0&&canLoad" ng-click="doInfinite()">{{'查看更多'|T}}</div>
+      <div class="clue-more" ng-if="!canLoad&&isShow">{{'已经到底了'|T}}</div>
+      <div ng-if="!myClueList.length>0" style="color: #aaa;font-size: 20px;text-align: center;line-height: 300px;">{{'暂无线索'|T}}</div>
+      <ion-infinite-scroll
+        ng-if="canLoad"
+        immediate-check="false"
+        distance="2%"
+        on-infinite="doInfinite()">
+      </ion-infinite-scroll>
+  </ion-content>
+</ion-view>

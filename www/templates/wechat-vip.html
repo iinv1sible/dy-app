@@ -1,0 +1,52 @@
+<ion-view hide-tabs="true">
+  <ion-nav-title></ion-nav-title>
+  <ion-content style="border-top: 1px solid #ccc;background: #fff;">
+    <div class="row">
+      <div class="col">
+        <div><span style="font-size: 30px;">{{data.vipName}}</span> <span>{{data.vipSex == '男' || data.vipSex == '先生'?'先生':'女士'}}</span></div>
+        <div style="margin-top: 10px;"><span>电话：{{data.vipPhone}}</span></div>
+        <div style="margin-top: 10px;"><span class="custom-info-tag-span">{{data.vipValueName}}</span></div>
+      </div>
+      <img ng-src={{data.imageUrl}} style="display: block;width: 100px;height: 100px;" />
+    </div>
+    <div class="row">生日：{{data.vipBirthday1}}</div>
+    <div class="row" style="border: 0;align-items: flex-start;">
+      <span>纪念日：</span>
+      <div class="col">
+        <div ng-repeat="item in anniversary">
+          <span>{{item.anniversaryObj}}的{{item.anniversaryName}} {{item.anniversaryTime}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="border: 0">爱好：{{data.hobby}}</div>
+    <div class="row" style="border: 0">忌口：{{data.detest}}</div>
+    <div class="row" style="border: 0;align-items: flex-start;">
+      <span>创建时间：</span>
+      <div class="col">
+        <div>{{data.createdAt}}</div>
+        <div>在 {{data.businessName}} 由销售经理{{data.appUserName}}创建</div>
+      </div>
+    </div>
+    <div class="row" style="border: 0;align-items: flex-start;">
+      <span>最近就餐：</span>
+      <div class="col">
+        <div ng-show="hasLastData">就餐日期 <span style="margin-left: 20px;">{{lastData.resvDate}}</span></div>
+        <div ng-show="hasLastData">就餐人数 <span style="margin-left: 20px;">{{lastData.resvNum}}</span></div>
+        <div ng-show="hasLastData">预订包厢 <span style="margin-left: 20px;">{{lastData.tableAreaName}}</span></div>
+        <div ng-show="hasLastData">结账金额 <span style="margin-left: 20px;">{{lastData.payamount}}</span></div></div>
+    </div>
+    <div class="row" style="border: 0;align-items: flex-start;">
+      <span>存酒：</span>
+      <div class="col">
+        <div ng-repeat="wine in wineList">{{wine.name}} <span style="margin-left: 20px;">{{wine.num}}件</span></div>
+      </div>
+    </div>
+    <div class="row" style="border: 0;align-items: flex-start;">
+      <span>总体消费：</span>
+      <div class="col">
+        <div>总金额：{{count.allOrderAmt}}万</div>
+        <div>消费频次：{{count.plNum}}单/月</div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

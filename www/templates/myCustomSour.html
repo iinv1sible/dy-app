@@ -1,0 +1,42 @@
+<ion-view hide-tabs="true" overflow-scroll="true">
+  <ion-nav-title>{{'资源分配'|T}}</ion-nav-title>
+  <ion-nav-buttons side="left">
+    <button class="button back-button buttons button-clear header-item" ng-click="goCustom()" >
+      <i class="icon icon-back" style="vertical-align: middle;"></i>
+    </button>
+  </ion-nav-buttons>
+  <ion-content>
+    <div class="list" style="margin-bottom:0;">
+      <div ng-click="goInfo($event)" ng-repeat="custom in customList" data-vipId={{custom.id}} class="item row">
+        <i class="disable-pointer-events  tab-custom-icon left-center text-center" ng-style="bgColor[custom.colorId]">
+          <img ng-src={{custom.imageUrl}} ng-show=custom.imageUrl style="border-radius: 50%;display: block;height: 100%;width: 100%;" alt="">
+          <span ng-hide=custom.imageUrl>{{custom.vipName[0]}}</span>
+        </i>
+        <div class="disable-pointer-events col" style="padding-left: 12px;">
+          <div class="myOrder-black-font">{{custom.vipName}}</div>
+          <div class="myOrder-gray-font">{{custom.vipPhone}}</div>
+        </div>
+        <div class="myOrder-gray-font disable-pointer-events" style="text-align: right;">
+          <div class="myOrder-gray-font" style="margin-bottom: 5px;">{{'资料完整度'|T}} {{custom.percentRank}}%</div>
+          <div class="chat-div-gray" style="display: inline-block;background: #ccc;">
+            <div style="width:12px;background: #ccc;float:left;height: 6px;position: relative;"><span style="position: absolute;left: 0;top: 0;bottom: 0;width:{{custom.percentRank<20&&custom.percentRank>0?custom.percentRank/20*12:12}}px" ng-class="{'bgRed':custom.percentRank>0}"></span></div>
+            <span style="float: left;width: 5px;height: 6px;background: #fff"></span>
+            <div style="width:12px;background: #ccc;float:left;height: 6px;position: relative;"><span style="position: absolute;left: 0;top: 0;bottom: 0;width:{{custom.percentRank<40&&custom.percentRank>20?(custom.percentRank-20)/20*12:12}}px" ng-class="{'bgRed':custom.percentRank>20}"></span></div>
+            <span style="float: left;width: 5px;height: 6px;background: #fff"></span>
+            <div style="width:12px;background: #ccc;float:left;height: 6px;position: relative;"><span style="position: absolute;left: 0;top: 0;bottom: 0;width:{{custom.percentRank<60&&custom.percentRank>40?(custom.percentRank-40)/20*12:12}}px" ng-class="{'bgRed':custom.percentRank>40}"></span></div>
+            <span style="float: left;width: 5px;height: 6px;background: #fff"></span>
+            <div style="width:12px;background: #ccc;float:left;height: 6px;position: relative;"><span style="position: absolute;left: 0;top: 0;bottom: 0;width:{{custom.percentRank<80&&custom.percentRank>60?(custom.percentRank-60)/20*12:12}}px" ng-class="{'bgRed':custom.percentRank>60}"></span></div>
+            <span style="float: left;width: 5px;height: 6px;background: #fff"></span>
+            <div style="width:12px;background: #ccc;float:left;height: 6px;position: relative;"><span style="position: absolute;left: 0;top: 0;bottom: 0;width:{{custom.percentRank<100&&custom.percentRank>80?(custom.percentRank-80)/20*12:12}}px" ng-class="{'bgRed':custom.percentRank>80}"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ion-infinite-scroll
+      ng-if="canLoad"
+      immediate-check="false"
+      distance="2%"
+      on-infinite="doInfinite()">
+    </ion-infinite-scroll>
+  </ion-content>
+</ion-view>

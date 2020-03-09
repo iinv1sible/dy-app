@@ -1,0 +1,50 @@
+<ion-view hide-tabs="true" overflow-scroll="true">
+  <ion-nav-title>{{'预订记录'|T}}</ion-nav-title>
+  <ion-nav-buttons  side="right">
+    <button  ng-if="showDish" class="button button-icon" ng-click="hideDish()">
+      <span style="font-size: 14px;color: #ff2741">{{'查看完成'|T}}</span>
+    </button>
+  </ion-nav-buttons>
+  <div class="d-modal isRight" style="overflow: auto;background-color: #efefef;" ng-class="{'isRight':!showDish,'isCenter':showDish}">
+    <ion-scroll class="list" style="background-color: #fff;">
+      <div class="row" ng-repeat="dish in dishList">
+        <div class="col-60 text-left" style="padding:5px;">
+          {{dish.cmmc}}
+        </div>
+        <div class="col-20 text-center" style="padding:5px;">
+          {{dish.cmsl}}{{'份'|T}}
+        </div>
+        <div class="col-20 text-center" style="padding:5px;">
+          <span style="color:#D76959;">{{dish.foundNum}}</span><span>/{{dish.allOrder}}</span>
+        </div>
+      </div>
+    </ion-scroll>
+  </div>
+  <ion-content style="padding:10px 0">
+    <div ng-repeat="order in orderList" class="list list-card">
+      <div class="row list-card-top">
+        <span class="tab-account-message-detail-icon" style="margin: 0;width: 28px;height: 28px;margin-right: 8px;"></span>
+        <span class="col">{{order.vipName}}<span class="myOrder-gray-font" style="margin-left: 5px;">{{order.vipPhone}}</span></span>
+        <i style="font-size:14px;color:#999;">{{'消费金额'|T}}：{{order.payamount}}</i>
+        <span ng-if="order.isDetail*1" ng-click="seesee(order.isDetail,order.vipId)" style="font-size:14px;color:#ff2741;text-decoration: underline">{{'查看明细'|T}}</span>
+      </div>
+      <div data-tableAreaName={{order.tableAreaName}} data-tableNo={{order.tableNo}} data-resvOrder={{order.resvOrder}} ng-click="goOrderDetail($event)" class="list-card-middle row">
+        <div class="col disable-pointer-events">
+          <div class="disable-pointer-events myOrder-gray-font" style="padding-top:3px;white-space: pre-wrap;">{{order.tableAreaName}} {{order.tableNo}}</div>
+          <div class="disable-pointer-events">
+            <span class="myOrder-gray-font">{{order.appUserName}}</span>
+            <span ng-if="order.peicai*1" class="red" style="font-size: 14px;">{{'配'|T}}</span>
+            <span class="right" style="color: #999;">{{order.resvDate}} {{order.meal_type_name}}</span>
+          </div>
+        </div>
+        <i class="disable-pointer-events icon icon-right-arrow"></i>
+      </div>
+    </div>
+    <ion-infinite-scroll
+      ng-if="canLoad"
+      immediate-check="false"
+      distance="2%"
+      on-infinite="doInfinite()">
+    </ion-infinite-scroll>
+  </ion-content>
+</ion-view>

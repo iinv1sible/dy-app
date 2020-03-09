@@ -1,0 +1,149 @@
+<ion-view hide-tabs="true">
+  <ion-nav-title>{{'客户管理'|T}}</ion-nav-title>
+  <ion-content ion-sticky>
+    <div class="list tab-account-list">
+      <a class="item item-divider row" ng-show="meetingShow" style="z-index: 10;border: 0;border-bottom: 1px solid #ddd;background: #fff;padding: 12px;min-height: 44px;">
+        <div class="col">
+          <i class="text-center myOrder-title title-tag" ng-class="{'myOrder-title-active':isCanyin}" ng-click="changeC()">{{'餐饮客户'|T}}</i>
+          <i class="text-center myOrder-title title-tag" ng-class="{'myOrder-title-active':isYanhui}" ng-click="changeY()">{{'宴会客户'|T}}</i>
+        </div>
+        <!-- <span class="icon icon-search-b" ng-show="isCanyin" ng-click="goSearch()"></span> -->
+      </a>
+      <a ng-click="goDetailAll()" ng-show="!info.hiddenPhoneNum" class="item row" ng-if="isCanyin">
+        <span class="icon icon-cust1"></span>
+        <span class="col">{{'全部客户'|T}}</span>
+        <i class="icon icon-right-arrow"></i>
+      </a>
+      <a ng-click="goDetail()" class="item row" ng-if="isCanyin">
+        <span class="icon icon-cust2"></span>
+        <span class="col">{{'我的客户'|T}}</span>
+        <i class="icon icon-right-arrow"></i>
+      </a>
+    </div>
+    <div class="list tab-account-list" style="margin-bottom:0;" ng-if="isCanyin">
+      <div class="item row item-divider item-divider" style="border: 0;background: #fff;padding: 13px;align-items: flex-end;">
+        <span class="col"><span style="color: #333;"><span class="custom-span">{{allSubNum}}</span> {{'人'|T}}</span> {{'贵宾'|T}} </span>
+        <span class="tab-chats-select" ng-if="!info.hiddenPhoneNum" ng-click="changeSubType()">
+          {{subTypeTxt|T}}
+          <i class="chats-corner"></i>
+        </span>
+      </div>
+    </div>
+    <div class="row" style="border-right: 0;background: #fff;border-top: 0;padding:0;" ng-show="isCanyin">
+      <div class="col-50 tab-chats-item" ng-repeat="value in subValueList" style="position: relative;padding-left: 62px;text-align: left;" ng-click="goCustom(value.id,value.value_name,'sub')">
+        <i class="custom-icon-top text-center custom-icon-text" style="background-color:{{colorList[$index%(colorList.length)]}};">{{value.value_name.substring(0,1)}}</i>
+        <span class="custom-span" style="font-size: 18px;">{{value.num}}</span>
+        <span class="tab-chats-font">{{'人'|T}}</span>
+        <p class="tab-chats-font">{{value.value_name}}</p>
+      </div>
+    </div>
+    <div class="list tab-account-list" style="margin-bottom:0;margin-top:10px">
+      <div class="item row item-divider item-divider" style="border: 0;background: #fff;padding: 13px;align-items: flex-end;">
+        <span class="col"><span style="color: #333;"><span class="custom-span">{{allNum}}</span> {{'人'|T}}</span> {{typeTxt|T}}{{'客户'|T}} </span>
+        <span class="tab-chats-select" ng-if="!info.hiddenPhoneNum" ng-click="changeType()">
+          {{typeTxt|T}}
+          <i class="chats-corner"></i>
+        </span>
+      </div>
+    </div>
+    <div class="row" style="border-right: 0;background: #fff;border-top: 0;padding:0;" ng-show="isCanyin">
+      <div class="col-50 tab-chats-item" ng-repeat="value in valueList" style="position: relative;padding-left: 62px;text-align: left;" ng-click="goCustom(value.vipValueId,value.vipValueName)">
+        <i class="custom-icon-top" style="background-image: url('images/ico_custom{{value.vipValueId}}@3x.png');"></i>
+        <span class="custom-span" style="font-size: 18px;">{{value.peopleNum}}</span>
+        <span class="tab-chats-font">{{'人'|T}}</span>
+        <p class="tab-chats-font">{{value.vipValueName}}</p>
+      </div>
+    </div>
+    <div class="list tab-account-list" style="margin-top:10px" ng-if="isCanyin">
+      <div class="item item-divider disable-pointer-events item-divider" style="border: 0;background: #fff;padding: 13px;">
+          <span style="color: #333;"><span class="custom-span">{{ziyuan}}</span> {{'人'|T}}</span> {{'待开发资源'|T}}
+      </div>
+      <div class="row" style="border-right: 0;background: #fff;padding:0;">
+        <div class="col-50 tab-chats-item" style="position: relative;padding-left: 68px;text-align: left;" ng-click="goSource(1)">
+          <i class="tab-chats-icon-top disable-pointer-events" style="background-image: url('images/icon_grandtotal@3x.png');"></i>
+          <span class="tab-chats-span disable-pointer-events" style="font-size: 18px;">{{leiji}}</span>
+          <span class="tab-chats-font disable-pointer-events">{{'人'|T}}</span>
+          <p class="tab-chats-font disable-pointer-events">{{'累计获得'|T}}</p>
+        </div>
+        <div class="col-50 tab-chats-item" style="position: relative;padding-left: 68px;text-align: left;" ng-click="goSource(2)">
+          <i class="tab-chats-icon-top disable-pointer-events" style="background-image: url('images/icon_development@3x.png');"></i>
+          <span class="tab-chats-span disable-pointer-events" style="font-size: 18px;">{{kaifa}}</span>
+          <span class="tab-chats-font disable-pointer-events">{{'人'|T}}</span>
+          <p class="tab-chats-font disable-pointer-events">{{'成功开发'|T}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="list tab-account-list" style="margin-top:10px" ng-click="goCunjiu()" ng-if="isCanyin">
+      <a ng-click="goCunjiu()" class="item row">
+        <span class="icon icon-cust2" style="background: url(img/ico_m_2@3x.png) no-repeat center center/100% 100%;"></span>
+        <span class="col">{{'存酒客户'|T}}</span>
+        <i class="icon icon-right-arrow"></i>
+      </a>
+    </div>
+    <div class="list" style="margin-bottom:0;" ng-if="isYanhui">
+      <div ng-click="goInfo($event)" ng-repeat="custom in customList" data-vipId={{custom.id}} data-isYan={{}} class="row item" style="padding: 12px;align-items: center;margin: 0 0 5px 0;">
+        <div class="row disable-pointer-events" style="padding: 0 0 10px 0">
+          <i class="tab-custom-icon text-center" ng-style="bgColor[custom.colorId]">
+            <img ng-src={{custom.imageUrl}} ng-show=custom.imageUrl style="border-radius: 50%;" width="100%" height="100%" alt="">
+            <span ng-hide=custom.imageUrl>{{custom.vipName[0]}}</span>
+          </i>
+          <div style="flex: 1;padding-left: 12px;">
+            <div class="myOrder-black-font">{{custom.vipName}}</div>
+            <div class="myOrder-gray-font">{{custom.vipPhone}}</div>
+          </div>
+          <div class="myOrder-gray-font" style="text-align: right;">
+            <div class="myOrder-gray-font" style="margin-bottom: 5px;">{{'资料完整度'|T}} {{custom.percentRank}}%</div>
+            <div class="chat-div-gray" style="display: inline-block;background: #ccc;">
+              <div style="width:12px;background: #ccc;float:left;height: 6px;position: relative;"><span style="position: absolute;left: 0;top: 0;bottom: 0;width:{{custom.percentRank<20&&custom.percentRank>0?custom.percentRank/20*12:12}}px" ng-class="{'bgRed':custom.percentRank>0}"></span></div>
+              <span style="float: left;width: 5px;height: 6px;background: #fff"></span>
+              <div style="width:12px;background: #ccc;float:left;height: 6px;position: relative;"><span style="position: absolute;left: 0;top: 0;bottom: 0;width:{{custom.percentRank<40&&custom.percentRank>20?(custom.percentRank-20)/20*12:12}}px" ng-class="{'bgRed':custom.percentRank>20}"></span></div>
+              <span style="float: left;width: 5px;height: 6px;background: #fff"></span>
+              <div style="width:12px;background: #ccc;float:left;height: 6px;position: relative;"><span style="position: absolute;left: 0;top: 0;bottom: 0;width:{{custom.percentRank<60&&custom.percentRank>40?(custom.percentRank-40)/20*12:12}}px" ng-class="{'bgRed':custom.percentRank>40}"></span></div>
+              <span style="float: left;width: 5px;height: 6px;background: #fff"></span>
+              <div style="width:12px;background: #ccc;float:left;height: 6px;position: relative;"><span style="position: absolute;left: 0;top: 0;bottom: 0;width:{{custom.percentRank<80&&custom.percentRank>60?(custom.percentRank-60)/20*12:12}}px" ng-class="{'bgRed':custom.percentRank>60}"></span></div>
+              <span style="float: left;width: 5px;height: 6px;background: #fff"></span>
+              <div style="width:12px;background: #ccc;float:left;height: 6px;position: relative;"><span style="position: absolute;left: 0;top: 0;bottom: 0;width:{{custom.percentRank<100&&custom.percentRank>80?(custom.percentRank-80)/20*12:12}}px" ng-class="{'bgRed':custom.percentRank>80}"></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="row disable-pointer-events" style="padding: 10px 0 0 0" ng-show="custom.tableName">
+          <span class="col" style="color: #666">{{custom.tableName}} {{custom.resvMeetingOrderTypeName}} {{custom.resvTableNum?custom.resvTableNum+('桌'|T):''}}</span><span>{{custom.lastResvDate}}</span>
+        </div>
+        <div class="row disable-pointer-events" style="padding: 10px 0 0 0" ng-show="!custom.tableName">
+          <span class="col" style="color: #666">无最近一次消费记录</span>
+        </div>
+      </div>
+    </div>
+    <ion-infinite-scroll
+      ng-if="canLoad&&isYanhui"
+      immediate-check="false"
+      distance="2%"
+      on-infinite="doInfinite()">
+    </ion-infinite-scroll>
+
+    <!--<div class="list" style="margin-bottom:0;" ng-repeat="class in customList">
+      <div class="item item-divider item-icon-left item-icon-right" ng-click="selectClass($event)" data-vipValueId={{class.vipValueId}} data-type={{class.type}} style="padding-top:16px;padding-bottom:16px;background-color: #FFFDEA;color: #999;">
+        <i class="tab-account-message-icon left-center" style="background-image: url('img/ico_custom{{class.type}}@3x.png')"></i>
+        {{class.vipValueName}}
+        <i class="disable-pointer-events icon" ng-class="{'ion-ios-plus-empty':!class.isNowSelect,'ion-ios-minus-empty':class.isNowSelect}"></i>
+      </div>
+      <div ng-click="goInfo($event)" ng-repeat="custom in class.list" data-vipId={{custom.id}} class="item item-icon-left" style="padding-top:5px;padding-bottom: 5px;">
+        <i class="tab-custom-icon left-center text-center" ng-style="bgColor">
+          <img ng-src={{custom.imageUrl}} ng-show=custom.imageUrl style="border-radius: 50%;" width="100%" height="100%" alt="">
+          <span ng-hide=custom.imageUrl>{{custom.vipName[0]}}</span>
+        </i>
+        <div class="disable-pointer-events">
+          <span class="myOrder-black-font">{{custom.vipName}}</span>
+          <span class="myOrder-gray-font">{{custom.vipPhone}}</span>
+          <span class="myOrder-gray-font" style="float: right;font-size: 12px;">资料完整度 <span style="color:#8ECE88;">{{custom.percentRank}}%</span></span>
+        </div>
+        <div class="disable-pointer-events myOrder-gray-font chat-div-contain">
+          <div class="chat-div-gray">
+            <div class="chat-div-gray" style="background-color:#8ECE88;opacity: 0.8;width:{{custom.percentRank}}%;"></div>
+          </div>
+        </div>
+      </div>
+    </div>-->
+
+  </ion-content>
+</ion-view>

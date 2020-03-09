@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>邀请函</title>
+  <style scoped>
+    html{height: 100%;}
+  body{margin: 0;padding: 0;height: 100%;}
+  p{margin: 0;}
+  </style>
+</head>
+<body>
+  <div style="display: flex;align-items: center;height: 100%;"><div style="flex:1">
+    <div style="background: url(images/bg-share.png) no-repeat center center/100% 100%;">
+      <div style="padding: 10px 10px 10px 42%;">
+        <p>尊敬的贵宾：</p>
+        <p style="text-indent: 2em;" id="info1"></p>
+        <br>
+        <p style="text-indent: 2em;">届时</p>
+        <p>敬请光临</p>
+        <br>
+        <p style="text-align: right;" id="info2"></p>
+      </div>
+    </div>
+    <div style="line-height: 40px;padding: 0 20px;display:flex;align-items: center;" onclick="openMap()">
+      <i style="background: url(images/address.png) no-repeat center center/100% 100%;width:20px;height: 20px;"></i>
+      <span style="flex:1" id="info3"></span>
+      <i style="background: url(images/btn_view@3x.png) no-repeat center center/100% 100%;width:8px;height: 16px;"></i>
+    </div>
+  </div></div>
+  <script src="lib/jQuery/dist/jquery.min.js"></script>
+<script>
+  var addressUrl = ''
+  $(function(){
+    var data = {}
+    var weekday = ['日','一','二','三','四','五','六']
+    console.log(GetQueryString('batchNo'))
+    var url='https://phone.zhidianfan.com:9091';
+    // var url='http://server7.zhidianfan.com:9090';
+    // var url='http://192.168.3.203:9018';
+    $.ajax({
+      url: url + "/meetingKey/invitation?batchNo=" + GetQueryString('batchNo'),
+      success:function(data){
+        var year = new Date(data.resvDate).getFullYear()
+        var month = new Date(data.resvDate).getMonth()+1
+        var date = new Date(data.resvDate).getDate()
+        var day = weekday[data.week]
+        var isAM = data.destTime <= '12:00' ? 'am' : 'pm'
+        var html = `您好, <span style="font-weight: bold;font-size: 15px;">${year}年${month}月${date}日（星期${day}）${data.mealTypeName}</span>为您安排在${data.tableName}；`
+        if(data.destTime){
+          html += `就餐时间：${data.destTime}${isAM}；`
+        }
+        html += `就餐人数：${data.resvNum}人；详细地址请点击下方的酒店定位。`
+        $('#info1').html(html)
+        $('#info2').html(`${data.businessName}全体员工`)
+        $('#info3').html(data.address)
+        addressUrl = data.addressUrl
+      }
+    })
+  })
+  function GetQueryString(name)
+  {
+    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if(r!=null)return  unescape(r[2]); return null;
+  }
+  function openMap(){
+    window.open(addressUrl, '_blank')
+  }
+</script>
+</body>
+</html>

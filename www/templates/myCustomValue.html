@@ -1,0 +1,55 @@
+<ion-view hide-tabs="true" overflow-scroll="true">
+  <ion-nav-title>{{name|T}}</ion-nav-title>
+  <ion-nav-buttons side="left">
+    <button class="button back-button buttons button-clear header-item" ng-click="goCustom()" >
+      <i class="icon icon-back" style="vertical-align: middle;"></i>
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <i ng-click="choice($event)" ng-if="showValueFilter" class="button button-small button-clear" style="border: none;color:#999;font-size: 15px;">
+      <i class="icon icon-filter">{{valueText|T}}</i>
+    </i>
+    <i class="sanjiao1" ng-if="showValueFilter"></i>
+  </ion-nav-buttons>
+  <ion-content style="border-top: 1px solid #ddd;">
+    <div class="list" style="margin-bottom:0;">
+      <div ng-click="goInfo($event)" ng-repeat="custom in customList" data-vipId={{custom.id}} data-isYan={{}} class="item row" style="padding: 10px 25px;margin-bottom: 5px;">
+        <div class="row disable-pointer-events" style="padding: 0 0 10px 0;">
+          <i class="tab-custom-icon text-center" ng-style="bgColor[custom.colorId]">
+            <img ng-src={{custom.imageUrl}} ng-show=custom.imageUrl style="border-radius: 50%;display: block;height: 100%;width: 100%;" alt="">
+            <span ng-hide=custom.imageUrl>{{custom.vipName[0]}}</span>
+          </i>
+          <div class="col" style="padding-left: 12px;">
+            <div class="myOrder-black-font">{{custom.vipName}}</div>
+            <div class="myOrder-gray-font">{{custom.vipPhone}}</div>
+          </div>
+          <div class="myOrder-gray-font" style="text-align: right;">
+            <div class="myOrder-gray-font" style="margin-bottom: 5px;">{{'资料完整度'|T}} {{custom.percentRank}}%</div>
+            <div class="chat-div-gray" style="display: inline-block;background: #ccc;">
+              <div style="width:12px;background: #ccc;float:left;height: 6px;position: relative;"><span style="position: absolute;left: 0;top: 0;bottom: 0;width:{{custom.percentRank<20&&custom.percentRank>0?custom.percentRank/20*12:12}}px" ng-class="{'bgRed':custom.percentRank>0}"></span></div>
+              <span style="float: left;width: 5px;height: 6px;background: #fff"></span>
+              <div style="width:12px;background: #ccc;float:left;height: 6px;position: relative;"><span style="position: absolute;left: 0;top: 0;bottom: 0;width:{{custom.percentRank<40&&custom.percentRank>20?(custom.percentRank-20)/20*12:12}}px" ng-class="{'bgRed':custom.percentRank>20}"></span></div>
+              <span style="float: left;width: 5px;height: 6px;background: #fff"></span>
+              <div style="width:12px;background: #ccc;float:left;height: 6px;position: relative;"><span style="position: absolute;left: 0;top: 0;bottom: 0;width:{{custom.percentRank<60&&custom.percentRank>40?(custom.percentRank-40)/20*12:12}}px" ng-class="{'bgRed':custom.percentRank>40}"></span></div>
+              <span style="float: left;width: 5px;height: 6px;background: #fff"></span>
+              <div style="width:12px;background: #ccc;float:left;height: 6px;position: relative;"><span style="position: absolute;left: 0;top: 0;bottom: 0;width:{{custom.percentRank<80&&custom.percentRank>60?(custom.percentRank-60)/20*12:12}}px" ng-class="{'bgRed':custom.percentRank>60}"></span></div>
+              <span style="float: left;width: 5px;height: 6px;background: #fff"></span>
+              <div style="width:12px;background: #ccc;float:left;height: 6px;position: relative;"><span style="position: absolute;left: 0;top: 0;bottom: 0;width:{{custom.percentRank<100&&custom.percentRank>80?(custom.percentRank-80)/20*12:12}}px" ng-class="{'bgRed':custom.percentRank>80}"></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="row disable-pointer-events" style="padding: 10px 0 0 0;">
+          <div style="width: 100%;margin-bottom: 3px;">{{'消费频次'|T}}<span class="right">{{custom.payfrequency||0}}{{'次/月'|T}}</span></div>
+          <div style="width: 100%;margin-bottom: 3px;">{{'客户总消费金额'|T}}<span class="right">{{custom.payamount||0}}{{'元'|T}}</span></div>
+          <div style="width: 100%">{{'最近消费时间'|T}}<span class="right">{{(custom.lastResvDate||'无')|T}}</span></div>
+        </div>
+      </div>
+    </div>
+    <ion-infinite-scroll
+      ng-if="canLoad"
+      immediate-check="false"
+      distance="2%"
+      on-infinite="doInfinite()">
+    </ion-infinite-scroll>
+  </ion-content>
+</ion-view>

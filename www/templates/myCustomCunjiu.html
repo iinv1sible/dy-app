@@ -1,0 +1,34 @@
+<ion-view hide-tabs="true" overflow-scroll="true">
+  <ion-nav-title>{{'存酒客户'|T}}</ion-nav-title>
+  <ion-nav-buttons side="left">
+    <button class="button back-button buttons button-clear header-item" ng-click="goback()" >
+      <i class="icon icon-back" style="vertical-align: middle;"></i>
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <button class="button button-small button-clear" ng-click="openPopover($event)">
+      <i class="icon icon-select" style="font-size: 15px;">{{typeTxt|T}}</i>
+    </button>
+  </ion-nav-buttons>
+  <div style="background: url(images/btn_plus@3x.png) no-repeat center center/100%;position: fixed;bottom: 60px;right: 30px;z-index: 20;width: 60px;height: 60px;text-align: center;color: #fff;font-size: 60px;border-radius: 50%;" ng-click="addWineVip($event)"></div>
+  <ion-content style="border-top: 1px solid #ddd;">
+    <div class="list" style="margin-bottom:0;padding:10px">
+      <div ng-click="goInfo(item.vipId)" class="item row" style="padding: 10px 25px;margin-bottom: 10px;border-radius: 5px;border: 0;" ng-repeat="item in customerList">
+        <div class="col">
+          <div style="line-height: 34px;display: flex;border-bottom: 1px solid #d0d0d0;margin-bottom: 10px;">
+            <span style="flex: 1;"><span class="icon-user"></span>{{item.vipName}} {{item.vipSex}} <span style="margin-left: 20px;" ng-show="item.storeWineSendTime>0" ng-click="showTask($event, item.storeWineSendTime1)"><span class="icon-mess"></span>{{item.storeWineSendTime>=10?item.storeWineSendTime1:item.storeWineSendTime+'天后'}}</span></span><span>{{item.appUserName}}</span>
+          </div>
+          <div ng-repeat="wine in item.storeWines" style="display: flex;line-height: 30px;">
+            <span style="flex: 1;"><span class="icon-wine"></span>{{wine.name}}</span><span>{{wine.num}}件</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <ion-infinite-scroll
+      ng-if="canLoad"
+      immediate-check="false"
+      distance="2%"
+      on-infinite="doInfinite()">
+    </ion-infinite-scroll> -->
+  </ion-content>
+</ion-view>

@@ -1,0 +1,134 @@
+<ion-view hide-tabs="true">
+  <ion-nav-title>{{'客户信息'|T}}</ion-nav-title>
+  <ion-nav-buttons side="right">
+    <a class="button button-small button-clear" ng-if="showEdit" ng-hide="save" ng-click="revise()" style="border: none;color:#76A6DF;font-size: 14px;">
+      {{'编辑'|T}}
+    </a>
+    <a class="button button-small button-clear" ng-if="showEdit" ng-show="save" ng-click="saveAll()" style="border: none;color:#ff2741;font-size: 14px;">
+      {{'保存'|T}}
+    </a>
+  </ion-nav-buttons>
+  <ion-content scroll="false">
+    <ion-scroll style="height: 100%;">
+    <div class="list">
+      <a href="javascript:0" ng-class={'disable-pointer-events':lock} ng-file-select="onFileSelect($files)" data-multiple="true" title="select file" class="item item-icon-right" id="custom-photo">
+        <span class="input-label">{{'头像'|T}}</span>
+        <i class="icon icon-right-arrow">
+          <img ng-src={{imgSrc}} class="responsive-sm" style="width:42px;height:42px;" alt="">
+        </i>
+      </a>
+    </div>
+    <div class="list">
+      <label class="item row">
+        <span class="input-label">{{'客户姓名'|T}}</span>
+        <input class="text-right col" ng-disabled=lock type="text" ng-model=data.vipName>
+      </label>
+      <div class="item row">
+        <span class="input-label">{{'客户性别'|T}}</span>
+        <span class="icon icon-select col" style="text-align: right;" ng-class="{'disable-pointer-events':lock}" ng-click="openPopoverSex($event)">{{data.vipSex + '士' | T}}</span>
+      </div>
+      <div class="item row">
+        <span class="input-label">{{'客户电话'|T}}</span>
+        <span ng-if="info.isInternational==1" class="icon icon-select" ng-class="{'disable-pointer-events':lock}" ng-click="openPopoverCountry($event)">{{countryName | T}}</span>
+        <input class="text-right col" disabled type="text" ng-model=data.vipPhone>
+      </div>
+      <label class="item row">
+        <span class="input-label">{{'客户座机'|T}}</span>
+        <input class="text-right col" ng-disabled=lock type="text" ng-model=data.telephone>
+      </label>
+    </div>
+    <div class="list">
+      <label ng-click="goDay()" class="item row item-icon-right">
+        <span class="input-label">{{'纪念日'|T}}</span>
+        <i class="icon icon-right-arrow"></i>
+      </label>
+      <!--<label class="item row">-->
+        <!--<span class="input-label">{{'客户生日'|T}}</span>-->
+        <!--<input class="text-right" style="background-color:#fff;padding: 0"-->
+               <!--ng-disabled=lock type="text" readonly ng-click="showCalender()" ng-model=data.vipBirthday>-->
+      <!--</label>-->
+      <!--<label ng-show="data.vipBirthday" class="item row">-->
+        <!--<span class="input-label">{{'农历生日'|T}}</span>-->
+        <!--<input class="text-right" style="background-color:#fff;padding: 0"-->
+               <!--ng-disabled=lock type="text" ng-model=data.vipBirthdayNl>-->
+      <!--</label>-->
+      <div class="item row">
+        <span class="input-label">{{'生日'|T}}</span>
+        <input class="text-right col" style="margin-right: 8px" ng-disabled=lock type="text" readonly ng-click="showCalender()" ng-model="data.vipBirthday1">
+        <i class="span-gray detail-gender-pick col" style="font-size: 1em;">
+          <span class="icon icon-select" ng-class="{'disable-pointer-events':lock}" ng-click="openPopoverCal($event)">{{(data.birthFlag==1?'农历':'公历') | T}}</span>
+            <span class="icon icon-check" ng-class="{'icon-check-r':data.hideBirthdayYear}" ng-disabled=lock ng-click="changeYear()">{{'忽略年份'|T}}</span>
+        </i>
+      </div>
+      <label class="item row">
+        <span class="input-label">{{'客户家庭地址'|T}}</span>
+        <input class="text-right col" ng-disabled=lock type="text" ng-model=data.vipAddress>
+      </label>
+      <label class="item row">
+        <span class="input-label">{{'客户工作单位'|T}}</span>
+        <input class="text-right col" ng-disabled=lock type="text" ng-model=data.vipCompany>
+      </label>
+      <a ng-click="goTag()" class="item row item-icon-right">
+        <span class="input-label">{{'客户标签'|T}}</span>
+        <i class="icon icon-right-arrow">
+          <span class="custom-info-tag-span" style="margin-top: 0" ng-show="customInfo.tag[0]">{{customInfo.tag[0]}}</span>
+          <span class="custom-info-tag-span" style="margin-top: 0" ng-show="customInfo.tag[1]">{{customInfo.tag[1]}}</span>
+        </i>
+      </a>
+      <a ng-click="goHobby()" class="item row item-icon-right">
+        <span class="input-label">{{'客户喜好'|T}}</span>
+        <i class="icon icon-right-arrow">
+          <span class="custom-info-tag-span" style="margin-top: 0" ng-show="customInfo.hobby[0]">{{customInfo.hobby[0]}}</span>
+          <span class="custom-info-tag-span" style="margin-top: 0" ng-show="customInfo.hobby[1]">{{customInfo.hobby[1]}}</span>
+        </i>
+
+      </a>
+      <a ng-click="goDetest()" class="item row item-icon-right">
+        <span class="input-label">{{'客户忌口'|T}}</span>
+        <i class="icon icon-right-arrow">
+          <span class="custom-info-tag-span" style="margin-top: 0" ng-show="customInfo.detest[0]">{{customInfo.detest[0]}}</span>
+          <span class="custom-info-tag-span" style="margin-top: 0" ng-show="customInfo.detest[1]">{{customInfo.detest[1]}}</span>
+        </i>
+
+      </a>
+    </div>
+    </ion-scroll>
+  </ion-content>
+  <div class="c-modalB" ng-show="calender"></div>
+  <div class="c-modal hideC" ng-class="{'hideC':!calender}" on-swipe-left="addMonth()" on-swipe-right="minusMonth()">
+    <div class="row">
+      <div class="col-offset-10 col-40 text-center">
+        <span class="right icon icon-arrow-right" ng-click="addYear()" style="width: 20%;"></span>
+        <span class="left icon icon-arrow-left" ng-click="minusYear()" style="width: 20%;"></span>
+        <select ng-model="dateYear" ng-change="yearChanged(dateYear)" ng-options="year for year in yearsList" class="ng-valid ng-not-empty ng-dirty ng-valid-parse ng-touched" style="font-size: 15px;border:none;background: #fff">
+          <option label="year" value="number:year">year</option>
+        </select>
+        <i class="icon icon-select"></i>
+      </div>
+      <div class="col-offset-10 col-40 text-center">
+        <span class="right icon icon-arrow-right" ng-click="addMonth()" style="width: 20%;"></span>
+        <span class="left icon icon-arrow-left" ng-click="minusMonth()" style="width: 20%;"></span>
+        <!-- <span style="font-size: 15px;margin:5px 0;">{{dateMonth+1+'月'|T}}</span> -->
+        <select ng-model="dateMonth" ng-change="monthChanged()" ng-options="month for month in monthsList" class="ng-valid ng-not-empty ng-dirty ng-valid-parse ng-touched" style="font-size: 15px;border:none;background: #fff">
+          <option label="month" value="number:month">month</option>
+        </select>
+        <i class="icon icon-select"></i>
+      </div>
+    </div>
+    <div class="row" style="padding: 0 0 5px;border-top: 0;">
+      <div ng-repeat="weekDay in weekList" class="weekList">
+        <span style="color: #999;">{{weekDay}}</span>
+      </div>
+    </div>
+    <div class="row row-wrap">
+      <div ng-repeat="date in dateList" class="dateList" ng-click="hideCalender($event)" data-id="{{date.id}}" data-date="{{date.ylr}}" ng-class="{'disable-pointer-events':(date.color=='#ccc')}">
+        <p class="disable-pointer-events" style="margin-bottom: 3px;color:{{date.color}};">{{date.ylr}}</p>
+        <p class="disable-pointer-events" style="color:{{date.color}}">{{date.nlr}}</p>
+      </div>
+    </div>
+    <div class="row" style="border-top: 0;padding: 10px 20px;text-align: center;">
+      <span class="dateButton" ng-click="dateCancel()" style="background-color: #ccc">{{'取 消'|T}}</span>
+      <span class="dateButton" ng-click="dateToday()" style="background-color: #ff2741;margin-left: 30px;">{{'今 日'|T}}</span>
+    </div>
+  </div>
+</ion-view>

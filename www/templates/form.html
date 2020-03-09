@@ -1,0 +1,78 @@
+<ion-view hide-tabs="true">
+  <ion-nav-title>{{'有奖推荐'|T}}</ion-nav-title>
+  <ion-content>
+    <a ui-sref="#" class="item item-divider disable-pointer-events">{{'推荐人'|T}}</a>
+    <div class="item row">
+      <span class="input-label">{{'姓名'|T}}</span>
+      <input type="text" class="text-right input-style col" ng-model="data.name" id="name">
+    </div>
+    <div class="item row">
+      <span class="input-label">{{'电话'|T}}</span>
+      <input type="text" class="text-right input-style col" ng-model="data.tel" id="tel">
+    </div>
+    <div class="item row">
+      <span class="input-label">{{'酒店名称'|T}}</span>
+      <input type="text" class="text-right input-style col" ng-model="data.businessName" id="business">
+    </div>
+    <a ui-sref="#" class="item item-divider disable-pointer-events">{{'推荐客户'|T}}</a>
+    <div class="item row">
+      <span class="input-label">{{'姓名'|T}}</span>
+      <input type="text" class="text-right input-style col" placeholder="{{'必填'|T}}" ng-model="data.linkMan" id="linkMan">
+    </div>
+    <div class="item row">
+      <span class="input-label">{{'电话'|T}}</span>
+      <input type="text" class="text-right input-style col" placeholder="{{'必填'|T}}" ng-model="data.linkTel" id="linkTel">
+    </div>
+    <div class="item row">
+      <span class="input-label">{{'酒店名称'|T}}</span>
+      <input type="text" class="text-right input-style col" ng-model="data.company" id="company">
+    </div>
+    <div class="item row">
+      <span class="input-label">{{'城市'|T}}</span>
+      <input type="text" class="text-right input-style col" ng-model="data.city" id="city">
+    </div>
+    <div class="item row" style="margin-bottom:90px;">
+      <span class="input-label">{{'职位'|T}}</span>
+      <select class="col" style="height: 34px;border: 0;font-size: 16px;direction: rtl;background: #fff" ng-model="data.job" id="job">
+        <option value="老板">{{'老板'|T}}</option>
+        <option value="总经理">{{'总经理'|T}}</option>
+        <option value="管理层">{{'管理层'|T}}</option>
+        <option value="其他">{{'其他'|T}}</option>
+      </select>
+    </div>
+    <div id="showAlert"></div>
+    <div id="showWait"></div>
+
+      <!--<div class="bg">
+        <div class="rownew" style="margin-top: 10%">
+          <label style="display: inline-block;width: 41%;padding-right: 1%;">您的姓名</label><input type="text" ng-model="data.name" style="height: 30px;outline: 0;border: 0;padding: 0 5px;border-bottom: 1px solid #656565;background: none;display: inline-block;width: 58%;box-sizing: border-box;font-size: 16px;" id="name"/>
+        </div>
+         <div class="rownew">
+            <label class="label-style">男女</label><input type="text" class="input-style" type="text" id="sex"/>
+        </div>
+        <div class="rownew">
+          <label style="display: inline-block;width: 41%;padding-right: 1%;">您的手机</label><input type="tel" ng-model="data.tel" style="height: 30px;outline: 0;border: 0;padding: 0 5px;border-bottom: 1px solid #656565;background: none;display: inline-block;width: 58%;box-sizing: border-box;font-size: 16px;" id="tel"/>
+        </div>
+        <div class="rownew">
+          <label style="display: inline-block;width: 41%;padding-right: 1%;">被推荐人姓名</label><input type="text" placeholder="必填" ng-model="data.linkMan" style="height: 30px;outline: 0;border: 0;padding: 0 5px;border-bottom: 1px solid #656565;background: none;display: inline-block;width: 58%;box-sizing: border-box;font-size: 16px;" id="linkMan"/>
+        </div>
+        <div class="rownew">
+          <label style="display: inline-block;width: 41%;padding-right: 1%;">被推荐人联系方式</label><input type="tel" placeholder="必填" ng-model="data.linkTel" style="height: 30px;outline: 0;border: 0;padding: 0 5px;border-bottom: 1px solid #656565;background: none;display: inline-block;width: 58%;box-sizing: border-box;font-size: 16px;" id="linkTel"/>
+        </div>
+        <div class="rownew">
+          <label style="display: inline-block;width: 41%;padding-right: 1%;">被推荐人职位</label>
+           <input type="text" ng-model="data.job" style="height: 30px;outline: 0;border: 0;padding: 0 5px;border-bottom: 1px solid #656565;background: none;display: inline-block;width: 58%;box-sizing: border-box;font-size: 16px;" id="job"/>
+        </div>
+        <div class="rownew">
+          <label style="display: inline-block;width: 41%;padding-right: 1%;">被推荐单位城市</label><input type="text" ng-model="data.city" style="height: 30px;outline: 0;border: 0;padding: 0 5px;border-bottom: 1px solid #656565;background: none;display: inline-block;width: 58%;box-sizing: border-box;font-size: 16px;" id="city"/>
+        </div>
+        <div class="rownew">
+          <label style="display: inline-block;width: 41%;padding-right: 1%;">被推荐单位</label><input type="text" ng-model="data.company" style="height: 30px;outline: 0;border: 0;padding: 0 5px;border-bottom: 1px solid #656565;background: none;display: inline-block;width: 58%;box-sizing: border-box;font-size: 16px;" id="company"/>
+        </div>
+        <div id="showAlert"></div>
+        <div id="showWait"></div>
+      </div>-->
+  </ion-content>
+  <div class="row bar bar-footer" style="background-color: transparent;border:0;padding: 0 20px 10px;">
+    <div class="text-center ng-binding" style="background-color: #ff2741;color: #fff;width: 100%;height: 40px;line-height: 40px;border-radius: 4px;" ng-click="submit()">{{'推荐领奖'|T}}</div>
+</ion-view>

@@ -1,0 +1,108 @@
+<ion-view hide-tabs="true">
+  <ion-nav-title>
+    {{'消息中心'|T}}
+  </ion-nav-title>
+  <ion-nav-buttons side="left">
+    <button class="button back-button buttons button-clear header-item" ng-click="back()">
+      <i class="icon icon-back" style="vertical-align: middle;"></i>
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <a class="button button-small button-clear" ng-click="allRead()" style="border: none;color:#ff2741;font-size: 14px;">
+      {{'全部已读'|T}}
+    </a>
+  </ion-nav-buttons>
+  <div style="margin-bottom: 0;background: #fff;position: absolute;top: 44px;left: 0;right: 0;">
+    <div class="row" style="padding-top:0;padding-bottom:0;">
+      <div class="text-center" style="height:44px;position: relative;" ng-class="{'col-25':isJk==1,'col-33':isJk==0}">
+        <a href="javascript:0" class="button button-stable button-clear book-footBar-font-style" ng-class="{'active':!orderShow}" ng-click="checkOrder()">
+          {{'普通订单'|T}}
+        </a>
+        <span class="pointnnew1" ng-show="orderNum > 0">{{orderNum}}</span>
+      </div>
+      <div class="text-center" style="height:44px;position: relative;" ng-class="{'col-25':isJk==1,'col-33':isJk==0}">
+        <a href="javascript:0" class="button button-stable button-clear book-footBar-font-style active" ng-class="{'active':!meetingOrderShow}" ng-click="checkMeetingOrder()">
+          {{'宴会订单'|T}}
+        </a>
+        <span class="pointnnew2"  ng-show="meetingOrderNum > 0">{{meetingOrderNum}}</span>
+      </div>
+      <div class="text-center" style="height:44px;position: relative;" ng-class="{'col-25':isJk==1,'col-33':isJk==0}">
+        <a href="javascript:0" class="button button-stable button-clear book-footBar-font-style active" ng-class="{'active':!messageShow}" ng-click="checkAnn()">
+          {{'纪念日'|T}}
+        </a>
+        <span class="pointnnew3" ng-show="messageNum > 0">{{messageNum}}</span>
+      </div>
+      <div class="col-25 text-center" style="height:44px;position: relative;" ng-if="isJk == 1">
+        <a href="javascript:0" class="button button-stable button-clear book-footBar-font-style active" ng-class="{'active':!cardShow}" ng-click="checkCard()">
+          {{'优惠劵'|T}}
+        </a>
+        <span class="pointnnew3" ng-show="cardNum > 0">{{cardNum}}</span>
+      </div>
+    </div>
+  </div>
+  <div ng-click="goWechatCode()" style="position: absolute;top: 88px;line-height: 30px;padding: 0 20px;left: 0;right: 0;background: #e8e8e8;text-align: center;color: #387ef5;">关注公众号</div>
+  <ion-content style="top: 116px;">
+    <div class="list" ng-show="isOrder" style="background: #e8e8e8;">
+      <div class="row list-row" ng-repeat="orderNotice in orderNoticeList track by $index" on-swipe-left="readNotice(3,3,orderNotice.resvType,$index)" ng-show="resvType.indexOf(orderNotice.resvType) > -1 && orderNotice.resvType != 7" ng-click="readNotice(2,orderNotice.status,orderNotice.resvType,$index);geOrder(orderNotice.resvType,orderNotice.resvOrder,orderNotice.tableName,orderNotice.createdAt)">
+        <i class="disable-pointer-events tab-account-message-detail-icon">
+          <i class="pointonly" ng-click="readNotice(2,orderNotice.status,orderNotice.resvType,$index);$event.stopPropagation();" ng-show="orderNotice.status==1"></i>
+        </i>
+        <!--<p class="disable-pointer-events" style="color:#000;">-->
+          <!--{{orderNotice.notice}}-->
+        <!--</p>-->
+        <p class="span-gray disable-pointer-events col" style="margin-top:5px;white-space: normal;" ng-if="orderNotice.resvType != 6">{{orderNotice.notice}} <a>{{'查看详情'|T}}</a></p>
+        <p class="span-gray disable-pointer-events col" style="margin-top:5px;white-space: normal;" ng-if="orderNotice.resvType == 6">您有{{orderNotice.notice}} 位客户今日进入沉睡状态。<a>{{'查看详情'|T}}</a></p>
+        <div class="disable-pointer-events">
+          <span class="span-gray disable-pointer-events" style="font-size: 12px;padding-top:5px;line-height: 40px;color:#999">{{orderNotice.createdAt}}</span>
+        </div>
+        <div class="icon icon-right-arrow row-enter disable-pointer-events">{{'查看订单'|T}}</div>
+      </div>
+    </div>
+    <div class="list" ng-show="isOrder&&isWx" style="background: #e8e8e8;">
+      <div class="row list-row" ng-repeat="wxNotice in wxNoticeList track by $index" on-swipe-left="deleteNotice($index)">
+        <i class="disable-pointer-events tab-account-message-detail-icon">
+          <i class="pointonly" ng-click="read1($index)" ng-class="{'ion-android-mail':wxNotice.yidu==0,'ion-android-drafts':wxNotice.yidu==1}" ng-show="wxNotice.yidu==0"></i>
+        </i>
+        <p class="disable-pointer-events">{{'微信预订'|T}}</p>
+        <p class="disable-pointer-events col" style="color:#000;">
+          <a href="tel:{{'+'+(wxNotice.countryCode || '86') + wxNotice.vipPhone}}">{{wxNotice.vipPhone}}</a> {{wxNotice.vipName}}
+        </p>
+        <p class="span-gray disable-pointer-events" style="margin-top:5px;white-space: normal;margin-right: 10px;flex:1">{{wxNotice.resvDate}} {{wxNotice.mealTypeName}} {{wxNotice.resvNum}}人 {{wxNotice.destTime}}</p>
+        <div class="disable-pointer-events">
+          <span class="span-gray" style="font-size: 12px;padding-top:5px;line-height: 40px;color:#999">{{wxNotice.createdAt}}</span>
+        </div>
+      </div>
+    </div>
+     <div class="list" ng-hide="isOrder||cardShow" style="background: #e8e8e8;">
+       <div class="row list-row" ng-repeat="message in messageList track by $index" on-swipe-left="delete(message.sid)" ng-click="read(message.sid)">
+         <i class="tab-account-message-detail-icon left-center" ng-class="{'tab-account-message-detail-icon1':(message.messageType==1)}">
+          <i ng-class="{'ion-android-mail':!message.yidu,'ion-android-drafts':message.yidu}" ng-show="!message.yidu" style="color: #ff2741"></i>
+         </i>
+         <div class="col">
+          <p style="color:#000;">
+            <a href="tel:{{'+'+(message.countryCode || '86') + message.vipPhone}}">{{message.vipPhone}}</a> {{message.vipName}}
+          </p>
+          <p class="span-gray" style="margin-top:5px;white-space: normal;margin-right: 10px;flex:1">{{message.anniversaryObj}} {{message.anniversaryName}} {{message.anniversaryDatetxt}}</p>
+        </div>
+         <div class="disable-pointer-events">
+           <span class="span-gray disable-pointer-events" style="font-size: 12px;padding-top:5px;line-height: 40px;color:#999">{{message.createdTimetxt}}</span>
+         </div>
+       </div>
+     </div>
+    <div class="list" ng-show="isJk&&cardShow" style="background: #e8e8e8;">
+      <div class="row list-row" ng-repeat="orderNotice in orderNoticeList track by $index" on-swipe-left="readNotice(3,3,orderNotice.resvType,$index)" ng-show="orderNotice.resvType == 7" ng-click="readNotice(2,orderNotice.status,orderNotice.resvType,$index);goCard()">
+        <i class="disable-pointer-events tab-account-message-detail-icon">
+          <i class="pointonly" ng-click="readNotice(2,orderNotice.status,orderNotice.resvType,$index);$event.stopPropagation();" ng-show="orderNotice.status==1"></i>
+        </i>
+        <!--<p class="disable-pointer-events" style="color:#000;">-->
+        <!--{{orderNotice.notice}}-->
+        <!--</p>-->
+        <p class="span-gray disable-pointer-events col" style="margin-top:5px;white-space: normal;" ng-if="orderNotice.resvType != 6">{{orderNotice.notice}} <a>{{'查看详情'|T}}</a></p>
+        <div class="disable-pointer-events">
+          <span class="span-gray disable-pointer-events" style="font-size: 12px;padding-top:5px;line-height: 40px;color:#999">{{orderNotice.createdAt}}</span>
+        </div>
+        <div class="icon icon-right-arrow row-enter disable-pointer-events">{{'查看优惠劵'|T}}</div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

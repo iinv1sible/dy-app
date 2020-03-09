@@ -1,0 +1,21 @@
+<ion-view hide-tabs="true">
+  <ion-nav-title>
+    {{'编辑标签'|T}}
+  </ion-nav-title>
+  <ion-content>
+    <div class="list" style="margin-bottom:0;">
+      <div class="item custom-info-tag-item" id="customHobby">
+        <a class="button button-balanced button-small custom-info-tag-a" on-hold="remove($event)"  ng-repeat="tag in tagList" data-tag="{{$index}}">{{tag}}</a>
+        <a class="button button-stable button-outline button-small custom-info-tag-a" ng-click="addHobbyShow()">{{'添加标签'|T}}</a>
+      </div>
+      <div class="item item-input-inset" ng-if="addShowHobby" style="border-color: #fff;">
+        <label class="item-input-wrapper">
+          <input type="text" placeholder="{{'请输入标签内容'|T}}" autofocus ng-model="data.hobbyName">
+        </label>
+        <a class="button button-small button-stable" ng-click="addHobbyName()">
+          {{'确认添加'|T}}
+        </a>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

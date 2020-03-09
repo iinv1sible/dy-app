@@ -1,0 +1,28 @@
+<ion-view title="发票选择" hide-tabs="true">
+  <ion-content>
+    <div class="list" ng-repeat="add in addData" ng-class="{'add-select':add.select}" data-id="{{add.num}}" ng-click="selectAdd($event)">
+      <div class="item tab-myOrder-detail-item item-text-wrap disable-pointer-events" style="border-width:0;color:#333;">
+        <p>
+          (普票)
+          <span style="font-size: 14px;color: #666;">{{add.receiptTitle}}</span>
+        </p>
+        <p>
+          (纳税人编号)
+          <span style="font-size: 14px;color: #666;">{{add.receiptNo}}</span>
+        </p>
+      </div>
+      <div class="item tab-myOrder-detail-item disable-pointer-events" style="border-width:0;color:#333;">
+        收货人：{{add.receiptPerson}}
+        <span class="right">{{add.receiptPhone}}</span>
+      </div>
+      <div class="item tab-myOrder-detail-item item-icon-left disable-pointer-events" style="border-width:0;">
+        <i class="icon ion-ios-location" style="font-size: 24px;color:#76A6DF;"></i>
+        <span style="font-size: 12px;color: #999;">{{add.receiptArea}}</span><br>
+        <span  style="font-size: 12px;color: #999;">{{add.receiptAddress}}</span>
+      </div>
+    </div>
+    <div ui-sref="AddAddF" class="item button button-positive button-block text-center" style="min-height: 0;">
+      新增抬头
+    </div>
+  </ion-content>
+</ion-view>
