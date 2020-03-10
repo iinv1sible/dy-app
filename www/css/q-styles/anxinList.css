@@ -1,0 +1,87 @@
+.q-axl-container {
+  background-color: #f2f2f2;
+}
+
+.q-axl-title {
+  padding: 10px 10px;
+  font-size: 12px;
+}
+
+.q-axl-list-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 10px 10px;
+  font-size: 12px;
+}
+.q-axl-list-item-icon {
+  width: 36px;
+  height: 36px;
+}
+
+.q-axl-list-item-name {
+  margin-left: 8px;
+}
+
+.q-axl-list-item-lt {
+  margin-left: 87px;
+}
+
+.q-axl-list-item-gang {
+  margin-left: 4px;
+}
+
+.q-axl-list-item-temp-label {
+  margin-left: 11px;
+}
+
+.q-axl-list-item-temp {
+  position: absolute;
+  right: 17px;
+}
+.q-axl-list-container {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.q-axl-list-region {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 10px;
+  font-size: 12px;
+}
+
+.q-axl-none {
+  padding: 8px 10px;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  margin-bottom: 1px;
+}
+
+.q-axl-header {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.p-axl-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.p-axl-bottom > button {
+  border-radius: 4px;
+  width: 352px;
+  height: 32px;
+  background-color: #fe273f;
+  font-size: 14px;
+  color: #fff;
+}

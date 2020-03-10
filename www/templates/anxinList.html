@@ -1,0 +1,104 @@
+<ion-view hide-tabs="true">
+  <ion-nav-title>{{'安心卡管理'|T}}</ion-nav-title>
+  <ion-content ion-sticky>
+    <div class="q-axl-container">
+      <div class="q-axl-header">
+        <div style="font-weight:bold;">2020-03-03 安心卡责任人员</div>
+        <div style="margin-top: 19px;">午餐</div>
+      </div>
+      <div>
+        <div ng-show="foodPersons.length <= 0" class="q-axl-none">
+          <div style="font-weight: bold;">菜品责任人</div>
+          <div>配置人员></div>
+        </div>
+        <div ng-show="foodPersons.length > 0" class="q-axl-list-container">
+          <div class="q-axl-title">
+            <div style="font-weight: bold;">菜品责任人</div>
+          </div>
+          <div class="q-axl-list">
+            <div
+              ng-click="showAnxinPersonSelect()"
+              ng-repeat="person in foodPersons"
+              class="q-axl-list-item"
+            >
+              <image class="q-axl-list-item-icon" src="{{person.icon}}"></image>
+              <div class="q-axl-list-item-name">{{person.name}}</div>
+              <div class="q-axl-list-item-lt">></div>
+              <div class="q-axl-list-item-gang">|</div>
+              <div class="q-axl-list-item-temp-label">
+                体温
+              </div>
+              <div class="q-axl-list-item-temp">
+                {{person.tempDesc}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div ng-show="deliverPersons.length <= 0" class="q-axl-none">
+          <div style="font-weight: bold;">传菜责任人</div>
+          <div>配置人员></div>
+        </div>
+        <div ng-show="deliverPersons.length > 0" class="q-axl-list-container">
+          <div class="q-axl-title">
+            <div style="font-weight: bold;">传菜责任人</div>
+          </div>
+          <div class="q-axl-list">
+            <div ng-repeat="person in deliverPersons" class="q-axl-list-item">
+              <image class="q-axl-list-item-icon" src="{{person.icon}}"></image>
+              <div class="q-axl-list-item-name">{{person.name}}</div>
+              <div class="q-axl-list-item-lt">></div>
+              <div class="q-axl-list-item-gang">|</div>
+              <div class="q-axl-list-item-temp-label">
+                体温
+              </div>
+              <div class="q-axl-list-item-temp">
+                {{person.tempDesc}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div ng-show="serverPersons.length <= 0" class="q-axl-none">
+          <div style="font-weight: bold;">服务员</div>
+          <div>配置人员></div>
+        </div>
+        <div ng-show="serverPersons.length > 0">
+          <div class="q-axl-list-container">
+            <div
+              class="q-axl-title"
+              style="display: flex; align-items: center; justify-content: space-between;"
+            >
+              <div style="font-weight: bold;">服务员</div>
+              <div>修改人员></div>
+            </div>
+            <div class="q-axl-list">
+              <div ng-repeat="person in serverPersons">
+                <div class="q-axl-list-item">
+                  <image
+                    class="q-axl-list-item-icon"
+                    src="{{person.icon}}"
+                  ></image>
+                  <div class="q-axl-list-item-name">{{person.name}}</div>
+                  <div class="q-axl-list-item-lt">></div>
+                  <div class="q-axl-list-item-gang">|</div>
+                  <div class="q-axl-list-item-temp-label">
+                    体温
+                  </div>
+                  <div class="q-axl-list-item-temp">
+                    {{person.tempDesc}}
+                  </div>
+                </div>
+                <div ng-click="goAnxinRegionSelect()" class="q-axl-list-region">
+                  <div>固定服务区域</div>
+                  <div>{{person.regionDesc}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="p-axl-bottom">
+        <button>提交</button>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

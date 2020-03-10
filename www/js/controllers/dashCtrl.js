@@ -1010,6 +1010,10 @@ angular.module('starter.controllers.dashCtrl', []).controller('DashCtrl', functi
       $showAlert.alert('您暂未开通此服务');
     }
   }
+  $scope.goAnxinList = ()=>{
+    console.log("goAnxinList")
+    $state.go("anxinList")
+  }
   // $scope.sendEmail = function($event){
   //   $event.stopPropagation();
   //   $hezuo.guanggao({

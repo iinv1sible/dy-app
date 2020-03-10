@@ -1,0 +1,50 @@
+.axrs-region-item-bar {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 15px 15px;
+  position: relative;
+  background-color: #fff;
+  border-bottom: 1px solid #e8e8e8;
+}
+.axrs-region-item-bar:last-of-type {
+  border-bottom: 0;
+}
+
+.axrs-container {
+  margin: 1px 1px 0 1px;
+}
+
+.axrs-search {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  padding: 15px 15px;
+  margin-bottom: 1px;
+}
+
+.axrs-search > input {
+  flex: auto;
+  margin-left: 20px;
+}
+
+.axrs-region-item-content {
+  background-color: #fff;
+}
+.axrs-region-item .ng-hide {
+  background-color: rgba(255, 255, 255, 0);
+  height: 0;
+}
+
+.axrs-room {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 15px 15px;
+  background-color: #fff;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.axrs-room:last-of-type {
+  border-bottom: 0;
+}

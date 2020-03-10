@@ -1,0 +1,82 @@
+<ion-view hide-tabs="true">
+  <ion-nav-title>{{'固定服务区域选择'|T}}</ion-nav-title>
+  <ion-content ion-sticky>
+    <div class="axrs-container">
+      <div class="axrs-search">
+        <image
+          style="width: 23px; height: 23px;"
+          src="images/search.png"
+        ></image>
+        <input type="text" placeholder="搜索" ng-model="searchKey.key" />
+        <image
+          ng-click="clearSearch()"
+          ng-show="searchKey.key && searchKey.key.length>0"
+          style="width: 20px; height: 20px;"
+          src="images/btn_closed@3x.png"
+        ></image>
+      </div>
+      <div class="axrs-region-list">
+        <div
+          class="axrs-region-item"
+          ng-repeat="region in regions | regionFilter :searchKey.key"
+        >
+          <div ng-click="showRoom(region.id)" class="axrs-region-item-bar">
+            <div ng-click="selectRegion(region.id, $event)">
+              <image
+                ng-show="isAllRoomNotSelected(region.id)"
+                style="width: 23px; height: 23px;"
+                src="images/circle.png"
+              ></image>
+              <image
+                ng-show="isAllRoomSelected(region.id)"
+                style="width: 23px; height: 23px;"
+                src="images/select.png"
+              ></image>
+              <image
+                ng-show="!isAllRoomNotSelected(region.id) && !isAllRoomSelected(region.id)"
+                style="width: 23px; height: 23px;"
+                src="images/half-select.png"
+              ></image>
+            </div>
+            <div style="font-size:14px; margin-left: 10px;">
+              {{region.name}}
+            </div>
+            <div style="position: absolute;right: 15px;">
+              <image
+                ng-show="!region.showRoom"
+                style="width: 10px;height: 10px;"
+                src="images/arrow-right.png"
+              ></image>
+              <image
+                ng-show="region.showRoom"
+                style="width: 10px;height: 10px;"
+                src="images/arrow-down.png"
+              ></image>
+            </div>
+          </div>
+          <div ng-show="region.showRoom" class="axrs-region-item-content">
+            <div
+              ng-click="selectRoom(room)"
+              class="axrs-room"
+              ng-repeat="room in region.rooms"
+            >
+              <image
+                ng-show="!room.selected"
+                style="width: 16px; height: 16px;"
+                src="images/circle.png"
+              ></image>
+              <image
+                ng-show="room.selected"
+                style="width: 16px; height: 16px;"
+                src="images/select.png"
+              ></image>
+              <div style="font-size:14px; margin-left: 10px;">
+                {{room.name}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
