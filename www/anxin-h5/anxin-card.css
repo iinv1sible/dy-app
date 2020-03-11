@@ -1,0 +1,9 @@
+@import "./home/home.css";
+@import "./qualification/qualification.css";
+@import "./healthCard/healthCard.css";
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-collapse: collapse;
+}

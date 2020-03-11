@@ -1,0 +1,13 @@
+.qua-container{
+    background-color: #000;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+}
+.qua-image{
+    max-width: 100%;
+}

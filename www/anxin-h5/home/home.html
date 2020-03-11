@@ -1,0 +1,69 @@
+<div class="home-container">
+  <div class="home-top">
+    <div class="home-title">预订安心卡</div>
+    <div class="home-order-info">订单： 2020-03-04 午餐 柳浪闻莺</div>
+    <div class="home-persons">
+      <div class="home-persons-header">
+        <div style="margin-left: 85px">岗位</div>
+        <div style="margin-left: 80px;">姓名</div>
+        <div style="margin-left: 50px;">体温</div>
+      </div>
+      <div class="home-persons-list">
+        <div ng-repeat="person in persons">
+          <div>
+            <image
+              style="width: 55px; height: 55px;"
+              ng-src="{{person.icon}}"
+            ></image>
+          </div>
+          <div
+            style="width: 87px;display: flex; flex-direction: column; justify-content: space-around;margin-left: 14px;"
+          >
+            <div style="font-size: 14px;">{{person.jobDesc}}</div>
+            <div
+              style="display: flex; margin-top: 10px; background-color: #D4F3E0;padding: 3px 6px; align-items: center;border-radius: 4px;"
+            >
+              <image
+                src="/images/btn_search_gray@3x.png"
+                style="width: 10px; height: 10px;"
+              ></image>
+              <div ng-click="showHealthCard(person)" style="margin-left: 5px;">
+                查看健康证
+              </div>
+            </div>
+          </div>
+          <div style="width: 24px;margin-left: 17px;">{{person.name}}</div>
+          <div style="margin-left: 43px;">{{person.tempDesc}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="home-record-time">记录时间：2020年3月4日</div>
+    <div class="home-qualification-button">
+      <image
+        src="/images/certificate.png"
+        style="width: 15px;height: 15px;"
+      ></image>
+      <div ng-click="showQualificationImgs()" style="margin-left: 10px;">
+        门店资质展示
+      </div>
+    </div>
+    <div class="home-logo">
+      <image style="height: 39%; width: 60px;" src="images/logo.png"></image>
+    </div>
+    <div class="home-doctor">
+      <image
+        style="width: 170px;height: 63%;display: block;"
+        src="images/doctor.png"
+      ></image>
+    </div>
+  </div>
+  <div class="home-bottom">
+    <div>
+      预订全程可跟踪，请您安心享用美食，感谢您的支持！
+    </div>
+    <image
+      style="width: 80%;height: 13%;display: block;margin-top: 30px;display: block;"
+      src="images/menubar.png"
+    ></image>
+  </div>
+</div>

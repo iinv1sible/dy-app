@@ -1,0 +1,14 @@
+.health-container {
+  background-color: #000;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+}
+.health-image {
+  max-width: 100%;
+}
