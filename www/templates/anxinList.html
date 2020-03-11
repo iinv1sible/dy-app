@@ -7,17 +7,21 @@
         <div style="margin-top: 19px;">午餐</div>
       </div>
       <div>
-        <div ng-show="foodPersons.length <= 0" class="q-axl-none">
-          <div style="font-weight: bold;">菜品责任人</div>
-          <div>配置人员></div>
+        <div
+          ng-click="showAnxinPersonSelect(1, foodPersons, 1)"
+          ng-show="foodPersons.length <= 0"
+          class="q-axl-none"
+        >
+          <div style="font-weight: bold;">{{'菜品责任人' | T}}</div>
+          <div>{{'配置人员' | T}}></div>
         </div>
         <div ng-show="foodPersons.length > 0" class="q-axl-list-container">
           <div class="q-axl-title">
-            <div style="font-weight: bold;">菜品责任人</div>
+            <div style="font-weight: bold;">{{'菜品责任人' | T}}</div>
           </div>
           <div class="q-axl-list">
             <div
-              ng-click="showAnxinPersonSelect()"
+              ng-click="showAnxinPersonSelect(1, foodPersons, 1)"
               ng-repeat="person in foodPersons"
               class="q-axl-list-item"
             >
@@ -34,16 +38,24 @@
             </div>
           </div>
         </div>
-        <div ng-show="deliverPersons.length <= 0" class="q-axl-none">
-          <div style="font-weight: bold;">传菜责任人</div>
-          <div>配置人员></div>
+        <div
+          ng-click="showAnxinPersonSelect(1, deliverPersons, 2)"
+          ng-show="deliverPersons.length <= 0"
+          class="q-axl-none"
+        >
+          <div style="font-weight: bold;">{{'传菜责任人' | T}}</div>
+          <div>{{'配置人员' | T}}></div>
         </div>
         <div ng-show="deliverPersons.length > 0" class="q-axl-list-container">
           <div class="q-axl-title">
-            <div style="font-weight: bold;">传菜责任人</div>
+            <div style="font-weight: bold;">{{'传菜责任人' | T}}</div>
           </div>
           <div class="q-axl-list">
-            <div ng-repeat="person in deliverPersons" class="q-axl-list-item">
+            <div
+              ng-click="showAnxinPersonSelect(1, deliverPersons, 2)"
+              ng-repeat="person in deliverPersons"
+              class="q-axl-list-item"
+            >
               <image class="q-axl-list-item-icon" src="{{person.icon}}"></image>
               <div class="q-axl-list-item-name">{{person.name}}</div>
               <div class="q-axl-list-item-lt">></div>
@@ -57,9 +69,13 @@
             </div>
           </div>
         </div>
-        <div ng-show="serverPersons.length <= 0" class="q-axl-none">
-          <div style="font-weight: bold;">服务员</div>
-          <div>配置人员></div>
+        <div
+          ng-click="showAnxinPersonSelect(2, serverPersons, 3)"
+          ng-show="serverPersons.length <= 0"
+          class="q-axl-none"
+        >
+          <div style="font-weight: bold;">{{'服务员' | T}}</div>
+          <div>{{'配置人员' | T}}></div>
         </div>
         <div ng-show="serverPersons.length > 0">
           <div class="q-axl-list-container">
@@ -67,11 +83,16 @@
               class="q-axl-title"
               style="display: flex; align-items: center; justify-content: space-between;"
             >
-              <div style="font-weight: bold;">服务员</div>
-              <div>修改人员></div>
+              <div style="font-weight: bold;">{{'服务员' | T}}</div>
+              <div ng-click="showAnxinPersonSelect(2, serverPersons, 3)">
+                {{'修改人员' | T}}>
+              </div>
             </div>
             <div class="q-axl-list">
-              <div ng-repeat="person in serverPersons">
+              <div
+                ng-click="showAnxinPersonSelect(1, [person], 3)"
+                ng-repeat="person in serverPersons"
+              >
                 <div class="q-axl-list-item">
                   <image
                     class="q-axl-list-item-icon"
@@ -88,7 +109,7 @@
                   </div>
                 </div>
                 <div ng-click="goAnxinRegionSelect()" class="q-axl-list-region">
-                  <div>固定服务区域</div>
+                  <div>{{'固定服务区域' | T}}</div>
                   <div>{{person.regionDesc}}</div>
                 </div>
               </div>
@@ -97,7 +118,7 @@
         </div>
       </div>
       <div class="p-axl-bottom">
-        <button>提交</button>
+        <button>{{'提交' | T}}</button>
       </div>
     </div>
   </ion-content>

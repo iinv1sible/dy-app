@@ -269,8 +269,12 @@
         <input type="tel" placeholder="{{'请输入定金金额'|T}}" ng-model="data.depositAmount" class="text-right input-style col" ng-disabled="showState1" >
       </div>
       <div ng-show="data.deposit" class="item row">
-        <span class="input-label">{{'收据编号'|T}}<i style="color: #ff2741;">*</i></span>
+        <span class="input-label">{{'收据编号'|T}}<i style="color: #696969;">*</i></span>
         <input type="text" placeholder="{{'请输入收据编号'|T}}" ng-model="data.receiptNo" class="text-right input-style col" ng-disabled="showState1" >
+      </div>
+      <div style="display: flex;justify-content: space-between;align-items: center;" class="item row">
+        <span class="input-label">{{'安心卡'|T}}</span>
+        <div>></div>
       </div>
       <div ng-show="info.kbc && !canSubmit" ng-class="{'disable-pointer-events':showState}"  class="item row">
         <span class="input-label">{{'跨班次'|T}}<span style="color:#ccc;font-size: 13px;">({{'仅限当日'|T}})</span></span>

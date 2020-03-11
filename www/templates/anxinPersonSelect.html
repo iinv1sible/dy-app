@@ -1,42 +1,89 @@
-<ion-view view-title="选择城市" hide-tabs="true">
-  <div class="bar bar-subheader">
+<ion-view
+  view-title="{{data.jobTypeDescMap[data.jobType]}}责任人选择"
+  hide-tabs="true"
+>
+  <div class="bar bar-subheader" style="height: 90px;">
     <div
-      style="padding:10px;background-color:#fff;;display:flex;flex-direction:column;"
+      style="background-color:#fff;;display:flex;flex-direction:column; width: 100%; height: 100%;"
     >
-      <div>当前菜品负责人</div>
-      <div style="display:flex;align-items:center;margin-top:12px;">
-        <image
-          style="width:36px;height:36px;"
-          src="images/icon_logo@3x.png"
-        ></image>
-        <span style="margin-left:20px;">张三</span>
+      <div
+        style="display: flex;align-items: center;justify-content: space-between;"
+      >
+        <div>当前{{data.jobTypeDescMap[data.jobType]}}负责人</div>
+        <div
+          style="width:60px;height:30px;border-radius:12px;background-color: #fff;border: 1px solid #ccc;color: #ccc;font-size: 14px;display: flex; align-items: center;justify-content: center;"
+        >
+          <span
+            ng-class="{true: 'axps-confirm-active', false: ''}[data.selectedPersons.length>0]"
+            ng-click="confirmMultiSelect()"
+            >确定</span
+          >
+        </div>
       </div>
+      <div
+        ng-show="data.selectedPersons.length<=0"
+        style="width: 100%; height: 60px; display: flex; align-items: center; justify-content: center; color: #ccc; font-size: 24px;"
+      >
+        当前选择列表为空
+      </div>
+      <ion-scroll
+        delegate-handle="selected-person-scroll"
+        ng-show="data.selectedPersons.length >0"
+        scrollbar-x="false"
+        direction="x"
+        style="width: 100%; height: 100%;"
+      >
+        <div style="width: auto; height: 100%; display: flex;">
+          <div
+            ng-repeat="selectedPerson in data.selectedPersons"
+            style="display:flex;align-items:center;margin-top:12px;margin-left: 20px;"
+          >
+            <image
+              style="width:36px;height:36px;"
+              src="{{selectedPerson.icon}}"
+            ></image>
+            <div style="margin-left:20px;width: 60px;">
+              {{selectedPerson.name}}
+            </div>
+          </div>
+        </div>
+      </ion-scroll>
     </div>
   </div>
-  <ion-content class="has-subheader" scroll="false">
+  <ion-content class="has-subheader" scroll="false" style="top: 133px;">
     <ion-scroll
-      delegate-handle="city-handle"
+      delegate-handle="person-handle"
       direction="y"
       style="width:100%; height:100%"
       overflow-scroll="true"
     >
       <div class="list">
-        <div ng-repeat="(key,value) in persons track by $index">
+        <div ng-repeat="(key,persons) in data.personData track by $index">
           <div class="item item-divider" id="{{key}}" ng-hide="isShowKeyboard">
             {{key}}
           </div>
           <a
             style="display: flex; align-items: center;"
             class="item"
-            ng-repeat="data in value"
-            ng-click="selectItem(data)"
+            ng-repeat="person in persons"
+            ng-click="selectPerson(person)"
           >
             <image
-              style="width: 20px; height: 20px;"
-              src="{{data.icon}}"
+              ng-show="data.selectType == 2 && !isInSelectedPersons(person)"
+              style="width: 23px; height: 23px;"
+              src="images/circle.png"
+            ></image>
+            <image
+              ng-show="data.selectType == 2 && isInSelectedPersons(person)"
+              style="width: 23px; height: 23px;"
+              src="images/select.png"
+            ></image>
+            <image
+              style="width: 20px; height: 20px; margin-left: 5px;"
+              src="{{person.icon}}"
             ></image>
             <div style="margin-left:20px">
-              {{data.name}}
+              {{person.name}}
             </div>
           </a>
         </div>
@@ -51,7 +98,7 @@
     >
       <p
         class="letter"
-        ng-repeat="(key,value) in persons track by $index"
+        ng-repeat="(key,persons) in data.personData track by $index"
         ng-class="{selected:selected==key}"
         ng-click="selectType(key)"
       >

@@ -203,7 +203,7 @@ angular
       // setup an abstract state for the tabs directive
       .state("anxinPersonSelect", {
         url: "/anxinPersonSelect",
-        params: { type: null },
+        params: { type: null, persons: null, jobType: null },
         templateUrl: "templates/anxinPersonSelect.html",
         controller: "anxinPersonSelectCtrl",
         resolve: {
@@ -219,7 +219,6 @@ angular
       })
       .state("anxinList", {
         url: "/anxinList",
-        params: { type: null },
         templateUrl: "templates/anxinList.html",
         controller: "anxinListCtrl",
         resolve: {

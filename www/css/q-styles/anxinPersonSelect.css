@@ -62,3 +62,7 @@ p {
   font-weight: 500;
 }
 /* 选择城市 */
+
+.axps-confirm-active {
+  color: #000;
+}

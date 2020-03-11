@@ -801,11 +801,11 @@
   "请选择要确认的订单": "Please select the order to confirm.",
   "请选择要标记的客户订单": "Please select the customer order to be marked",
   "请选择要取消标记的客户订单": "Please select the customer order to be unlabeled",
-  "消费频次":"Consumption frequency",
-  "次/月":"Times/month",
-  "客户总消费金额":"Total Consumption Amount of Customers",
-  "最近消费时间":"Recent consumption time",
-  "存酒信息":"Wine storage information",
+  "消费频次": "Consumption frequency",
+  "次/月": "Times/month",
+  "客户总消费金额": "Total Consumption Amount of Customers",
+  "最近消费时间": "Recent consumption time",
+  "存酒信息": "Wine storage information",
   "客户": "client",
   "编辑资料": "edit",
   "充值": "recharge",
@@ -813,7 +813,6 @@
   "请确认以下信息": "Please confirm the following information",
   "确认充值": "confirm recharge",
   "会员卡号": "vip cardNo",
-  "请注意，当前页面的会员卡号与手机号码对应的不是同一客户，请确认是否充值到该会员卡号中": "Please note that the current page's membership card number and mobile phone number are not the same customer, please confirm whether to recharge into the membership card number"
+  "请注意，当前页面的会员卡号与手机号码对应的不是同一客户，请确认是否充值到该会员卡号中": "Please note that the current page's membership card number and mobile phone number are not the same customer, please confirm whether to recharge into the membership card number",
+  "安心卡": "anxin card"
 }
-
-
